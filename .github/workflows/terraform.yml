@@ -1,6 +1,10 @@
 name: 'Terragrunt GitHub Actions'
 on:
   - push
+  
+defaults:
+  run:
+    working-directory: CVT-IaC-Live-GCP
 env:
   tf_version: 'latest'
   tg_version: 'latest'
