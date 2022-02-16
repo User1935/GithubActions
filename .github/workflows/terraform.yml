@@ -5,6 +5,7 @@ env:
   tf_version: 'latest'
   tg_version: 'latest'
   tf_working_dir: '.'
+  GOOGLE_APPLICATION_CREDENTIALS: ${{secret.SECRET_KEY}}
 jobs:
   terragrunt:
     name: 'Terragrunt'
