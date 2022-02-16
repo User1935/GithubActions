@@ -4,7 +4,7 @@ on:
   
 defaults:
   run:
-    working-directory: CVT-IaC-Live-GCP
+    working-directory: ./CVT-IaC-Live-GCP
 env:
   tf_version: 'latest'
   tg_version: 'latest'
