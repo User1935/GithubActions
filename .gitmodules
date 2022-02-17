@@ -1,0 +1,3 @@
+[submodule "GithubActions"]
+	path = GithubActions
+	url = https://github.com/User1935/GithubActions.git
