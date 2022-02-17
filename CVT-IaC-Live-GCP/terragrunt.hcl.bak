@@ -27,7 +27,7 @@ generate "provider" {
   contents  = <<EOF
 provider "google" {
   project     = "My First Project"
-  region      = "us-central1"
+  region      = "europe-west2"
 }
 EOF
 }
@@ -36,7 +36,7 @@ EOF
 remote_state {
   backend = "gcs"
   config = {
-    bucket  = "tf-state-prod"
+    bucket  = "tf-state-prod-0-0-1"
     prefix  = "terraform/state"
   }
   generate = {

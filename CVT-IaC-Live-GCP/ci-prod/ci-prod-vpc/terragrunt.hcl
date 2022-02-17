@@ -1,5 +1,5 @@
 terraform {
-	source = "git::git@github.com:----//"
+	source = "git::https://github.com/User1935/GithubActions.git//CVT-IaC-Modules-GCP/vpc"
 }
 
 include {
