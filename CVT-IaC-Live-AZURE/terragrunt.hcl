@@ -23,7 +23,6 @@ generate "provider" {
   contents  = <<EOF
 provider "azurerm" {
   features {}
-  allowed_account_ids = ["${local.account_id}"]
 }
 EOF
 }
