@@ -20,7 +20,7 @@ locals {
   gcp_region   = local.region_vars.locals.gcp_region
 }
 
-# Generate an AWS provider block
+# Generate an GCP provider block
 generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
