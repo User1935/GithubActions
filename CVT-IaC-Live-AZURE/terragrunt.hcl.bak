@@ -34,7 +34,7 @@ EOF
 
 # Configure Terragrunt to automatically store tfstate files in an S3 bucket
 remote_state {
-  backend = "azurerm"
+  backend = "gcs"
   config = {
     bucket  = "tf-state-prod-0-0-1"
     prefix  = "terraform/state"
