@@ -8,7 +8,7 @@ defaults:
 env:
   tf_version: 'latest'
   tg_version: 'latest'
-  tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vm/'
+  tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
   GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
 jobs:
   terragrunt:
