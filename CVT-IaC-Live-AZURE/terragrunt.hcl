@@ -4,7 +4,7 @@
 # remote state, and locking: https://github.com/gruntwork-io/terragrunt
 # ---------------------------------------------------------------------------------------------------------------------
 
-variables "STORAGE_KEY"{
+variable "STORAGE_KEY" {
 	type = string
 	description = "Storage Access Key"
 }
