@@ -4,10 +4,6 @@
 # remote state, and locking: https://github.com/gruntwork-io/terragrunt
 # ---------------------------------------------------------------------------------------------------------------------
 
-variable "STORAGE_KEY" {
-	type = string
-	description = "Storage Access Key"
-}
 
 locals {
   account_vars = read_terragrunt_config(find_in_parent_folders("account.hcl"))
@@ -39,7 +35,7 @@ remote_state {
    resource_group_name  = "rg-LA-test-storage-gitops"
     storage_account_name = "gitacttfstatestorage"
     container_name       = "tfstate"
-    key                  = var.STORAGE_KEY
+    key                  = get_env("STORAGE_KEY")
   }
   generate = {
     path      = "backend.tf"
