@@ -16,7 +16,7 @@ locals {
 
   # Extract the variables we need for easy access
   account_name = local.account_vars.locals.account_name
-  account_id   = local.account_vars.locals.gcp_account_id
+  account_id   = local.account_vars.locals.account_id
   gcp_region   = local.region_vars.locals.gcp_region
 }
 
@@ -25,9 +25,9 @@ generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
-provider "google" {
-  project     = "My First Project"
-  region      = "europe-west2"
+provider "azurerm" {
+  features {}
+  allowed_account_ids = ["${local.account_id}"]
 }
 EOF
 }
