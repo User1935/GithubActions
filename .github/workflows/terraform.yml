@@ -23,6 +23,7 @@ jobs:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
       - name: 'Checkout'
         uses: actions/checkout@master
+      - uses: elstudio/action-install-azure-cli@v1
       - name: 'Sets env Variable'
         working-directory: ./CVT-IaC-Live-AZURE
         run: export TF_VAR_STORAGE_KEY={{secrets.STORAGE_KEY}};
