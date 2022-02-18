@@ -24,11 +24,11 @@ jobs:
         uses: actions/checkout@master
       - name: 'Sets env Variable'
         working-directory: ./CVT-IaC-Live-AZURE
-        run: export TF_VAR_STORAGE_KEY={{secrets.STORAGE_KEY}}
-             printenv
-             pwd
-             sed 's/key = ""/key = "${{ secrets.KEY_STORE }}"/' ./CVT-IaC-Live-AZURE/terragrunt.hcl
-             echo  ./CVT-IaC-Live-AZURE/terragrunt.hcl
+        run: export TF_VAR_STORAGE_KEY={{secrets.STORAGE_KEY}};
+             printenv;
+             pwd;
+             sed 's/key = ""/key = "${{ secrets.KEY_STORE }}"/' ./CVT-IaC-Live-AZURE/terragrunt.hcl;
+             echo  ./CVT-IaC-Live-AZURE/terragrunt.hcl;
       - name: 'Terragrunt Format'
         uses: the-commons-project/terragrunt-github-actions@master
         with:
