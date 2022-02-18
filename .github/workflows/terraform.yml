@@ -10,6 +10,7 @@ env:
   tg_version: 'latest'
   tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
   GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+  
 jobs:
   terragrunt:
     name: 'Terragrunt'
@@ -23,6 +24,7 @@ jobs:
         uses: actions/checkout@master
       - name: 'Sets env Variable'
         run: export TF_VAR_STORAGE_KEY={{secrets.STORAGE_KEY}}
+             printenv
       - name: 'Terragrunt Format'
         uses: the-commons-project/terragrunt-github-actions@master
         with:
