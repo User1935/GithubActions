@@ -4,6 +4,11 @@
 # remote state, and locking: https://github.com/gruntwork-io/terragrunt
 # ---------------------------------------------------------------------------------------------------------------------
 
+variables "STORAGE_KEY"{
+	type = string
+	description = "Storage Access Key"
+}
+
 locals {
   # Automatically load account-level variables
   account_vars = read_terragrunt_config(find_in_parent_folders("account.hcl"))
@@ -34,10 +39,12 @@ EOF
 
 # Configure Terragrunt to automatically store tfstate files in an S3 bucket
 remote_state {
-  backend = "gcs"
+  backend = "azurerm"
   config = {
-    bucket  = "tf-state-prod-0-0-1"
-    prefix  = "terraform/state"
+   resource_group_name  = "rg-LA-test-storage-gitops"
+    storage_account_name = "gitacttfstatestorage"
+    container_name       = "tfstate"
+    key                  = "${{secrets.STORAGE_KEY}}"
   }
   generate = {
     path      = "backend.tf"
