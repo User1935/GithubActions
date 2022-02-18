@@ -8,12 +8,17 @@ defaults:
 env:
   tf_version: 'latest'
   tg_version: 'latest'
-  tf_working_dir: './CVT-IaC-Live-GCP/ci-prod/ci-prod-vpc/'
+  tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vpc/'
   GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
 jobs:
   terragrunt:
     name: 'Terragrunt'
     runs-on: ubuntu-latest
+    steps:
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
