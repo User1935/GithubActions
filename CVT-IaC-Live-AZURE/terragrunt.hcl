@@ -35,7 +35,6 @@ remote_state {
    resource_group_name  = "rg-LA-test-storage-gitops"
     storage_account_name = "gitacttfstatestorage"
     container_name       = "tfstate"
-    key                  = get_env("TF_VAR_STORAGE_KEY")
   }
   generate = {
     path      = "backend.tf"
