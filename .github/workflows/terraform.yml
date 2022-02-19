@@ -27,7 +27,7 @@ jobs:
         working-directory: ./CVT-IaC-Live-AZURE
         run: export TF_VAR_STORAGE_KEY={{secrets.STORAGE_KEY}};
             cd ..;
-            ./install-cli.sh;
+            sudo ./install-cli.sh;
       - name: 'Terragrunt Format'
         uses: the-commons-project/terragrunt-github-actions@master
         with:
