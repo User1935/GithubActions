@@ -6,7 +6,6 @@ RUN ["/bin/sh", "-c", "apk add --update --no-cache bash ca-certificates curl git
 RUN echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
 RUN addgroup -S docker && adduser -S docker -G wheel
 
-USER docker
 
 COPY ["src", "/src/"]
 
