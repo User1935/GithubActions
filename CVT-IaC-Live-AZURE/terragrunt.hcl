@@ -35,6 +35,7 @@ remote_state {
     storage_account_name = "gitacttfstatestorage"
     container_name       = "tfstate"
     key = get_env("STORAGE_KEY")
+
   }
   generate = {
     path      = "backend.tf"

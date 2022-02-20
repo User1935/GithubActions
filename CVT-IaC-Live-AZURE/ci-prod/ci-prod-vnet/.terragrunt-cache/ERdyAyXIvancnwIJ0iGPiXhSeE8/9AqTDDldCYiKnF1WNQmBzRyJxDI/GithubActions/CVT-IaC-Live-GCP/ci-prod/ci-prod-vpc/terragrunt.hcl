@@ -1,0 +1,12 @@
+terraform {
+	source = "git::https://github.com/User1935/GithubActions.git//CVT-IaC-Modules-GCP/vpc"
+}
+
+include {
+	path = find_in_parent_folders()
+}
+
+
+inputs = {
+	name = "vpc"
+}
