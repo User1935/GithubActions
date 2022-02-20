@@ -4,6 +4,7 @@
 # remote state, and locking: https://github.com/gruntwork-io/terragrunt
 # ---------------------------------------------------------------------------------------------------------------------
 
+
 locals {
   account_vars = read_terragrunt_config(find_in_parent_folders("account.hcl"))
   region_vars = read_terragrunt_config(find_in_parent_folders("region.hcl"))
@@ -22,7 +23,6 @@ generate "provider" {
   contents  = <<EOF
 provider "azurerm" {
   features {}
-  allowed_account_ids = ["${local.account_id}"]
 }
 EOF
 }
@@ -34,7 +34,8 @@ remote_state {
    resource_group_name  = "rg-LA-test-storage-gitops"
     storage_account_name = "gitacttfstatestorage"
     container_name       = "tfstate"
-    key                  = "2gXP12wtlIONzDMbuoauUEO8VSyI7VwASmw7oYKxy+s01RyZPkvw26FnyovNiuxra73KfOgYK3597m5hBGPr3w=="
+    key = get_env("STORAGE_KEY")
+
   }
   generate = {
     path      = "backend.tf"

@@ -1,3 +1,3 @@
 locals {
-	region = "europe-west2"
+	region = "uksouth"
 }
