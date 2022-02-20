@@ -30,7 +30,7 @@ jobs:
             chmod +x install-cli.sh;
             sudo bash install-cli.sh;
       - name: 'Terragrunt Format'
-        uses: the-commons-project/terragrunt-github-actions@master
+        uses: ./action
         with:
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
