@@ -7,7 +7,7 @@ defaults:
     working-directory: ./CVT-IaC-Live-GCP
 env:
   az_APPID: ${{secrets.APPID}}
-  az_APPTENANT: ${{secrets.APPTENANT}}
+  az_TENANTID: ${{secrets.APPTENANT}}
   az_SECRET: ${{secrets.SECRET}}
   tf_version: 'latest'
   tg_version: 'latest'
@@ -36,7 +36,7 @@ jobs:
         uses:  the-commons-project/terragrunt-github-actions@master
         with:
           az_APPID:  ${{ env.az_APPID }}
-          az_APPTENANT:  ${{ env.az_APPTENANT }}
+          az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
@@ -48,7 +48,7 @@ jobs:
         uses: the-commons-project/terragrunt-github-actions@master
         with:
           az_APPID:  ${{ env.az_APPID }}
-          az_APPTENANT:  ${{ env.az_APPTENANT }}
+          az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
@@ -60,7 +60,7 @@ jobs:
         uses: the-commons-project/terragrunt-github-actions@master
         with:
           az_APPID:  ${{ env.az_APPID }}
-          az_APPTENANT:  ${{ env.az_APPTENANT }}
+          az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
@@ -72,7 +72,7 @@ jobs:
         uses: ./action
         with:
           az_APPID:  ${{ env.az_APPID }}
-          az_APPTENANT:  ${{ env.az_APPTENANT }}
+          az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
