@@ -5,15 +5,6 @@ branding:
   icon: 'cloud'
   color: 'purple'
 inputs:
-  az_APPID:
-    description: 'APPID of Identity user for Azure'
-    required: true
-  az_TENANTID:
-    description: 'TENANTID of Identity user for Azure'
-    required: true
-  az_SECRET:
-    description: 'SECRET of Identity user for Azure'
-    required: true
   tf_actions_subcommand:
     description: 'Terraform or Terragrunt subcommand to execute.'
     required: true
