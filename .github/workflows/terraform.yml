@@ -6,6 +6,9 @@ defaults:
   run:
     working-directory: ./CVT-IaC-Live-GCP
 env:
+  az_APPID: ${{secrets.APPID}}
+  az_APPTENANT: ${{secrets.APPTENANT}}
+  az_SECRET: ${{secrets.SECRET}}
   tf_version: 'latest'
   tg_version: 'latest'
   tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
@@ -32,6 +35,9 @@ jobs:
       - name: 'Terragrunt Format'
         uses:  the-commons-project/terragrunt-github-actions@master
         with:
+          az_APPID:  ${{ env.az_APPID }}
+          az_APPTENANT:  ${{ env.az_APPTENANT }}
+          az_SECRET:  ${{ env.az_SECRET }}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terraform'
@@ -41,6 +47,9 @@ jobs:
       - name: 'Terragrunt Init'
         uses: the-commons-project/terragrunt-github-actions@master
         with:
+          az_APPID:  ${{ env.az_APPID }}
+          az_APPTENANT:  ${{ env.az_APPTENANT }}
+          az_SECRET:  ${{ env.az_SECRET }}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terraform'
@@ -50,6 +59,9 @@ jobs:
       - name: 'Terragrunt Validate'
         uses: the-commons-project/terragrunt-github-actions@master
         with:
+          az_APPID:  ${{ env.az_APPID }}
+          az_APPTENANT:  ${{ env.az_APPTENANT }}
+          az_SECRET:  ${{ env.az_SECRET }}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terraform'
@@ -59,6 +71,9 @@ jobs:
       - name: 'Terragrunt Plan'
         uses: ./action
         with:
+          az_APPID:  ${{ env.az_APPID }}
+          az_APPTENANT:  ${{ env.az_APPTENANT }}
+          az_SECRET:  ${{ env.az_SECRET }}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terragrunt'
