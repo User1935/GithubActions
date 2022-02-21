@@ -5,7 +5,7 @@ RUN apk add py3-pip
 RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo make
 RUN pip install --upgrade pip
 RUN pip install azure-cli
-RUN ["/bin/sh", "-c", "az login --service-principal -u ${INPUT_AZ_APPID} -p ${INPUT_AZ_APPSECRET} --tenant ${INPUT_AZ_APPTENANT}"]
+#RUN ["/bin/sh", "-c", "az login --service-principal -u ${INPUT_AZ_APPID} -p ${INPUT_AZ_APPSECRET} --tenant ${INPUT_AZ_APPTENANT}"]
 
 #RUN 'NEWUSER="docker"; adduser -D "docker" docker; echo "docker ALL=(ALL) ALL" > /etc/sudoers.d/docker && chmod 0440 /etc/sudoers.d/docker;'
 #RUN echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
