@@ -1,0 +1,21 @@
+azure:
+    azsubscription_id: ""
+    aztenant_id: ""
+    azclient_id: ""
+    azclient_secret: ""
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv:
+        - vault_url: https://gitkeyvault1234.vault.azure.net
+          name: key
+          version: 933182b6f7dc49bda5d3f5fd57c7bafe
+          created_at: "2022-02-22T13:03:33Z"
+          enc: M830iXwdsJuA6qNQS0GAHDLD8BD0xgH2PIaBkQTo12Z-YGjR2Lz3KR7modNkm14oePOmviXWnLfJuf6X-7AlxKOrOsEUK9h_T0Hvj7ZlbJ-CCXLk7ra12dwTDf3R8AuekzAn1_RbWwmM2sVL3wVqefmJbMH0PRWhnFD_fv5MbRh_-EhZa1rYQKhVwELEoQHG62pm5guICtZNEE8Zq5DENHJ_CMdUJH891Nr9_DX39OIWt6hXuwxBiOAYUumkjttqVl5FBD_T5lJnGUi0w3FEcHXjRs61fx07ySRnkNL1Zj1v4dKAWv8n9YVNFXjavt8rxhSUqnhxgN_4dq1suVtjZfdq16w3p3MNFFFkNhmDuo4wvM0AmDmdVrsUECuIf0vbVcyGDoWHtCM7RGzi2oNtCr6I9DcClY4RCvicc9JZJrTMNX2ze83sSBYGJkvN2ACXoF37Z04x5Am_Nn2h-9l1fbP33oTE9rlggx4gJTiB0LdscHX8U9QclhgQ1iaKr0GooiCPpUo_f938jqy6cgmrXauieDA0V_ozS1J3mduxSKRJQzNdMGUgwCopY8XWhXXG5rzT2REjr7F0bxAiGuod_XxebPb6plqniJFZ-qww54lUupldkAvrz1UrGQ0Rfn4QoDIhqdZpnbU-rfIMwMYervJlN7XqCC8c5Bjm7I2NjB8
+    hc_vault: []
+    age: []
+    lastmodified: "2022-02-22T13:03:36Z"
+    mac: ENC[AES256_GCM,data:3E04TZfBMKyKYEolxBCvM9cldhuxTtQTNRK/Y3Ld4+dUnpWYZCt+uhTIZMBxyb7K/+Yu/RHSDzHauDscl1oAufSdKaBH2Cbv83Q/9NlUhBnG9Lk3MJfq7V3qszZWGm3F/o+YKnTK0l85CZPMz4mqXFVFVF3cxTMHbR44FrLN5jQ=,iv:2T5b2Pw2+lq946binnep4ODe2Ciay5Rf9/ohkFihgOg=,tag:BpgsJjBvZg632uhVB5CPVA==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.1
