@@ -27,12 +27,6 @@ jobs:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
       - name: 'Checkout'
         uses: actions/checkout@master
-      - name: 'Sets env Variable and install az'
-        working-directory: ./CVT-IaC-Live-AZURE
-        run: export TF_VAR_STORAGE_KEY={{secrets.STORAGE_KEY}};
-            cd ..;
-            chmod +x install-cli.sh;
-            sudo bash install-cli.sh;
       - name: 'Terragrunt Format'
         uses:  the-commons-project/terragrunt-github-actions@master
         with:
