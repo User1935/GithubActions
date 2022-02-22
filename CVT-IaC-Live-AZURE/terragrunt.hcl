@@ -22,14 +22,15 @@ generate "provider" {
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
 provider "azurerm" {
-  subscription_id = data.sops_file.secrets.data["azure.azuresubscription_id"]
+  subscription_id = data.sops_file.secrets.data["azure.azsubscription_id"]
   tenant_id 	  = data.sops_file.secrets.data["azure.aztenant_id"]
   client_id		  = data.sops_file.secrets.data["azure.azclient_id"]
   client_secret   = data.sops_file.secrets.data["azure.azclient_secret"]
+  features {}
 }
 
 data "sops_file" "secrets" {
-  source_file = "${path_relative_to_include("root")}/secure/stuff.yaml"
+  source_file = "${path_relative_from_include()}/secure/stuff.yaml"
   input_type = "yaml"
 }
 EOF
