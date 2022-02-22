@@ -4,6 +4,7 @@
 # remote state, and locking: https://github.com/gruntwork-io/terragrunt
 # ---------------------------------------------------------------------------------------------------------------------
 
+
 locals {
   account_vars = read_terragrunt_config(find_in_parent_folders("account.hcl"))
   region_vars = read_terragrunt_config(find_in_parent_folders("region.hcl"))
@@ -21,12 +22,38 @@ generate "provider" {
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
 provider "azurerm" {
-  features {}
-  allowed_account_ids = ["${local.account_id}"]
+  subscription_id = data.sops_file.secrets.data["azure.azuresubscription_id"]
+  tenant_id 	  = data.sops_file.secrets.data["azure.aztenant_id"]
+  client_id		  = data.sops_file.secrets.data["azure.azclient_id"]
+  client_secret   = data.sops_file.secrets.data["azure.azclient_secret"]
+}
+
+required_providers {
+    sops = {
+      source  = "carlpett/sops"
+      version = "~> 0.6"
+    }
+  }
+
+data "sops_file" "secrets" {
+  source_file = "${path_relative_to_include("root")}/secure/stuff.yaml"
+  input_type = "yaml"
 }
 EOF
 }
+#terraform {
+#	before_hook "tf_plugins" {
+#		  commands = ["init", "format", "plan", "apply", "validate"]
+#
+#		  run_on_error = false
+#
+#		  execute = [
+#			"bash", "-c", "touch provider-sop.tf;echo 'provider \"sops\" {\n source = \"carlpett/sops\"\nversion = \"~> 0.6\"\n}' > provider-sop.tf"
+#		  ]
+#	}
+#}
 
+#   source = "carlpett/sops"
 # Configure Terragrunt to automatically store tfstate files in an S3 bucket
 remote_state {
   backend = "azurerm"
@@ -34,7 +61,8 @@ remote_state {
    resource_group_name  = "rg-LA-test-storage-gitops"
     storage_account_name = "gitacttfstatestorage"
     container_name       = "tfstate"
-    key                  = get_env("STORAGE_KEY")
+    key = get_env("STORAGE_KEY")
+
   }
   generate = {
     path      = "backend.tf"

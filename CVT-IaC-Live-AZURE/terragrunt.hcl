@@ -22,11 +22,56 @@ generate "provider" {
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
 provider "azurerm" {
-  features {}
+  subscription_id = data.sops_file.secrets.data["azure.azuresubscription_id"]
+  tenant_id 	  = data.sops_file.secrets.data["azure.aztenant_id"]
+  client_id		  = data.sops_file.secrets.data["azure.azclient_id"]
+  client_secret   = data.sops_file.secrets.data["azure.azclient_secret"]
+}
+
+data "sops_file" "secrets" {
+  source_file = "${path_relative_to_include("root")}/secure/stuff.yaml"
+  input_type = "yaml"
 }
 EOF
 }
 
+generate "terraform" {
+  path      = "terraform.tf"
+  if_exists = "overwrite"
+  contents = <<EOF
+terraform {
+	required_version = ">=1.0"
+	required_providers {
+		azurerm = {
+			source = "hashicorp/azurerm"
+			version = "~> 2.77"
+		}
+		sops = {
+			source = "carlpett/sops"
+			version = "~> 0.6"
+		}
+		azureread = {
+			source = "hashicorp/azuread"
+			version = "~> 2.4.0"
+		}
+	}
+}
+EOF
+}
+
+#terraform {
+#	before_hook "tf_plugins" {
+#		  commands = ["init", "format", "plan", "apply", "validate"]
+#
+#		  run_on_error = false
+#
+#		  execute = [
+#			"bash", "-c", "touch provider-sop.tf;echo 'provider \"sops\" {\n source = \"carlpett/sops\"\nversion = \"~> 0.6\"\n}' > provider-sop.tf"
+#		  ]
+#	}
+#}
+
+#   source = "carlpett/sops"
 # Configure Terragrunt to automatically store tfstate files in an S3 bucket
 remote_state {
   backend = "azurerm"

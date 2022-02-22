@@ -1,0 +1,21 @@
+azure:
+  azsubscription_id: ""
+  aztenant_id: ""
+  azclient_id: ""
+  azclient_secret: ""
+
+sops:
+  kms: []
+  gcp_kms: []
+  azure_kv:
+  - vault_url: ...
+    name: sopmething
+    version: ""
+    enc: ""
+  hc_vault: []
+  age: []
+  lastmodified:
+  mac:
+  pgp: []
+  unencrypted_suffix: _unencrypted
+  version: 3.7.1
