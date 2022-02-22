@@ -1,10 +1,12 @@
-FROM alpine:3 
+FROM mcr.microsoft.com/azure-cli
+#alpine:3 
 
 RUN ["/bin/sh", "-c", "apk add --update --no-cache bash ca-certificates curl git jq openssh sudo"]
-RUN apk add py3-pip
-RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo make
-RUN pip install --upgrade pip
-RUN pip install azure-cli
+#RUN apk add py3-pip
+#RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo make
+#RUN pip install --upgrade pip
+#RUN pip install azure-cli
+
 #RUN echo ${INPUT_AZ_APPSECRET} INPUT_AZ_APPSECRET AZ_APPSECRET ${AZ_APPSECRET}
 #RUN ["/bin/sh", "-c", "az login --service-principal --username ${INPUT_AZ_APPID} --password ${INPUT_AZ_APPSECRET} --tenant ${INPUT_AZ_APPTENANT}"]
 
