@@ -164,6 +164,10 @@ function main {
   source ${scriptDir}/terragrunt_taint.sh
   source ${scriptDir}/terragrunt_destroy.sh
   
+  for i in "${1}"
+  do
+     echo VAR $i
+  done
   echo ARG1: ${1} ARG2: ${1} ARG3: ${1}
   installAZ
   parseInputs
