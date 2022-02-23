@@ -116,7 +116,7 @@ function installTerraform {
 }
 
 function installAZ {
-  az login --service-principal --username $1 --password $3 --tenant $2
+  az login --service-principal --username ${1}[0] --password ${1}[2] --tenant ${1}[1]
 }
 
 function installTerragrunt {
@@ -164,7 +164,7 @@ function main {
   source ${scriptDir}/terragrunt_taint.sh
   source ${scriptDir}/terragrunt_destroy.sh
   
-  echo ARG1: ${1} ARG2: ${2} ARG3: ${3}
+  echo ARG1: ${1}[0] ARG2: ${1}[1] ARG3: ${1}[2]
   installAZ
   parseInputs
   configureCLICredentials
