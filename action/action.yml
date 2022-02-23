@@ -55,6 +55,8 @@ outputs:
 runs:
   using: 'docker'
   image: './Dockerfile'
+  option:
+    --e ENV=${{ secrets.APPID }} 
   args:
     - ${{ inputs.az_APPID }}
     - ${{ inputs.az_TENANTID }}
