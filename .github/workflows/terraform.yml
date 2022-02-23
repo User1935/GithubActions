@@ -7,7 +7,7 @@ defaults:
     working-directory: ./CVT-IaC-Live-GCP
 env:
   az_APPID: ${{secrets.APPID}}
-  az_TENANTID: ${{secrets.APPTENANT}}
+  az_APPTENANT: ${{secrets.APPTENANT}}
   az_SECRET: ${{secrets.SECRET}}
   test_SECRET: ${{secrets.TEST_SECRET}}
   tf_version: 'latest'
