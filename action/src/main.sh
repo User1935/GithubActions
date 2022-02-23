@@ -165,7 +165,7 @@ function main {
   source ${scriptDir}/terragrunt_destroy.sh
   
   IN=$@
-  arrIN=(${IN//;/ })
+  arrIN=(${IN// / })
   echo ${arrIN[1]}       
   echo ARG1:  ${arrIN[1]} ARG2:  ${arrIN[2]} ARG3:  ${arrIN[3]}
   installAZ
