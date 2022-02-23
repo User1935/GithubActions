@@ -164,7 +164,7 @@ function main {
   source ${scriptDir}/terragrunt_taint.sh
   source ${scriptDir}/terragrunt_destroy.sh
   
-  for i in "${1}"
+  for i in $@
   do
      echo VAR $i
   done
