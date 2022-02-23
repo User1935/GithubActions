@@ -60,6 +60,6 @@ runs:
   image: './Dockerfile'
   env: 
       ARM_CLIENT_ID: ${{ inputs.az_APPID }}
-      ARM_CLIENT_SECRET: ${{ inputs.az_TENANTID }}
-      ARM_TENANT_ID: ${{ inputs.az_SECRET }}
+      ARM_TENANT_ID: ${{ inputs.az_TENANTID }}
+      ARM_CLIENT_SECRET: ${{ inputs.az_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ inputs.az_SUBID }}
