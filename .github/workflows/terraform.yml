@@ -1,6 +1,6 @@
 name: 'Terragrunt GitHub Actions'
 on:
-  - create
+  - push
 
 defaults:
   run:
@@ -79,10 +79,10 @@ jobs:
           tf_actions_subcommand: 'plan'
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
-      - name: 'Render terraform docs and push changes back to PR'
-        uses: terraform-docs/gh-actions@main
-        with:
-          working-dir: .
-          output-file: README.md
-          output-method: inject
-          git-push: "true" 
+#      - name: 'Render terraform docs and push changes back to PR'
+#        uses: terraform-docs/gh-actions@main
+#        with:
+#          working-dir: .
+#          output-file: README.md
+#          output-method: inject
+#          git-push: "true" 
