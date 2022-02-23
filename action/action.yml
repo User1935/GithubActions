@@ -56,4 +56,6 @@ runs:
   using: 'docker'
   image: './Dockerfile'
   args: 
-    - (${{ inputs.az_APPID }} ${{ inputs.az_TENANTID }} ${{ inputs.az_SECRET }})
+    - ${{ inputs.az_APPID }}
+    - ${{ inputs.az_TENANTID }}
+    - ${{ inputs.az_SECRET }}
