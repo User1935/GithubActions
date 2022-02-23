@@ -59,7 +59,7 @@ runs:
   using: 'docker'
   image: './Dockerfile'
   env: 
-     - ${{ inputs.az_APPID }}
-     - ${{ inputs.az_TENANTID }}
-     - ${{ inputs.az_SECRET }}
-     - ${{ inputs.az_SUBID }}
+      ARM_CLIENT_ID: ${{ inputs.az_APPID }}
+      ARM_CLIENT_SECRET: ${{ inputs.az_TENANTID }}
+      ARM_TENANT_ID: ${{ inputs.az_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ inputs.az_SUBID }}
