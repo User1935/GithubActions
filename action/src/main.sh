@@ -168,7 +168,7 @@ function main {
   do
      echo VAR $i
   done
-  echo ARG1: ${1} ARG2: ${1} ARG3: ${1}
+  echo ARG1: $@[1] ARG2: $@[2] ARG3: $@[3]
   installAZ
   parseInputs
   configureCLICredentials
