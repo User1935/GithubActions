@@ -1,7 +1,7 @@
 name: 'Terragrunt GitHub Actions'
 on:
   - push
-  
+
 defaults:
   run:
     working-directory: ./CVT-IaC-Live-GCP
@@ -27,6 +27,10 @@ jobs:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
       - name: 'Checkout'
         uses: actions/checkout@master
+      - name: get secrets
+        run: |
+          echo "ARM_CLIENT_ID=${{ secrets.TEST_SECRET }}" >> $GITHUB_ENV
+          echo $GITHUB_END
       - name: 'Terragrunt Format'
         uses:  the-commons-project/terragrunt-github-actions@master
         with:
