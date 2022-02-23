@@ -164,12 +164,10 @@ function main {
   source ${scriptDir}/terragrunt_taint.sh
   source ${scriptDir}/terragrunt_destroy.sh
   
-  ARRAY=()
-  for i in $@
-  do
-     ARRAY+=($i)
-  done
-  echo ARG1: $1 ARG2: $2 ARG3: $3
+  IN=$@
+  arrIN=(${IN//;/ })
+  echo ${arrIN[1]}       
+  echo ARG1:  ${arrIN[1]} ARG2:  ${arrIN[2]} ARG3:  ${arrIN[3]}
   installAZ
   parseInputs
   configureCLICredentials
