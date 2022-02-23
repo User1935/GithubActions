@@ -72,7 +72,7 @@ jobs:
         with:
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
-          az_SECRET:  ${{ env.test_SECRET }}
+          az_SECRET:  ${{ env.az_SECRET }}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terragrunt'
