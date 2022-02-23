@@ -116,6 +116,10 @@ function installTerraform {
 }
 
 function installAZ {
+  IN=$@
+  arrIN=(${IN// / })
+  echo ${arrIN[1]}       
+  echo ARG1:  ${arrIN[0]} ARG2:  ${arrIN[1]} ARG3:  ${arrIN[2]}
   az login --service-principal --username ${1} --password ${3} --tenant ${2}
 }
 
@@ -167,8 +171,10 @@ function main {
   IN=$@
   arrIN=(${IN// / })
   echo ${arrIN[1]}       
-  echo ARG1:  ${arrIN[1]} ARG2:  ${arrIN[2]} ARG3:  ${arrIN[3]}
-  installAZ
+  echo ARG1:  ${arrIN[0]} ARG2:  ${arrIN[1]} ARG3:  ${arrIN[2]}
+  az login --service-principal --username ${arrIN[0]} --password ${arrIN[2]} --tenant ${arrIN[1]}
+  
+  echo ARG1:  ${arrIN[0]} ARG2:  ${arrIN[1]} ARG3:  ${arrIN[2]}
   parseInputs
   configureCLICredentials
   installTerraform
