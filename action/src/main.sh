@@ -164,7 +164,7 @@ function main {
   source ${scriptDir}/terragrunt_taint.sh
   source ${scriptDir}/terragrunt_destroy.sh
   
-  echo ENV: $ENV
+  echo ARG1: ${1} ARG2: ${2} ARG3: ${3}
   installAZ
   parseInputs
   configureCLICredentials
