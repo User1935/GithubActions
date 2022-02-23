@@ -172,7 +172,7 @@ function main {
   arrIN=(${IN// / })
   echo ${arrIN[1]}       
   echo ARG1:  ${arrIN[0]} ARG2:  ${arrIN[1]} ARG3:  ${arrIN[2]}
-  az login --service-principal --username ${arrIN[0]} --password ${arrIN[2]} --tenant ${arrIN[1]}
+  az login --service-principal -u ${arrIN[0]} -p ${arrIN[2]} --tenant ${arrIN[1]}
   
   echo ARG1:  ${arrIN[0]} ARG2:  ${arrIN[1]} ARG3:  ${arrIN[2]}
   parseInputs
