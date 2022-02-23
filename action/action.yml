@@ -58,8 +58,8 @@ outputs:
 runs:
   using: 'docker'
   image: './Dockerfile'
-  env: |
-     ${{ inputs.az_APPID }}
-     ${{ inputs.az_TENANTID }}
-     ${{ inputs.az_SECRET }}
-     ${{ inputs.az_SUBID }}
+  env: 
+     - ${{ inputs.az_APPID }}
+     - ${{ inputs.az_TENANTID }}
+     - ${{ inputs.az_SECRET }}
+     - ${{ inputs.az_SUBID }}
