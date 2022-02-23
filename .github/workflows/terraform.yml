@@ -30,7 +30,7 @@ jobs:
       - name: get secrets
         run: |
           echo "ARM_CLIENT_ID=${{ secrets.TEST_SECRET }}" >> $GITHUB_ENV
-          echo $GITHUB_END
+          echo GITHUB_END: $GITHUB_END
       - name: 'Terragrunt Format'
         uses:  the-commons-project/terragrunt-github-actions@master
         with:
