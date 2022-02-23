@@ -9,7 +9,7 @@ env:
   az_APPID: ${{secrets.APPID}}
   az_APPTENANT: ${{secrets.APPTENANT}}
   az_SECRET: ${{secrets.SECRET}}
-  test_SECRET: ${{secrets.TEST_SECRET}}
+  az_SUBID: ${{secrets.TEST_SECRET}}
   tf_version: 'latest'
   tg_version: 'latest'
   tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
@@ -37,6 +37,7 @@ jobs:
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
+          az_SUBID: ${{secrets.TEST_SECRET}}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terraform'
@@ -49,6 +50,7 @@ jobs:
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
+          az_SUBID: ${{secrets.TEST_SECRET}}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terraform'
@@ -61,6 +63,7 @@ jobs:
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
+          az_SUBID: ${{secrets.TEST_SECRET}}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terraform'
@@ -73,6 +76,7 @@ jobs:
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
+          az_SUBID: ${{secrets.TEST_SECRET}}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terragrunt'
