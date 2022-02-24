@@ -17,6 +17,9 @@ inputs:
   az_SUBID:
     description: 'Azure SUBID'
     required: true
+  az_STORAGE_KEY:
+     description: 'Azure SUBID'
+    required: true
   tf_actions_subcommand:
     description: 'Terraform or Terragrunt subcommand to execute.'
     required: true
@@ -63,3 +66,4 @@ runs:
       ARM_TENANT_ID: ${{ inputs.az_TENANTID }}
       ARM_CLIENT_SECRET: ${{ inputs.az_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ inputs.az_SUBID }}
+      STORAGE_KEY: ${{ inputs.az_STORAGE_KEY }}
