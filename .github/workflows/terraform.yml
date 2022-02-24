@@ -76,6 +76,7 @@ jobs:
           tf_actions_comment: true
       - name: 'Terragrunt Plan'
         uses: ./action
+        continue-on-error: true
         with:
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
