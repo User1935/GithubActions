@@ -32,7 +32,8 @@ jobs:
           echo "ARM_CLIENT_ID=${{ secrets.TEST_SECRET }}" >> $GITHUB_ENV
           echo GITHUB_END: $GITHUB_END
       - name: 'Terragrunt Format'
-        uses:  ./action 
+        uses:  ./action
+        continue-on-error: true
         with:
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
