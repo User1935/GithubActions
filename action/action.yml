@@ -18,7 +18,7 @@ inputs:
     description: 'Azure SUBID'
     required: true
   az_STORAGE_KEY:
-     description: 'Azure SUBID'
+    description: 'Azure STORAGE'
     required: true
   tf_actions_subcommand:
     description: 'Terraform or Terragrunt subcommand to execute.'
