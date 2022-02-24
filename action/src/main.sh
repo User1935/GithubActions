@@ -177,7 +177,7 @@ function main {
   #export ARM_CLIENT_SECRET=${arrIN[2]}
   #export ARM_TENANT_ID=${arrIN[1]}
   #export ARM_SUBSCRIPTION_ID=${arrIN[3]}
-  export STORAGE_KEY=${arrIN[4]}
+  #export STORAGE_KEY=${arrIN[4]}
   
   echo ARG1:  ${arrIN[0]} ARG2:  ${arrIN[1]} ARG3:  ${arrIN[2]}
   parseInputs
