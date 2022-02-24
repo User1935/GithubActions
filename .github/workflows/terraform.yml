@@ -32,7 +32,7 @@ jobs:
           echo "ARM_CLIENT_ID=${{ secrets.TEST_SECRET }}" >> $GITHUB_ENV
           echo GITHUB_END: $GITHUB_END
       - name: 'Terragrunt Format'
-        uses:  the-commons-project/terragrunt-github-actions@master
+        uses:  ./action 
         with:
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
@@ -45,7 +45,7 @@ jobs:
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
       - name: 'Terragrunt Init'
-        uses: the-commons-project/terragrunt-github-actions@master
+        uses: ./action
         with:
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
@@ -58,7 +58,7 @@ jobs:
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
       - name: 'Terragrunt Validate'
-        uses: the-commons-project/terragrunt-github-actions@master
+        uses: ./action
         with:
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
@@ -90,3 +90,4 @@ jobs:
           output-file: README.md
           output-method: inject
           git-push: "true" 
+#the-commons-project/terragrunt-github-actions@master
