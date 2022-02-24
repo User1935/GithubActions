@@ -35,6 +35,7 @@ jobs:
         uses:  ./action
         continue-on-error: true
         with:
+          sops_path: "./secure/stuff.yaml"
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
@@ -49,6 +50,7 @@ jobs:
       - name: 'Terragrunt Init'
         uses: ./action
         with:
+          sops_path: "./secure/stuff.yaml"
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
@@ -63,6 +65,7 @@ jobs:
       - name: 'Terragrunt Validate'
         uses: ./action
         with:
+          sops_path: "./secure/stuff.yaml"
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
@@ -78,6 +81,7 @@ jobs:
         uses: ./action
         continue-on-error: true
         with:
+          sops_path: "./secure/stuff.yaml"
           az_APPID:  ${{ env.az_APPID }}
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
