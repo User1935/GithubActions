@@ -3,7 +3,7 @@
 # Terragrunt is a thin wrapper for Terraform that provides extra tools for working with multiple Terraform modules,
 # remote state, and locking: https://github.com/gruntwork-io/terragrunt
 # ---------------------------------------------------------------------------------------------------------------------
-
+# ${path_relative_from_include()}
 
 locals {
   account_vars = read_terragrunt_config(find_in_parent_folders("account.hcl"))
@@ -30,7 +30,7 @@ provider "azurerm" {
 }
 
 data "sops_file" "secrets" {
-  source_file = "${path_relative_from_include()}/secure/stuff.yaml"
+  source_file = "/home/runner/work/GithubActions/GithubActions/secure/stuff.yaml"
   input_type  = "yaml"
 }
 EOF
