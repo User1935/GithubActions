@@ -4,6 +4,7 @@
 # remote state, and locking: https://github.com/gruntwork-io/terragrunt
 # ---------------------------------------------------------------------------------------------------------------------
 # ${path_relative_from_include()}
+# "${path_relative_from_include()}/secure/stuff.yaml"
 
 locals {
   account_vars = read_terragrunt_config(find_in_parent_folders("account.hcl"))
@@ -21,18 +22,20 @@ generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
-provider "azurerm" \{
+provider "azurerm" {
   subscription_id = data.sops_file.secrets.data["azure.azsubscription_id"]
   tenant_id 	    = data.sops_file.secrets.data["azure.aztenant_id"]
   client_id	      = data.sops_file.secrets.data["azure.azclient_id"]
   client_secret   = data.sops_file.secrets.data["azure.azclient_secret"]
-  features \{\}
-\}
-
-data "sops_file" "secrets" \{
-  source_file = "${path_relative_from_include()}/secure/stuff.yaml"
+  features {}
+}
+data "local_file" "yaml" {
+    filename = get_env("PATH_SOPS")
+}
+data "sops_file" "secrets" {
+  source_file = data.local_file.yaml.content
   input_type  = "yaml"
-\}
+}
 EOF
 }
 
