@@ -23,8 +23,8 @@ generate "provider" {
   contents  = <<EOF
 provider "azurerm" {
   subscription_id = data.sops_file.secrets.data["azure.azsubscription_id"]
-  tenant_id 	  = data.sops_file.secrets.data["azure.aztenant_id"]
-  client_id	  = data.sops_file.secrets.data["azure.azclient_id"]
+  tenant_id 	    = data.sops_file.secrets.data["azure.aztenant_id"]
+  client_id	      = data.sops_file.secrets.data["azure.azclient_id"]
   client_secret   = data.sops_file.secrets.data["azure.azclient_secret"]
   features {}
 }
@@ -44,11 +44,11 @@ terraform {
   required_version = ">=1.0"
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source  = "hashicorp/azurerm"
       version = "~> 2.77"
     }
     sops = {
-      source = "carlpett/sops"
+      source  = "carlpett/sops"
       version = "~> 0.6"
     }
     azureread = {
