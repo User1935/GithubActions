@@ -24,14 +24,14 @@ generate "provider" {
 provider "azurerm" {
   subscription_id = data.sops_file.secrets.data["azure.azsubscription_id"]
   tenant_id 	  = data.sops_file.secrets.data["azure.aztenant_id"]
-  client_id		  = data.sops_file.secrets.data["azure.azclient_id"]
+  client_id	  = data.sops_file.secrets.data["azure.azclient_id"]
   client_secret   = data.sops_file.secrets.data["azure.azclient_secret"]
   features {}
 }
 
 data "sops_file" "secrets" {
   source_file = "${path_relative_from_include()}/secure/stuff.yaml"
-  input_type = "yaml"
+  input_type  = "yaml"
 }
 EOF
 }
@@ -41,21 +41,21 @@ generate "terraform" {
   if_exists = "overwrite"
   contents = <<EOF
 terraform {
-	required_version = ">=1.0"
-	required_providers {
-		azurerm = {
-			source = "hashicorp/azurerm"
-			version = "~> 2.77"
-		}
-		sops = {
-			source = "carlpett/sops"
-			version = "~> 0.6"
-		}
-		azureread = {
-			source = "hashicorp/azuread"
-			version = "~> 2.4.0"
-		}
-	}
+  required_version = ">=1.0"
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "~> 2.77"
+    }
+    sops = {
+      source = "carlpett/sops"
+      version = "~> 0.6"
+    }
+    azureread = {
+      source  = "hashicorp/azuread"
+      version = "~> 2.4.0"
+    }
+  }
 }
 EOF
 }
