@@ -38,6 +38,7 @@ jobs:
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
           az_SUBID: ${{secrets.TEST_SECRET}}
+          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terragrunt'
@@ -51,6 +52,7 @@ jobs:
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
           az_SUBID: ${{secrets.TEST_SECRET}}
+          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terragrunt'
@@ -64,6 +66,7 @@ jobs:
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
           az_SUBID: ${{secrets.TEST_SECRET}}
+          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terragrunt'
@@ -77,6 +80,7 @@ jobs:
           az_TENANTID:  ${{ env.az_APPTENANT }}
           az_SECRET:  ${{ env.az_SECRET }}
           az_SUBID: ${{secrets.TEST_SECRET}}
+          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_binary: 'terragrunt'
