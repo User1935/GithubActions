@@ -80,7 +80,8 @@ remote_state {
    resource_group_name  = "rg-LA-test-storage-gitops"
     storage_account_name = "gitacttfstatestorage"
     container_name       = "tfstate"
-    key = get_env("STORAGE_KEY")
+    key = "test.tfstate"
+    access_key = get_env("STORAGE_KEY")
 
   }
   generate = {
