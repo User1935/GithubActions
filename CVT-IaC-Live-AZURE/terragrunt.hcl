@@ -30,7 +30,7 @@ provider "azurerm" {
 }
 
 data "sops_file" "secrets" {
-  source_file = "/home/runner/work/GithubActions/GithubActions/secure/stuff.yaml"
+  source_file = "${path_relative_from_include()}/secure/stuff.yaml"
   input_type  = "yaml"
 }
 EOF
