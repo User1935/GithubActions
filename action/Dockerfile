@@ -14,6 +14,17 @@ RUN ["/bin/sh", "-c", "apk add --update --no-cache bash ca-certificates curl git
 #RUN echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
 #RUN addgroup -S docker && adduser -S docker -G wheel
 
+RUN --mount=type=secret,id=ARM_CLIENT_ID \
+   --mount=type=secret,id=ARM_TENANT_ID \
+   --mount=type=secret,id=ARM_CLIENT_SECRET \
+   --mount=type=secret,id=ARM_SUBSCRIPTION_ID \
+   --mount=type=secret,id=STORAGE_KEY \
+   --mount=type=secret,id=TF_VAR_PATHSOPS \
+   export ARM_CLIENT_ID=$(cat /run/secrets/ARM_CLIENT_ID) && \
+   export ARM_TENANT_ID=$(cat /run/secrets/ARM_TENANT_ID) && \
+   export ARM_CLIENT_SECRET=$(cat /run/secrets/ARM_CLIENT_SECRET) && \
+   export ARM_SUBSCRIPTION_ID=$(cat /run/secrets/ARM_SUBSCRIPTION_ID) && \
+   
 
 COPY ["src", "/src/"]
 RUN ["chmod", "+x", "/src/main.sh"]
