@@ -64,10 +64,11 @@ outputs:
 runs:
   using: 'docker'
   image: './Dockerfile'
-  env: 
-      ARM_CLIENT_ID: ${{ inputs.az_APPID }}
-      ARM_TENANT_ID: ${{ inputs.az_TENANTID }}
-      ARM_CLIENT_SECRET: ${{ inputs.az_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ inputs.az_SUBID }}
-      STORAGE_KEY: ${{ inputs.az_STORAGE_KEY }}
-      TF_VAR_PATHSOPS: ${{inputs.sops_path}}
+  with:
+    secrets: |
+      "ARM_CLIENT_ID=${{ secrets.az_APPID }}"
+      "ARM_TENANT_ID=${{ secrets.az_TENANTID }}"
+      "ARM_CLIENT_SECRET=${{ secrets.az_SECRET }}"
+      "ARM_SUBSCRIPTION_ID=${{ secrets.az_SUBID }}"
+      "STORAGE_KEY"=${{ secrets.az_STORAGE_KEY }}
+      "TF_VAR_PATHSOPS=${{ secrets.sops_path }}"
