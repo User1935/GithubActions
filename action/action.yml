@@ -63,8 +63,9 @@ outputs:
  
 runs:
   using: 'docker'
-  image: './Dockerfile'
+  image: 'docker/build-push-action@v2'
   with:
+    push: false
     secrets: |
       "ARM_CLIENT_ID=${{ secrets.az_APPID }}"
       "ARM_TENANT_ID=${{ secrets.az_TENANTID }}"
