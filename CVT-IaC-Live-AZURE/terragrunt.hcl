@@ -29,9 +29,9 @@ provider "azurerm" {
   client_secret   = data.sops_file.secrets.data["azure.azclient_secret"]
   features {}
 }
-
+# join("", [path.cwd, "/secure/stuff.yaml"])
 data "local_file" "yaml" {
-    filename = join("", [path.cwd, "/secure/stuff.yaml"])
+    filename = "/secure/stuff.yaml"
 }
 data "sops_file" "secrets" {
   source_file = data.local_file.yaml.content
