@@ -82,7 +82,6 @@ jobs:
           tf_actions_comment: true
       - name: 'Terragrunt Plan'
         uses: ./action
-        continue-on-error: true
         with:
           sops_path: "./secure/stuff.yaml"
           az_APPID:  ${{ env.az_APPID }}
@@ -98,7 +97,6 @@ jobs:
           tf_actions_comment: true
       - name: 'Terragrunt Apply'
         uses: ./action
-        continue-on-error: true
         with:
           sops_path: "./secure/stuff.yaml"
           az_APPID:  ${{ env.az_APPID }}
@@ -113,11 +111,4 @@ jobs:
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
 
-      - name: 'Render terraform docs and push changes back to PR'
-        uses: terraform-docs/gh-actions@main
-        with:
-          working-dir: ${{ env.tf_working_dir }}
-          output-file: README.md
-          output-method: inject
-          git-push: "true" 
 #the-commons-project/terragrunt-github-actions@master
