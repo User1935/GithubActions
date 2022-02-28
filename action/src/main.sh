@@ -171,7 +171,7 @@ function main {
   IN=$@
   arrIN=(${IN// / })
   echo ${arrIN[1]}       
-  echo ARG1:  ${arrIN[0]} ARG2:  ${arrIN[1]} ARG3:  ${arrIN[2]}
+  echo ARG1:  ${INPUT_AZ_APPID} ARG2:  ${INPUT_AZ_SECRET} ARG3:  ${INPUT_az_TENANTID}
   az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
   #export ARM_CLIENT_ID=${arrIN[0]}
   #export ARM_CLIENT_SECRET=${arrIN[2]}
