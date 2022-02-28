@@ -22,3 +22,15 @@ jobs:
           output-file: README.md
           output-method: inject
           git-push: "true" 
+        
+      - name: get changed files
+        id: getfile
+        run: |
+          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }}| xargs)"
+
+      - name: echo the changed files
+        run: |
+          for i in ${{ steps.getfile.outputs.files }}
+          do
+              echo $i
+          done
