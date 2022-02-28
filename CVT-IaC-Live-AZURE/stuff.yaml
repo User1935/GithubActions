@@ -1,0 +1,21 @@
+azure:
+    azsubscription_id: ENC[AES256_GCM,data:BDP76XnUySaOtMpDNJZNnA4FA3xMW9YIyOn7587NFVkBPrir,iv:n6xo/J2XQF4Ywk9A94VJim2yHsOTmJd98FyTraiD8HY=,tag:1oJWWwtVnJQUfTuxMkRWGQ==,type:str]
+    aztenant_id: ENC[AES256_GCM,data:6uhP9VjTrwbHBrqDJsWvBPwK+SbmxckV8/SKJ2TWI20n8Lle,iv:wzrT75vNEgGHkrgbci9dGcbDqv7rfPbVSMSfje0h23I=,tag:8uqI+JjLvuzIGUEgTWUm3w==,type:str]
+    azclient_id: ENC[AES256_GCM,data:GPHTqeZYFxNUaU/+x//ICbv3MRL0D2sbzi0/iwH+xyZ2nlZ7,iv:DEGhVoB7KSIwf6WgfEyvtKkbc1k1Z8LvMh+0lEPVwuo=,tag:eYsXtKPD9gO8lAoanyQ4dw==,type:str]
+    azclient_secret: ENC[AES256_GCM,data:UdhpcvmwuJjFH9JTXvRU8me8W5JBCWcUsfklv1ZcGUei6n1RLg==,iv:kxfbwC8XUtDr54m/iS+bJCp8x5blt0NzKiOI/Y2IBN4=,tag:NMvYUzspOCNjSdQdTgzgbQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv:
+        - vault_url: https://gitkeyvault1234.vault.azure.net
+          name: key
+          version: 933182b6f7dc49bda5d3f5fd57c7bafe
+          created_at: "2022-02-22T14:55:52Z"
+          enc: DFjUuysL96s0dHTiDUU5t8zjWUMrE8o2AS15tWBvTjQNYSD1mfDth3_TMyNku0R9pW2Up1Ki7aWv_xnAD08EqNWzR2s13eFgpudIXiAL6ib7WtczaCpxq12yYtNVkL5mk1mcCdI7r25y6WrHCFKirvWkzvEFyxm0DPNB2qY8B3qKWz0McHsVrKaTn7kkp50Tv1Q61DNFxAqHX_jCwRjBSL4cJo-RDTnTULISLNIC_LWiR4OElLNPprSO9dDu8MGu2hIS_GJOY1VpJ6BGwkF3rWHMcng7nhbUyI7Ze1Pt9C7lKoXTTH27j1xYnLUqLlEfOmJ55sajoXJznGrMH3ISwyaMNpzY1KM4oTzAzsMY64QFTSsDBmsw7YCtiK-pBwnYI6t8kspf-2fdLgHqNWDysoPiOyH4xbaVcSI9RXfVwerMPlaGzdWz3IFMnNVW-fN8Ov44lrvxin51GA5Hdk2aCjMcshKaJgWq9B4PbKAuVJXdz3mZY_71p1eBfj9OAdMb-mRU1dpOWMuz7cRp8drQOfPE-rHIIxB7h2aKGdDu1G_VTee_zQD7PVUuLCxayc2MMCZPGKDiH2BUNCfDw--nBs8tXIwOSQrorbqJnYFDrHpV3eQCyqRyq7fnHwjyClmIURKTxWpIDXurdM6qBIpfePF6iQpdYJWg3qwgnuMmHWw
+    hc_vault: []
+    age: []
+    lastmodified: "2022-02-22T14:55:55Z"
+    mac: ENC[AES256_GCM,data:8NiQd7tQh0+cnHhoAB9IA1DrUwCi5oQreAw6tNaFEOVDto0Ws5K3r7OgvTtzg9s1ciDHEgTXw3HWSwK2IgKd4NKI3EaAi5sEnDuM4MzzAs9vS7e0LslLzFPv8lxh29xWeFkRhHDBNtHQzm1vqfHodkzoTvGYVeEJIvZUFkirWk8=,iv:HvQjG079fc16TYrV8V6Q/l8xmhVPvto2VclJKTnF9Ms=,tag:EPx/SLmjhMAQQW5E+sLPLQ==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.1
