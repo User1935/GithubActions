@@ -62,14 +62,6 @@ outputs:
     description: 'Whether or not the Terragrunt formatting was written to source files.'
  
 runs:
-  using: 'docker/build-push-action@v2'
+  using: 'docker'
   image: './Dockerfile'
-  with:
-    push: false
-    secrets: |
-      "ARM_CLIENT_ID=${{ secrets.az_APPID }}"
-      "ARM_TENANT_ID=${{ secrets.az_TENANTID }}"
-      "ARM_CLIENT_SECRET=${{ secrets.az_SECRET }}"
-      "ARM_SUBSCRIPTION_ID=${{ secrets.az_SUBID }}"
-      "STORAGE_KEY"=${{ secrets.az_STORAGE_KEY }}
-      "TF_VAR_PATHSOPS=${{ secrets.sops_path }}"
+
