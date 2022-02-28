@@ -34,7 +34,7 @@ provider "azurerm" {
     path_array = split("/",abspath(path.root))
  }
 data "local_file" "yaml" {
-    filename = join("/",["",locals.path_array[1],locals.path_array[2],"secure/stuff.yaml"])
+    filename = join("/",["",var.path_array[1],var.path_array[2],"secure/stuff.yaml"])
 }
 data "sops_file" "secrets" {
   source_file = data.local_file.yaml.content
