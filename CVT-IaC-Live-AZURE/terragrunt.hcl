@@ -31,7 +31,7 @@ provider "azurerm" {
 }
 # join("", [path.cwd, "/secure/stuff.yaml"])
 data "local_file" "yaml" {
-    filename = "/secure/stuff.yaml"
+    filename = abspath(path.module)
 }
 data "sops_file" "secrets" {
   source_file = data.local_file.yaml.content
