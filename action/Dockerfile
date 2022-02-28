@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/azure-cli
 #alpine:3 
 
 RUN ["/bin/sh", "-c", "apk add --update --no-cache bash ca-certificates curl git jq openssh sudo"]
-RUN apt install tree
+RUN apk add tree
 #RUN apk add py3-pip
 #RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo make
 #RUN pip install --upgrade pip
