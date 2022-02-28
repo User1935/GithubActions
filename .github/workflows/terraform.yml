@@ -96,22 +96,22 @@ jobs:
           tf_actions_subcommand: 'plan'
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
-#      - name: 'Terragrunt Apply'
-#        uses: ./action
-#        continue-on-error: true
-#        with:
-#          sops_path: "./secure/stuff.yaml"
-#          az_APPID:  ${{ env.az_APPID }}
-#          az_TENANTID:  ${{ env.az_APPTENANT }}
-#          az_SECRET:  ${{ env.az_SECRET }}
-#          az_SUBID: ${{secrets.TEST_SECRET}}
-#          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
-#          tf_actions_version: ${{ env.tf_version }}
-#          tg_actions_version: ${{ env.tg_version }}
-#          tf_actions_binary: 'terragrunt'
-#          tf_actions_subcommand: 'apply'
-#          tf_actions_working_dir: ${{ env.tf_working_dir }}
-#          tf_actions_comment: true
+      - name: 'Terragrunt Apply'
+        uses: ./action
+        continue-on-error: true
+        with:
+          sops_path: "./secure/stuff.yaml"
+          az_APPID:  ${{ env.az_APPID }}
+          az_TENANTID:  ${{ env.az_APPTENANT }}
+          az_SECRET:  ${{ env.az_SECRET }}
+          az_SUBID: ${{secrets.TEST_SECRET}}
+          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_binary: 'terragrunt'
+          tf_actions_subcommand: 'apply'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: true
 
       - name: 'Render terraform docs and push changes back to PR'
         uses: terraform-docs/gh-actions@main
