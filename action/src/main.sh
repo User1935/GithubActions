@@ -186,7 +186,7 @@ function main {
   configureCLICredentials
   installTerraform
   cd ${GITHUB_WORKSPACE}/${tfWorkingDir}
-
+  
   case "${tfSubcommand}" in
     fmt)
       installTerragrunt
@@ -229,6 +229,7 @@ function main {
       exit 1
       ;;
   esac
+  tree
 }
 
 main "${*}"
