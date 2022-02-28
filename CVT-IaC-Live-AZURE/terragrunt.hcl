@@ -31,7 +31,7 @@ provider "azurerm" {
 }
 
 data "local_file" "yaml" {
-    filename = "../secure/stuff.yaml"
+    filename = path.root
 }
 data "sops_file" "secrets" {
   source_file = data.local_file.yaml.content
