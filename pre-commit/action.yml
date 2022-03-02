@@ -2,12 +2,9 @@ name: "Pre-commit"
 description: 'Runs antonbabenkos pre-commit'
 author:  'User1935'
 inputs:
-  repoVersion:
-    description: 'SOPS FilePath'
-    required: true
   az_APPID:
     description: 'Azure APP ID.'
-    required: true
+    required: false
 
 outputs:
   tf_actions_output:
