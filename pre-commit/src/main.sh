@@ -3,6 +3,8 @@
 function main {
   cd $GITHUB_WORKSPACE
   pwd
+  ls
+  ls /GithubActions
   echo $GITHUB_WORKSPACE
   git init
   cat <<EOF > .pre-commit-config.yaml
