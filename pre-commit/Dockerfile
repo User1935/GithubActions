@@ -13,6 +13,7 @@ FROM ghcr.io/antonbabenko/pre-commit-terraform:latest
 #    curl -L "$(curl -s https://api.github.com/repos/aquasecurity/tfsec/releases/latest | grep -o -E -m 1 "https://.+?tfsec-linux-amd64")" > tfsec && chmod +x tfsec && mv tfsec /usr/bin/ && \
 #    apt install -y jq && \
 #    curl -L "$(curl -s https://api.github.com/repos/infracost/infracost/releases/latest | grep -o -E -m 1 "https://.+?-linux-amd64.tar.gz")" > infracost.tgz && tar -xzf infracost.tgz && rm infracost.tgz && mv infracost-linux-amd64 /usr/bin/infracost && infracost register && \
+RUN infracost register
 
 COPY ["src", "/src/"]
 RUN ["chmod", "+x", "/src/main.sh"]
