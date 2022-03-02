@@ -14,8 +14,15 @@ FROM ghcr.io/antonbabenko/pre-commit-terraform:latest
 #    apt install -y jq && \
 #    curl -L "$(curl -s https://api.github.com/repos/infracost/infracost/releases/latest | grep -o -E -m 1 "https://.+?-linux-amd64.tar.gz")" > infracost.tgz && tar -xzf infracost.tgz && rm infracost.tgz && mv infracost-linux-amd64 /usr/bin/infracost && infracost register && \
 
-
-
 COPY ["src", "/src/"]
 RUN ["chmod", "+x", "/src/main.sh"]
+
+
+# Checkov happy
+HEALTHCHECK NONE
+
+# Reduce Privileges
+RUN groupadd -r user && useradd --no-log-init -r -g user user
+USER user
+
 ENTRYPOINT ["/src/main.sh"]
