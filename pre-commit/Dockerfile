@@ -24,5 +24,5 @@ HEALTHCHECK NONE
 # Reduce Privileges
 #RUN groupadd -r user && useradd --no-log-init -r -g user user
 #USER user
-
+USER root
 ENTRYPOINT ["/src/main.sh"]
