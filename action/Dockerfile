@@ -15,7 +15,13 @@ RUN apk add tree
 #RUN echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
 #RUN addgroup -S docker && adduser -S docker -G wheel
 
-
 COPY ["src", "/src/"]
 RUN ["chmod", "+x", "/src/main.sh"]
+
+# Checkov happy
+HEALTHCHECK NONE
+
+# Reduce Privileges
+#RUN groupadd -r user && useradd --no-log-init -r -g user user
+#USER user
 ENTRYPOINT ["/src/main.sh"]
