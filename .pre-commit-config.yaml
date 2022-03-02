@@ -19,9 +19,9 @@ repos:
   hooks:
     - id: terraform_fmt
     - id: terraform_docs
-#    - id: terraform_validate
+    - id: terraform_validate
     - id: terrascan
     - id: terraform_tflint
     - id: terraform_tfsec
     - id: checkov
-#    - id: infracost_breakdown
+    - id: infracost_breakdown

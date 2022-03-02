@@ -17,7 +17,6 @@ FROM ghcr.io/antonbabenko/pre-commit-terraform:latest
 COPY ["src", "/src/"]
 RUN ["chmod", "+x", "/src/main.sh"]
 
-
 # Checkov happy
 HEALTHCHECK NONE
 
