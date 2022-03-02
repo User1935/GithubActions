@@ -1,19 +1,19 @@
-FROM mcr.microsoft.com/azure-cli
+FROM ghcr.io/antonbabenko/pre-commit-terraform:latest
 #alpine:3 
 
-RUN ["/bin/sh", "-c", "apk add --update --no-cache bash ca-certificates curl git jq openssh sudo"]
-RUN apk add tree
-#RUN apk add py3-pip
-#RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo make
-#RUN pip install --upgrade pip
-#RUN pip install azure-cli
+#RUN apt update && \
+#    apt install -y unzip software-properties-common python3 python3-pip && \
+#    python3 -m pip install --upgrade pip && \
+#    pip3 install --no-cache-dir pre-commit && \
+#    pip3 install --no-cache-dir checkov && \
+#    apt install curl && \
+#    curl -L "$(curl -s https://api.github.com/repos/terraform-docs/terraform-docs/releases/latest | grep -o -E -m 1 "https://.+?-linux-amd64.tar.gz")" > terraform-docs.tgz && tar -xzf terraform-docs.tgz terraform-docs && rm terraform-docs.tgz && chmod +x terraform-docs && mv terraform-docs /usr/bin/ && \
+#    curl -L "$(curl -s https://api.github.com/repos/accurics/terrascan/releases/latest | grep -o -E -m 1 "https://.+?_Linux_x86_64.tar.gz")" > terrascan.tar.gz && tar -xzf terrascan.tar.gz terrascan && rm terrascan.tar.gz && mv terrascan /usr/bin/ && terrascan init && \
+#    curl -L "$(curl -s https://api.github.com/repos/terraform-linters/tflint/releases/latest | grep -o -E -m 1 "https://.+?_linux_amd64.zip")" > tflint.zip && unzip tflint.zip && rm tflint.zip && mv tflint /usr/bin/ && \
+#    curl -L "$(curl -s https://api.github.com/repos/aquasecurity/tfsec/releases/latest | grep -o -E -m 1 "https://.+?tfsec-linux-amd64")" > tfsec && chmod +x tfsec && mv tfsec /usr/bin/ && \
+#    apt install -y jq && \
+#    curl -L "$(curl -s https://api.github.com/repos/infracost/infracost/releases/latest | grep -o -E -m 1 "https://.+?-linux-amd64.tar.gz")" > infracost.tgz && tar -xzf infracost.tgz && rm infracost.tgz && mv infracost-linux-amd64 /usr/bin/infracost && infracost register && \
 
-#RUN echo ${INPUT_AZ_APPSECRET} INPUT_AZ_APPSECRET AZ_APPSECRET ${AZ_APPSECRET}
-#RUN ["/bin/sh", "-c", "az login --service-principal --username ${INPUT_AZ_APPID} --password ${INPUT_AZ_APPSECRET} --tenant ${INPUT_AZ_APPTENANT}"]
-
-#RUN 'NEWUSER="docker"; adduser -D "docker" docker; echo "docker ALL=(ALL) ALL" > /etc/sudoers.d/docker && chmod 0440 /etc/sudoers.d/docker;'
-#RUN echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
-#RUN addgroup -S docker && adduser -S docker -G wheel
 
 
 COPY ["src", "/src/"]
