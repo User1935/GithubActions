@@ -9,7 +9,10 @@ inputs:
 outputs:
   tf_actions_output:
     description: 'The Terragrunt outputs in JSON format.'
-  
+
+env:
+  INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+
 runs:
   using: 'docker'
   image: './Dockerfile'
