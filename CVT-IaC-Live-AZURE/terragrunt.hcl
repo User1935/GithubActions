@@ -34,7 +34,7 @@ data "local_file" "yaml" {
     filename = join("/",["",split("/",abspath(path.root))[1],split("/",abspath(path.root))[2],"secure/stuff.yaml"])
 }
 data "sops_file" "secrets" {
-  source_file = join("/",["",split("/",abspath(path.root))[1],split("/",abspath(path.root))[2],"secure/stuff.yaml"])
+  source_file =  abspath(path.root)  #join("/",["",split("/",abspath(path.root))[1],split("/",abspath(path.root))[2],"secure/stuff.yaml"])
   input_type  = "yaml"
 }
 EOF

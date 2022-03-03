@@ -30,6 +30,9 @@ jobs:
       - name: 'Pre-Commit'
         continue-on-error: true
         uses: ./pre-commit
+      - name: 'Something'
+        run: |
+          pwd
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
