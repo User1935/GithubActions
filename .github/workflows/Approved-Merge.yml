@@ -1,9 +1,10 @@
 name: 'Terragrunt GitHub Actions'
 on:
-  push:
-    branches:
-      - main
-      # - 'main/CVT-IaC-Live-AZURE'
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+
 
 env:
   az_APPID: ${{secrets.APPID}}
@@ -17,20 +18,13 @@ env:
   STORAGE_KEY: ${{secrets.STORAGE_KEY}}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
-  terragrunt:
-    name: 'Terragrunt'
+  approved:
+    if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
     steps:
-#      - name: Log in with Azure
-#        uses: azure/login@v1
-#        with:
-#          creds: '${{ secrets.AZURE_CREDENTIALS }}'
       - name: 'Checkout'
         uses: actions/checkout@master
-      - name: 'Pre-Commit'
-        uses: ./pre-commit
-        with:
-            INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+        
       - name: 'TerraGrunt Init'
         uses: ./action
         with:
@@ -46,6 +40,7 @@ jobs:
           tf_actions_subcommand: 'init'
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
+          
       - name: 'Terragrunt Format'
         uses:  ./action
         continue-on-error: true
@@ -62,37 +57,23 @@ jobs:
           tf_actions_subcommand: 'fmt'
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
-      - name: 'Terragrunt Init'
-        uses: ./action
-        with:
-          sops_path: "./secure/stuff.yaml"
-          az_APPID:  ${{ env.az_APPID }}
-          az_TENANTID:  ${{ env.az_APPTENANT }}
-          az_SECRET:  ${{ env.az_SECRET }}
-          az_SUBID: ${{secrets.TEST_SECRET}}
-          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_binary: 'terragrunt'
-          tf_actions_subcommand: 'init'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: true
-      - name: 'Terragrunt Plan'
-        uses: ./action
-        with:
-          sops_path: "./secure/stuff.yaml"
-          az_APPID:  ${{ env.az_APPID }}
-          az_TENANTID:  ${{ env.az_APPTENANT }}
-          az_SECRET:  ${{ env.az_SECRET }}
-          az_SUBID: ${{secrets.TEST_SECRET}}
-          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_binary: 'terragrunt'
-          tf_actions_subcommand: 'plan'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: true
 
+      - name: 'Terragrunt Apply'
+        uses: ./action
+        with:
+          sops_path: "./secure/stuff.yaml"
+          az_APPID:  ${{ env.az_APPID }}
+          az_TENANTID:  ${{ env.az_APPTENANT }}
+          az_SECRET:  ${{ env.az_SECRET }}
+          az_SUBID: ${{secrets.TEST_SECRET}}
+          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_binary: 'terragrunt'
+          tf_actions_subcommand: 'apply'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: true
+      - name: 'Output'
         
 
 #the-commons-project/terragrunt-github-actions@master
