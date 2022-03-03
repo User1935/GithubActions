@@ -91,6 +91,14 @@ jobs:
           tf_actions_subcommand: 'plan'
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
+          
+      - name: 'ChangedFiles'
+        id: files
+        uses: jitterbit/get-changed-files@v1
+      - run: |
+          for changed_file in ${{ steps.files.outputs.all }}; do
+            echo "Do something with this ${changed_file}."
+          done
 
       - name: Setup Infracost
         uses: infracost/actions/setup@v1
@@ -105,6 +113,6 @@ jobs:
         with:
           path: ${{ env.tf_working_dir }}infracost.json
           behavior: update
-        
+      
 
 #the-commons-project/terragrunt-github-actions@master
