@@ -1,0 +1,14 @@
+name: 'Terragrunt GitHub Actions'
+on:
+  - push
+  
+jobs:
+  approved:
+    if: github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@master
+        
+      - name: 'TerraGrunt Init'
+        run: "git status"
