@@ -95,6 +95,8 @@ jobs:
       - name: 'ChangedFiles'
         id: files
         uses: jitterbit/get-changed-files@v1
+
+      - name: 'List Changed Files'
         run: |
           for changed_file in ${{ steps.files.outputs.all }}; do
             echo "Do something with this ${changed_file}."
