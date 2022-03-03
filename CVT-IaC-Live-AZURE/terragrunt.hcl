@@ -34,7 +34,7 @@ locals {
 }
 # join("", [path.cwd, "/secure/stuff.yaml"]) data.local_file.yaml.content
 #data "local_file" "yaml" {
-#    filename = join("/",["",sops_file_path[1],sops_file_path[2],sops_file_path[3],sops_file_path[4], sops_file_path[5]]) #join("/",["",split("/",abspath(path.root))[1],split("/",abspath(path.root))[2],"secure/stuff.yaml"])
+#    filename = join("/",["",sops_file_path[1],sops_file_path[2],sops_file_path[3],sops_file_path[4], sops_file_path[5],"secure/stuff.yaml"]) #join("/",["",split("/",abspath(path.root))[1],split("/",abspath(path.root))[2],"secure/stuff.yaml"])
 #}
 data "sops_file" "secrets" {
   source_file =  join("/",["",local.sops_file_path[1],local.sops_file_path[2],local.sops_file_path[3],local.sops_file_path[4], local.sops_file_path[5]]) #join("/",["",split("/",abspath(path.root))[1],split("/",abspath(path.root))[2],"secure/stuff.yaml"]) #join("/",["",split("/",abspath(path.root))[1],split("/",abspath(path.root))[2],"secure/stuff.yaml"])
