@@ -29,9 +29,12 @@ provider "azurerm" {
   client_secret   = data.sops_file.secrets.data["azure.azclient_secret"]
   features {}
 }
+locals {
+  sops_file_path = split("/",abspath(path.root))
+}
 # join("", [path.cwd, "/secure/stuff.yaml"]) data.local_file.yaml.content
 data "local_file" "yaml" {
-    filename = join("/",["",split("/",abspath(path.root))[1],split("/",abspath(path.root))[2],"secure/stuff.yaml"])
+    filename = join("/",["",sops_file_path[1],sops_file_path[2],sops_file_path[3],sops_file_path[4], sops_file_path[5]]) #join("/",["",split("/",abspath(path.root))[1],split("/",abspath(path.root))[2],"secure/stuff.yaml"])
 }
 data "sops_file" "secrets" {
   source_file =  abspath(path.root)  #join("/",["",split("/",abspath(path.root))[1],split("/",abspath(path.root))[2],"secure/stuff.yaml"])
