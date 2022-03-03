@@ -28,6 +28,7 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@master
       - name: 'Pre-Commit'
+        continue-on-error: true
         uses: ./pre-commit
         with:
             INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
