@@ -8,5 +8,5 @@ include {
 
 
 inputs = {
-	name = "vvnetTest"
+	name = "vnetTest2"
 }

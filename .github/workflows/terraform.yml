@@ -30,8 +30,6 @@ jobs:
       - name: 'Pre-Commit'
         continue-on-error: true
         uses: ./pre-commit
-        with:
-            INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
       - name: 'TerraGrunt Init'
         uses: ./action
         with:
@@ -94,6 +92,19 @@ jobs:
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
 
+      - name: Setup Infracost
+        uses: infracost/actions/setup@v1
+        with:
+          api-key: ${{ secrets.INFRACOST_API_KEY }}
+          
+      - name: Run Infracost
+        run: infracost breakdown --path=examples/terragrunt/code --format=json --out-file=/tmp/infracost.json
+        
+      - name: Post the comment
+        uses: infracost/actions/comment@v1
+        with:
+          path: /tmp/infracost.json
+          behavior: update
         
 
 #the-commons-project/terragrunt-github-actions@master
