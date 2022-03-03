@@ -98,12 +98,12 @@ jobs:
           api-key: ${{ secrets.INFRACOST_API_KEY }}
           
       - name: Run Infracost
-        run: infracost breakdown --path=examples/terragrunt/code --format=json --out-file=/tmp/infracost.json
+        run: infracost breakdown --path=${{ env.tf_working_dir }} --format=json --out-file=${{ env.tf_working_dir }}infracost.json
         
       - name: Post the comment
         uses: infracost/actions/comment@v1
         with:
-          path: /tmp/infracost.json
+          path: ${{ env.tf_working_dir }}infracost.json
           behavior: update
         
 
