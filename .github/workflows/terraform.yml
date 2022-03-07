@@ -33,7 +33,7 @@ jobs:
         id: 'pre-commit'
         continue-on-error: true
         uses: ./pre-commit
-
+      # ${{ steps.pre-commit.outputs.filecontent }}
       - name: 'Comment Pre-Commit comment'
         run:  export INFRACOST_CI_POST_CONDITION=update
 
@@ -41,7 +41,7 @@ jobs:
         id: compost-comment
         uses: infracost/compost-action@master
         with:
-          body: ${{ steps.pre-commit.outputs.filecontent }}
+          body: 'derd'
           behavior: 'update'
           github-token: ${{ env.GITHUB_TOKEN }}
 
