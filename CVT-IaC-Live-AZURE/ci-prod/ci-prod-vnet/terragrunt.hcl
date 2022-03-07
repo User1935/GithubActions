@@ -8,5 +8,5 @@ include {
 
 
 inputs = {
-	name = "xnetTest"
+	name = "SomethingnetTest"
 }
