@@ -5,10 +5,15 @@ inputs:
   INFRACOST_API_KEY:
     description: 'API_KEY.'
     required: false
+  IS_PUSH:
+    description: 'Is is a push of a pull.'
+    required: false
+    default: 'false'
+
 
 outputs:
-  tf_actions_output:
-    description: 'The Terragrunt outputs in JSON format.'
+  filecontent:
+    description: 'Content of Pre-Commit'
 
 
 

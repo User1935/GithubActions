@@ -32,8 +32,17 @@ jobs:
         uses: actions/checkout@master
 
       - name: 'Pre-Commit'
+        id: 'pre-commit'
         continue-on-error: true
         uses: ./pre-commit
+
+      - name: 'Comment Pre-Commit output'
+        id: compost-comment
+        uses: infracost/compost-action@master
+        with:
+          body: ${{ steps.pre-commit.outputs.filecontent }}
+          behavior: 'update'
+          github-token: ${{ env.GITHUB_TOKEN }}
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
