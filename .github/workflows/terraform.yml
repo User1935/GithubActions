@@ -25,9 +25,7 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          #tenant_id: 
-          #client_id:
-          #subscription:
+
       - name: 'Checkout'
         uses: actions/checkout@master
 
@@ -35,6 +33,9 @@ jobs:
         id: 'pre-commit'
         continue-on-error: true
         uses: ./pre-commit
+
+      - name: 'Comment Pre-Commit comment'
+        run:  export INFRACOST_CI_POST_CONDITION=update
 
       - name: 'Comment Pre-Commit output'
         id: compost-comment
@@ -71,7 +72,7 @@ jobs:
       #    tf_actions_subcommand: 'fmt'
       #    tf_actions_working_dir: ${{ env.tf_working_dir }}
       #    tf_actions_comment: true
-#
+      #
       #- name: 'Terragrunt Init'
       #  uses: ./action
       #  with:
@@ -87,7 +88,7 @@ jobs:
       #    tf_actions_subcommand: 'init'
       #    tf_actions_working_dir: ${{ env.tf_working_dir }}
       #    tf_actions_comment: true
-#
+      #
       #- name: 'Terragrunt Plan'
       #  uses: ./action
       #  with:
