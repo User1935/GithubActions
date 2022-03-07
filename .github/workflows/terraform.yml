@@ -35,54 +35,65 @@ jobs:
         continue-on-error: true
         uses: ./pre-commit
 
-      - name: 'Terragrunt Format'
-        uses:  ./action
-        continue-on-error: true
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
         with:
-          sops_path: "./secure/stuff.yaml"
-          az_APPID:  ${{ env.az_APPID }}
-          az_TENANTID:  ${{ env.az_APPTENANT }}
-          az_SECRET:  ${{ env.az_SECRET }}
-          az_SUBID: ${{secrets.TEST_SECRET}}
-          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_binary: 'terragrunt'
-          tf_actions_subcommand: 'fmt'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: true
+          terraform_wrapper: false # This is recommended so the `terraform show` command outputs valid JSON
 
-      - name: 'Terragrunt Init'
-        uses: ./action
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v1.1.0
         with:
-          sops_path: "./secure/stuff.yaml"
-          az_APPID:  ${{ env.az_APPID }}
-          az_TENANTID:  ${{ env.az_APPTENANT }}
-          az_SECRET:  ${{ env.az_SECRET }}
-          az_SUBID: ${{secrets.TEST_SECRET}}
-          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_binary: 'terragrunt'
-          tf_actions_subcommand: 'init'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: true
+          terragrunt_version: 0.35.9
+     
 
-      - name: 'Terragrunt Plan'
-        uses: ./action
-        with:
-          sops_path: "./secure/stuff.yaml"
-          az_APPID:  ${{ env.az_APPID }}
-          az_TENANTID:  ${{ env.az_APPTENANT }}
-          az_SECRET:  ${{ env.az_SECRET }}
-          az_SUBID: ${{secrets.TEST_SECRET}}
-          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_binary: 'terragrunt'
-          tf_actions_subcommand: 'plan'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: true
+      #- name: 'Terragrunt Format'
+      #  uses:  ./action
+      #  continue-on-error: true
+      #  with:
+      #    sops_path: "./secure/stuff.yaml"
+      #    az_APPID:  ${{ env.az_APPID }}
+      #    az_TENANTID:  ${{ env.az_APPTENANT }}
+      #    az_SECRET:  ${{ env.az_SECRET }}
+      #    az_SUBID: ${{secrets.TEST_SECRET}}
+      #    az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
+      #    tf_actions_version: ${{ env.tf_version }}
+      #    tg_actions_version: ${{ env.tg_version }}
+      #    tf_actions_binary: 'terragrunt'
+      #    tf_actions_subcommand: 'fmt'
+      #    tf_actions_working_dir: ${{ env.tf_working_dir }}
+      #    tf_actions_comment: true
+#
+      #- name: 'Terragrunt Init'
+      #  uses: ./action
+      #  with:
+      #    sops_path: "./secure/stuff.yaml"
+      #    az_APPID:  ${{ env.az_APPID }}
+      #    az_TENANTID:  ${{ env.az_APPTENANT }}
+      #    az_SECRET:  ${{ env.az_SECRET }}
+      #    az_SUBID: ${{secrets.TEST_SECRET}}
+      #    az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
+      #    tf_actions_version: ${{ env.tf_version }}
+      #    tg_actions_version: ${{ env.tg_version }}
+      #    tf_actions_binary: 'terragrunt'
+      #    tf_actions_subcommand: 'init'
+      #    tf_actions_working_dir: ${{ env.tf_working_dir }}
+      #    tf_actions_comment: true
+#
+      #- name: 'Terragrunt Plan'
+      #  uses: ./action
+      #  with:
+      #    sops_path: "./secure/stuff.yaml"
+      #    az_APPID:  ${{ env.az_APPID }}
+      #    az_TENANTID:  ${{ env.az_APPTENANT }}
+      #    az_SECRET:  ${{ env.az_SECRET }}
+      #    az_SUBID: ${{secrets.TEST_SECRET}}
+      #    az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
+      #    tf_actions_version: ${{ env.tf_version }}
+      #    tg_actions_version: ${{ env.tg_version }}
+      #    tf_actions_binary: 'terragrunt'
+      #    tf_actions_subcommand: 'plan'
+      #    tf_actions_working_dir: ${{ env.tf_working_dir }}
+      #    tf_actions_comment: true
 
       - name: 'ChangedFiles'
         id: files
