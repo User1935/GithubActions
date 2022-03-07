@@ -21,13 +21,13 @@ jobs:
     name: 'Terragrunt'
     runs-on: ubuntu-latest
     steps:
-      #- name: Log in with Azure
-      #  uses: azure/login@v1
-      #  with:
-      #    creds: ${{ secrets.AZURE_CREDENTIALS }}
-      #    #tenant_id: 
-      #    #client_id:
-      #    #subscription:
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          #tenant_id: 
+          #client_id:
+          #subscription:
       - name: 'Checkout'
         uses: actions/checkout@master
 
@@ -93,7 +93,7 @@ jobs:
           for changed_file in ${{ steps.files.outputs.all }}; do
             echo "Do something with this ${changed_file}."
           done
-      
+
       - name: Setup Infracost
         uses: infracost/actions/setup@v1
         with:
