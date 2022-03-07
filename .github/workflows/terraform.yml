@@ -34,26 +34,36 @@ jobs:
         continue-on-error: true
         uses: ./pre-commit
 
-      # ${{ steps.pre-commit.outputs.filecontent }}
-      - name: 'Comment Pre-Commit comment'
-        run:  export INFRACOST_CI_POST_CONDITION=update
-
-      - name: comment on PR with Binder link
-        uses: actions/github-script@v3
+      - name: 'Make File with Content'
+        run: echo ${{ steps.pre-commit.outputs.filecontent }} > something.md
+      
+      - name: Comment
+        id: compost-comment
+        uses: infracost/compost-action@master
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            var PR_HEAD_USERREPO = process.env.PR_HEAD_USERREPO;
-            var PR_HEAD_REF = process.env.PR_HEAD_REF;
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `derd`
-            })
-        env:
-          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
-          PR_HEAD_USERREPO: ${{ github.event.pull_request.head.repo.full_name }}
+          body-file: something.md
+          github-token: ${{ inputs.github-token }}
+
+#      # ${{ steps.pre-commit.outputs.filecontent }}
+#      - name: 'Comment Pre-Commit comment'
+#        run:  export INFRACOST_CI_POST_CONDITION=update
+#
+#      - name: comment on PR with Binder link
+#        uses: actions/github-script@v3
+#        with:
+#          github-token: ${{secrets.GITHUB_TOKEN}}
+#          script: |
+#            var PR_HEAD_USERREPO = process.env.PR_HEAD_USERREPO;
+#            var PR_HEAD_REF = process.env.PR_HEAD_REF;
+#            github.issues.createComment({
+#              issue_number: context.issue.number,
+#              owner: context.repo.owner,
+#              repo: context.repo.repo,
+#              body: `derd`
+#            })
+#        env:
+#          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+#          PR_HEAD_USERREPO: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
