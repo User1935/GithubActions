@@ -81,13 +81,14 @@ EOF
 
 #   source = "carlpett/sops"
 # Configure Terragrunt to automatically store tfstate files in an S3 bucket
+# Key Changed
 remote_state {
   backend = "azurerm"
   config = {
    resource_group_name  = "rg-LA-test-storage-gitops"
     storage_account_name = "gitacttfstatestorage"
     container_name       = "tfstate"
-    key = "test.tfstate"
+    key = "${path_relative_to_include()}/test.tfstate"
     access_key = get_env("STORAGE_KEY")
 
   }

@@ -21,51 +21,20 @@ jobs:
     name: 'Terragrunt'
     runs-on: ubuntu-latest
     steps:
-      - name: Install az
-        run: sudo curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash 
-      - name: Log in with Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          #tenant_id: 
-          #client_id:
-          #subscription:
+      #- name: Log in with Azure
+      #  uses: azure/login@v1
+      #  with:
+      #    creds: ${{ secrets.AZURE_CREDENTIALS }}
+      #    #tenant_id: 
+      #    #client_id:
+      #    #subscription:
       - name: 'Checkout'
         uses: actions/checkout@master
+
       - name: 'Pre-Commit'
         continue-on-error: true
         uses: ./pre-commit
-      - name: 'Something'
-        run: |
-          pwd
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_wrapper: false # This is recommended so the `terraform show` command outputs valid JSON
-
-      - name: Setup Terragrunt
-        uses: autero1/action-terragrunt@v1.1.0
-        with:
-          terragrunt_version: 0.35.9
-     
-     
-         
-      - name: 'TerraGrunt Init'
-        uses: ./action
-        with:
-          sops_path: "./secure/stuff.yaml"
-          az_APPID:  ${{ env.az_APPID }}
-          az_TENANTID:  ${{ env.az_APPTENANT }}
-          az_SECRET:  ${{ env.az_SECRET }}
-          az_SUBID: ${{ secrets.TEST_SECRET }}
-          az_STORAGE_KEY: ${{ secrets.STORAGE_KEY }}
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_binary: 'terragrunt'
-          tf_actions_subcommand: 'init'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: true
       - name: 'Terragrunt Format'
         uses:  ./action
         continue-on-error: true
@@ -82,6 +51,7 @@ jobs:
           tf_actions_subcommand: 'fmt'
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
+
       - name: 'Terragrunt Init'
         uses: ./action
         with:
@@ -97,6 +67,7 @@ jobs:
           tf_actions_subcommand: 'init'
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
+
       - name: 'Terragrunt Plan'
         uses: ./action
         with:
@@ -123,19 +94,19 @@ jobs:
             echo "Do something with this ${changed_file}."
           done
       
-#      - name: Setup Infracost
-#        uses: infracost/actions/setup@v1
-#        with:
-#          api-key: ${{ secrets.INFRACOST_API_KEY }}
-#          
-#      - name: Run Infracost
-#        run: infracost breakdown --path=${{ env.tf_working_dir }} --format=json --out-file=${{ env.tf_working_dir }}infracost.json
-#        
-#      - name: Post the comment
-#        uses: infracost/actions/comment@v1
-#        with:
-#          path: ${{ env.tf_working_dir }}infracost.json
-#          behavior: update
+      - name: Setup Infracost
+        uses: infracost/actions/setup@v1
+        with:
+          api-key: ${{ secrets.INFRACOST_API_KEY }}
+          
+      - name: Run Infracost
+        run: infracost breakdown --path=${{ env.tf_working_dir }} --format=json --out-file=${{ env.tf_working_dir }}infracost.json
+        
+      - name: Post the comment
+        uses: infracost/actions/comment@v1
+        with:
+          path: ${{ env.tf_working_dir }}infracost.json
+          behavior: update
       
 
 #the-commons-project/terragrunt-github-actions@master
