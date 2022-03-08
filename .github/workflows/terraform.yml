@@ -37,7 +37,8 @@ jobs:
 
       - name: 'Make File with Content'
         run: 'node ./node/writeFile.js'
-
+        env:
+          FILE_OUTPUT: ${{ steps.pre-commit.outputs.filecontent }}
 #      - name: 'Make File with Content'
 ##        run: echo '${{ steps.pre-commit.outputs.filecontent }}' > something.md
       
