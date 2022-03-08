@@ -10,4 +10,6 @@ fs.writeFile("/tmp/test", process.env.FILE_OUTPUT , function(err) {
 */
 
 // Or
-fs.writeFileSync('./node/tempfile.md', process.env.FILE_OUTPUT);
+let buff = new Buffer.from(process.env.FILE_OUTPUT, 'base64');
+let text = buff.toString('ascii');
+fs.writeFileSync('./node/tempfile.md', text);
