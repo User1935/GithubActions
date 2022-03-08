@@ -18,15 +18,10 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   TERRAGRUNT_DOWNLOAD: '.terragrunt-cache'
 jobs:
-  terragrunt:
-    name: 'Terragrunt'
+  pre-commit:
+    name: 'Pre-Commit'
     runs-on: ubuntu-latest
     steps:
-      - name: Log in with Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: 'Checkout'
         uses: actions/checkout@master
 
@@ -46,8 +41,20 @@ jobs:
         id: compost-comment
         uses: infracost/compost-action@master
         with:
-          body-file: './node/tempfile'
+          body-file: './node/tempfile.md'
           github-token: '${{ env.GITHUB_TOKEN }}'
+
+  terragrunt:
+    name: 'Terragrunt'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Checkout'
+        uses: actions/checkout@master
 
 #      # ${{ steps.pre-commit.outputs.filecontent }}
 #      - name: 'Comment Pre-Commit comment'
