@@ -16,6 +16,7 @@ env:
   GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
   STORAGE_KEY: ${{secrets.STORAGE_KEY}}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  TERRAGRUNT_DOWNLOAD: '.terragrunt-cache'
 jobs:
   terragrunt:
     name: 'Terragrunt'
