@@ -47,7 +47,7 @@ jobs:
         uses: infracost/compost-action@master
         with:
           body-file: './node/writeFile.js'
-          github-token: '${{ inputs.github-token }}'
+          github-token: '${{ env.GITHUB_TOKEN }}'
 
 #      # ${{ steps.pre-commit.outputs.filecontent }}
 #      - name: 'Comment Pre-Commit comment'
