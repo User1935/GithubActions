@@ -7,6 +7,7 @@ function main {
   echo '    - id: terraform_validate' >> .pre-commit-config.yaml
   fi
   pre-commit run -a | tee comment_pre-commit.md
+  echo Character Type $LC_CTYPE Language $LANG
   base64 comment_pre-commit.md > b64encfile.md
   echo ::set-output name=filecontent::$(cat b64encfile.md)
 }
