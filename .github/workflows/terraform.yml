@@ -152,7 +152,7 @@ jobs:
         uses: infracost/actions/comment@v1
         with:
           path: ${{ env.tf_working_dir }}infracost.json
-          behavior: update
+          behavior: create
       
 
 #the-commons-project/terragrunt-github-actions@master
