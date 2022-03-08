@@ -11,5 +11,5 @@ fs.writeFile("/tmp/test", process.env.FILE_OUTPUT , function(err) {
 
 // Or
 let buff = new Buffer.from(process.env.FILE_OUTPUT, 'base64');
-let text = buff.toString('ascii');
+let text = buff.toString('utf8');
 fs.writeFileSync('./node/tempfile.md', text);
