@@ -39,7 +39,7 @@ jobs:
         run: 'node ./node/writeFile.js'
 
 #      - name: 'Make File with Content'
-#        run: echo '${{ steps.pre-commit.outputs.filecontent }}' > something.md
+##        run: echo '${{ steps.pre-commit.outputs.filecontent }}' > something.md
       
       - name: Comment
         id: compost-comment
