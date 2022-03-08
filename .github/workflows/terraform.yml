@@ -36,13 +36,16 @@ jobs:
         uses: ./pre-commit
 
       - name: 'Make File with Content'
-        run: echo '${{ steps.pre-commit.outputs.filecontent }}' > something.md
+        run: 'node ./node/writeFile.js'
+
+#      - name: 'Make File with Content'
+#        run: echo '${{ steps.pre-commit.outputs.filecontent }}' > something.md
       
       - name: Comment
         id: compost-comment
         uses: infracost/compost-action@master
         with:
-          body-file: something.md
+          body-file: tempfile.md
           github-token: ${{ inputs.github-token }}
 
 #      # ${{ steps.pre-commit.outputs.filecontent }}
