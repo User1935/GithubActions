@@ -20,7 +20,9 @@ jobs:
       - name: 'Make File with Content'
         run: 'node ./node/writeFile.js'
         env:
-          FILE_OUTPUT: '<base64 enc content>'
+          FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
+          FILE_OUTPUT: './actions/node/'
 ```
 
-FILE_OUTPUT is an environment variable that contains the base64 encrypted data.
+FILE_INPUT is an environment variable that contains the base64 encrypted data.
+FILE_OUTPUT is the directory of the node action folder

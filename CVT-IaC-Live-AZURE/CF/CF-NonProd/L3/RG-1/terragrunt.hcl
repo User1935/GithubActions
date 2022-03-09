@@ -9,4 +9,5 @@ include {
 
 inputs = {
 	name = "SomethingnetTest"
+	region = "uksouth"
 }
