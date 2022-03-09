@@ -4,73 +4,52 @@ on:
     types: [submitted]
 
 env:
-  az_APPID: ${{secrets.APPID}}
-  az_APPTENANT: ${{secrets.APPTENANT}}
-  az_SECRET: ${{secrets.SECRET}}
-  az_SUBID: ${{secrets.TEST_SECRET}}
+#  az_APPID: ${{secrets.APPID}}
+#  az_APPTENANT: ${{secrets.APPTENANT}}
+#  az_SECRET: ${{secrets.SECRET}}
+#  az_SUBID: ${{secrets.TEST_SECRET}}
   tf_version: 'latest'
   tg_version: 'latest'
   tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
-  GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
   STORAGE_KEY: ${{secrets.STORAGE_KEY}}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
 jobs:
-  approved:
-    if: github.event.review.state == 'approved'
+  apply:
+    name: 'Terragrunt'
     runs-on: ubuntu-latest
     steps:
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: 'Checkout'
         uses: actions/checkout@master
-        
-      - name: 'TerraGrunt Init'
-        uses: ./action
-        with:
-          sops_path: "./secure/stuff.yaml"
-          az_APPID:  ${{ env.az_APPID }}
-          az_TENANTID:  ${{ env.az_APPTENANT }}
-          az_SECRET:  ${{ env.az_SECRET }}
-          az_SUBID: ${{ secrets.TEST_SECRET }}
-          az_STORAGE_KEY: ${{ secrets.STORAGE_KEY }}
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_binary: 'terragrunt'
-          tf_actions_subcommand: 'init'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: true
 
-      - name: 'Terragrunt Format'
-        uses:  ./action
-        continue-on-error: true
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
         with:
-          sops_path: "./secure/stuff.yaml"
-          az_APPID:  ${{ env.az_APPID }}
-          az_TENANTID:  ${{ env.az_APPTENANT }}
-          az_SECRET:  ${{ env.az_SECRET }}
-          az_SUBID: ${{secrets.TEST_SECRET}}
-          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_binary: 'terragrunt'
-          tf_actions_subcommand: 'fmt'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: true
+          terraform_wrapper: false # This is recommended so the `terraform show` command outputs valid JSON
 
-      - name: 'Terragrunt Apply'
-        uses: ./action
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v1.1.0
         with:
-          sops_path: "./secure/stuff.yaml"
-          az_APPID:  ${{ env.az_APPID }}
-          az_TENANTID:  ${{ env.az_APPTENANT }}
-          az_SECRET:  ${{ env.az_SECRET }}
-          az_SUBID: ${{secrets.TEST_SECRET}}
-          az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_binary: 'terragrunt'
-          tf_actions_subcommand: 'apply'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: true
-        
+          terragrunt_version: 0.35.9
+     
+      - name: Terragrunt Init and Apply
+        working-directory: ${{ env.tf_working_dir }}
+        run: |
+          terragrunt init
+          terragrunt apply -auto-approve
 
-#the-commons-project/terragrunt-github-actions@master
+      - name: 'ChangedFiles'
+        id: files
+        uses: jitterbit/get-changed-files@v1
+
+      - name: 'List Changed Files'
+        run: |
+          for changed_file in ${{ steps.files.outputs.all }}; do
+            echo "Do something with this ${changed_file}."
+          done
+

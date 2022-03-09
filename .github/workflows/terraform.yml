@@ -1,19 +1,16 @@
 name: 'Terragrunt GitHub Actions'
 on:
-  push:
-    branches:
-      - main
-      # - 'main/CVT-IaC-Live-AZURE'
+   [push, pull_request]
+  
 
 env:
-  az_APPID: ${{secrets.APPID}}
-  az_APPTENANT: ${{secrets.APPTENANT}}
-  az_SECRET: ${{secrets.SECRET}}
-  az_SUBID: ${{secrets.TEST_SECRET}}
-  tf_version: 'latest'
-  tg_version: 'latest'
-  tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
-  GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+#  az_APPID: ${{secrets.APPID}}
+#  az_APPTENANT: ${{secrets.APPTENANT}}
+#  az_SECRET: ${{secrets.SECRET}}
+#  az_SUBID: ${{secrets.TEST_SECRET}}
+#  tf_version: 'latest'
+#  tg_version: 'latest'
+  tf_working_dir: './CVT-IaC-Live-AZURE/CF/CF-NonProd/L3/RG-1'
   STORAGE_KEY: ${{secrets.STORAGE_KEY}}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   TERRAGRUNT_DOWNLOAD: '.terragrunt-cache'
@@ -28,20 +25,18 @@ jobs:
       - name: 'Pre-Commit'
         id: 'pre-commit'
         continue-on-error: true
-        uses: ./pre-commit
+        uses: ./actions/pre-commit
 
       - name: 'Make File with Content'
-        run: 'node ./node/writeFile.js'
+        run: 'node ./actions/node/writeFile.js'
         env:
           FILE_OUTPUT: '${{ steps.pre-commit.outputs.filecontent }}'
-#      - name: 'Make File with Content'
-##        run: echo '${{ steps.pre-commit.outputs.filecontent }}' > something.md
-      
+
       - name: Comment
         id: compost-comment
         uses: infracost/compost-action@master
         with:
-          body-file: './node/tempfile.md'
+          body-file: './actions/node/tempfile.md'
           github-token: '${{ env.GITHUB_TOKEN }}'
 
   terragrunt:
@@ -56,27 +51,6 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@master
 
-#      # ${{ steps.pre-commit.outputs.filecontent }}
-#      - name: 'Comment Pre-Commit comment'
-#        run:  export INFRACOST_CI_POST_CONDITION=update
-#
-#      - name: comment on PR with Binder link
-#        uses: actions/github-script@v3
-#        with:
-#          github-token: ${{secrets.GITHUB_TOKEN}}
-#          script: |
-#            var PR_HEAD_USERREPO = process.env.PR_HEAD_USERREPO;
-#            var PR_HEAD_REF = process.env.PR_HEAD_REF;
-#            github.issues.createComment({
-#              issue_number: context.issue.number,
-#              owner: context.repo.owner,
-#              repo: context.repo.repo,
-#              body: `derd`
-#            })
-#        env:
-#          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
-#          PR_HEAD_USERREPO: ${{ github.event.pull_request.head.repo.full_name }}
-
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -87,56 +61,6 @@ jobs:
         with:
           terragrunt_version: 0.35.9
      
-
-      #- name: 'Terragrunt Format'
-      #  uses:  ./action
-      #  continue-on-error: true
-      #  with:
-      #    sops_path: "./secure/stuff.yaml"
-      #    az_APPID:  ${{ env.az_APPID }}
-      #    az_TENANTID:  ${{ env.az_APPTENANT }}
-      #    az_SECRET:  ${{ env.az_SECRET }}
-      #    az_SUBID: ${{secrets.TEST_SECRET}}
-      #    az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
-      #    tf_actions_version: ${{ env.tf_version }}
-      #    tg_actions_version: ${{ env.tg_version }}
-      #    tf_actions_binary: 'terragrunt'
-      #    tf_actions_subcommand: 'fmt'
-      #    tf_actions_working_dir: ${{ env.tf_working_dir }}
-      #    tf_actions_comment: true
-      #
-      #- name: 'Terragrunt Init'
-      #  uses: ./action
-      #  with:
-      #    sops_path: "./secure/stuff.yaml"
-      #    az_APPID:  ${{ env.az_APPID }}
-      #    az_TENANTID:  ${{ env.az_APPTENANT }}
-      #    az_SECRET:  ${{ env.az_SECRET }}
-      #    az_SUBID: ${{secrets.TEST_SECRET}}
-      #    az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
-      #    tf_actions_version: ${{ env.tf_version }}
-      #    tg_actions_version: ${{ env.tg_version }}
-      #    tf_actions_binary: 'terragrunt'
-      #    tf_actions_subcommand: 'init'
-      #    tf_actions_working_dir: ${{ env.tf_working_dir }}
-      #    tf_actions_comment: true
-      #
-      #- name: 'Terragrunt Plan'
-      #  uses: ./action
-      #  with:
-      #    sops_path: "./secure/stuff.yaml"
-      #    az_APPID:  ${{ env.az_APPID }}
-      #    az_TENANTID:  ${{ env.az_APPTENANT }}
-      #    az_SECRET:  ${{ env.az_SECRET }}
-      #    az_SUBID: ${{secrets.TEST_SECRET}}
-      #    az_STORAGE_KEY: ${{secrets.STORAGE_KEY}}
-      #    tf_actions_version: ${{ env.tf_version }}
-      #    tg_actions_version: ${{ env.tg_version }}
-      #    tf_actions_binary: 'terragrunt'
-      #    tf_actions_subcommand: 'plan'
-      #    tf_actions_working_dir: ${{ env.tf_working_dir }}
-      #    tf_actions_comment: true
-
       - name: 'ChangedFiles'
         id: files
         uses: jitterbit/get-changed-files@v1
