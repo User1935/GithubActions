@@ -31,7 +31,7 @@ jobs:
         run: 'node ./actions/node/writeFile.js'
         env:
           FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
-          FILE_OUTPUT: './actions/node/'
+          FILE_OUTPUT: './actions/node/tempfile.md'
 
       - name: Comment
         id: compost-comment
