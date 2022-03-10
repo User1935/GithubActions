@@ -22,27 +22,29 @@ jobs:
         uses: ./actions/pre-commit
 
       - name: 'Make File with Content'
-        run: 'node ./actions/node/writeFile.js'
+        run: |
+          npm install -g turndown-file
+          node ./actions/node/writeFile.js
         env:
           FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
           FILE_OUTPUT: './actions/node/tempfile.md'
 
-     #- name: Comment
-     #  id: compost-comment
-     #  uses: infracost/compost-action@master
-     #  with:
-     #    body-file: './actions/node/tempfile.md'
-     #    github-token: '${{ env.GITHUB_TOKEN }}'
       - name: Comment
-        uses: actions/github-script@v6
+        id: compost-comment
+        uses: infracost/compost-action@master
         with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '👋 Thanks for reporting!'
-            })
+          body-file: './actions/node/tempfile.md'
+          github-token: '${{ env.GITHUB_TOKEN }}'
+      #- name: Comment
+      #  uses: actions/github-script@v6
+      #  with:
+      #    script: |
+      #      github.rest.issues.createComment({
+      #        issue_number: context.issue.number,
+      #        owner: context.repo.owner,
+      #        repo: context.repo.repo,
+      #        body: '👋 Thanks for reporting!'
+      #      })
 
   Pull_InfraCost:
     if: github.event_name == 'pull_request'
