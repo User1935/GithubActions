@@ -1,0 +1,5 @@
+# infrastructure-live/non-prod/.terragrunt-version
+0.21.0
+
+# infrastructure-live/prod/.terragrunt-version
+0.18.7

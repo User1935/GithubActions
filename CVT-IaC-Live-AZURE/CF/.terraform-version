@@ -1,0 +1,5 @@
+# infrastructure-live/non-prod/.terraform-version
+0.12.17
+
+# infrastructure-live/prod/.terraform-version
+0.11.14
