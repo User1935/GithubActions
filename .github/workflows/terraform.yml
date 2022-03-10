@@ -23,7 +23,7 @@ jobs:
 
       - name: 'Make File with Content'
         run: |
-          npm install -g turndown-file
+          npm install turndown --save
           node ./actions/node/writeFile.js
         env:
           FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
