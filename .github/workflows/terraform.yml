@@ -24,6 +24,7 @@ jobs:
       - name: 'Convert to Markdown file'
         run: |
           sudo apt install php-league-html-to-markdown
+          echo '${{ steps.pre-commit.outputs.filecontent }}' > document.html
           html-to-markdown document.html > ./actions/node/tempfile.md
       #|
       #    npm install turndown --save
