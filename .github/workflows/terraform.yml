@@ -45,6 +45,22 @@ jobs:
       #        repo: context.repo.repo,
       #        body: '👋 Thanks for reporting!'
       #      })
+      - name: comment on PR with Binder link
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            var PR_HEAD_USERREPO = process.env.PR_HEAD_USERREPO;
+            var PR_HEAD_REF = process.env.PR_HEAD_REF;
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `👋 Thanks for reporting!`
+            })
+        env:
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          PR_HEAD_USERREPO: ${{ github.event.pull_request.head.repo.full_name }}
 
   Pull_InfraCost:
     if: github.event_name == 'pull_request'
