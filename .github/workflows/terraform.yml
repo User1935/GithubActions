@@ -21,10 +21,10 @@ jobs:
         continue-on-error: true
         uses: ./actions/pre-commit
 
+      #|
+      #    npm install turndown --save
       - name: 'Make File with Content'
-        run: |
-          npm install turndown --save
-          node ./actions/node/writeFile.js
+        run: node ./actions/node/writeFile.js
         env:
           FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
           FILE_OUTPUT: './actions/node/tempfile.md'
@@ -35,6 +35,7 @@ jobs:
         with:
           body-file: './actions/node/tempfile.md'
           github-token: '${{ env.GITHUB_TOKEN }}'
+
       #- name: Comment
       #  uses: actions/github-script@v6
       #  with:
@@ -45,22 +46,23 @@ jobs:
       #        repo: context.repo.repo,
       #        body: '👋 Thanks for reporting!'
       #      })
-      - name: comment on PR with Binder link
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            var PR_HEAD_USERREPO = process.env.PR_HEAD_USERREPO;
-            var PR_HEAD_REF = process.env.PR_HEAD_REF;
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `👋 Thanks for reporting!`
-            })
-        env:
-          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
-          PR_HEAD_USERREPO: ${{ github.event.pull_request.head.repo.full_name }}
+
+      #- name: comment on PR with Binder link
+      #  uses: actions/github-script@v3
+      #  with:
+      #    github-token: ${{secrets.GITHUB_TOKEN}}
+      #    script: |
+      #      var PR_HEAD_USERREPO = process.env.PR_HEAD_USERREPO;
+      #      var PR_HEAD_REF = process.env.PR_HEAD_REF;
+      #      github.issues.createComment({
+      #        issue_number: context.issue.number,
+      #        owner: context.repo.owner,
+      #        repo: context.repo.repo,
+      #        body: `👋 Thanks for reporting!`
+      #      })
+      #  env:
+      #    PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      #    PR_HEAD_USERREPO: ${{ github.event.pull_request.head.repo.full_name }}
 
   Pull_InfraCost:
     if: github.event_name == 'pull_request'
