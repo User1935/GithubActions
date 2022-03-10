@@ -16,7 +16,7 @@ fs.writeFile("/tmp/test", process.env.FILE_OUTPUT , function(err) {
 //let text = buff.toString('utf8');
 // changed FIlE_OUPUT TO INPUT
 var input = '```' + process.env.FILE_INPUT + '````'
-fs.writeFileSync(process.env.FILE_OUTPUT, ìnput);
+fs.writeFileSync(process.env.FILE_OUTPUT, input);
 
 //fs.readFile(process.env.FILE_INPUT, "utf8", function(err, data) {
 //    var turndownService = new TurndownService({
