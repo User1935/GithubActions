@@ -21,13 +21,17 @@ jobs:
         continue-on-error: true
         uses: ./actions/pre-commit
 
+      - name: 'Convert to Markdown file'
+        run: |
+          apt install php-league-html-to-markdown
+          html-to-markdown document.html > ./actions/node/tempfile.md
       #|
       #    npm install turndown --save
-      - name: 'Make File with Content'
-        run: node ./actions/node/writeFile.js
-        env:
-          FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
-          FILE_OUTPUT: './actions/node/tempfile.md'
+      #- name: 'Make File with Content'
+      #  run: node ./actions/node/writeFile.js
+      #  env:
+      #    FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
+      #    FILE_OUTPUT: './actions/node/tempfile.md'
 
       - name: Comment
         id: compost-comment
