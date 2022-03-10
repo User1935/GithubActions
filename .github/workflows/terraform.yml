@@ -81,12 +81,21 @@ jobs:
       - name: Run Infracost
         run: infracost breakdown --path=${{ env.tf_working_dir }} --format=json --out-file=${{ env.tf_working_dir }}infracost.json
         
-      - name: Post the comment
-        uses: infracost/actions/comment@v1
+     #- name: Post the comment
+     #  uses: infracost/actions/comment@v1
+     #  with:
+     #    path: ${{ env.tf_working_dir }}infracost.json
+     #    behavior: new
+      - name: Comment
+        uses: actions/github-script@v6
         with:
-          path: ${{ env.tf_working_dir }}infracost.json
-          behavior: new
-
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for reporting!'
+            })
   Push_Terragrunt:
     if: github.event_name != 'pull_request'
     name: 'Terragrunt'
