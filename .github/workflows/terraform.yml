@@ -43,6 +43,7 @@ jobs:
               repo: context.repo.repo,
               body: '👋 Thanks for reporting!'
             })
+
   Pull_InfraCost:
     if: github.event_name == 'pull_request'
     name: 'Terragrunt'
@@ -90,11 +91,11 @@ jobs:
       - name: Run Infracost
         run: infracost breakdown --path=${{ env.tf_working_dir }} --format=json --out-file=${{ env.tf_working_dir }}infracost.json
         
-     - name: Post the comment
-       uses: infracost/actions/comment@v1
-       with:
-         path: ${{ env.tf_working_dir }}infracost.json
-         behavior: new
+      - name: Post the comment
+        uses: infracost/actions/comment@v1
+        with:
+          path: ${{ env.tf_working_dir }}infracost.json
+          behavior: new
 
   Push_Terragrunt:
     if: github.event_name != 'pull_request'
