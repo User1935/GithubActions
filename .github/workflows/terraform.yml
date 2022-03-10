@@ -111,9 +111,11 @@ jobs:
           terragrunt_version: 0.35.9
 
       - name: Install TgSwitch
+        continue-on-error: true
         run: curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
 
       - name: Install TFenv
+        continue-on-error: true
         run: brew install tfenv
 
       - name: 'ChangedFiles'
