@@ -1,0 +1,18 @@
+name: "CommentBash"
+description: 'Runs antonbabenkos pre-commit'
+author:  'User1935'
+inputs:
+  INPUT:
+    description: 'Data to be sent as comment'
+    required: true
+
+outputs:
+  tf_actions_output:
+    description: 'The Terragrunt outputs in JSON format.'
+
+
+
+runs:
+  using: 'docker'
+  image: './Dockerfile'
+
