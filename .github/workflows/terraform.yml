@@ -34,15 +34,19 @@ jobs:
       #  env:
       #    FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
       #    FILE_OUTPUT: './actions/node/tempfile.md'
-      #- name: "Bash Comment"
-      #  uses: "./actions/bash"
-      #  with:
-      #    INPUT: '${{ steps.pre-commit.outputs.filecontent }}'
+      - name: "Bash Comment"
+        uses: "./actions/bash"
+        continue-on-error: true
+        with:
+          INPUT: '${{ steps.pre-commit.outputs.filecontent }}'
       
       - name: "Bash Comment"
         run: |
           chmod +x ./actions/bash/script.sh
           bash ./actions/bash/script.sh
+        env:
+          INPUT: '${{ steps.pre-commit.outputs.filecontent }}'
+          
       - name: Comment
         id: compost-comment
         uses: infracost/compost-action@master
