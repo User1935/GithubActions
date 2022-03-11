@@ -35,7 +35,9 @@ jobs:
       #    FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
       #    FILE_OUTPUT: './actions/node/tempfile.md'
       - name: "Bash Comment"
-        run: "./actions/bash/script.sh"
+        uses: "./actions/bash"
+        with:
+          INPUT: '${{ steps.pre-commit.outputs.filecontent }}'
 
       - name: Comment
         id: compost-comment
