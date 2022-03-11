@@ -29,11 +29,21 @@ jobs:
           cat ./actions/node/tempfile.md
       #|
       #    npm install turndown --save
+      #    npm install @octokit/core
       #- name: 'Make File with Content'
       #  run: node ./actions/node/writeFile.js
       #  env:
       #    FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
       #    FILE_OUTPUT: './actions/node/tempfile.md'
+      
+      - name: Comment
+        run: |
+           curl \
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/GithubActions/hello-world/issues/42/comments \
+            -d '{"body":"body"}'
+
       - name: "Bash Comment"
         uses: "./actions/bash"
         continue-on-error: true
