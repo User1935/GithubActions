@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-RUN ["chmod", "+x", "/src/main.sh"]
+RUN ["chmod", "+x", "script.sh"]
 
 ENTRYPOINT [ "script.sh" ]
 
