@@ -8,7 +8,7 @@ fi
 COMMAND=$1
 # Arg 2 is input. We strip ANSI colours.
 INPUT=$(echo "$2" | sed 's/\x1b\[[0-9;]*m//g')
-INPUT = $INPUT_INPUT
+INPUT=$INPUT_INPUT
 
 # Read TF_WORKSPACE environment variable or use "default"
 WORKSPACE=${TF_WORKSPACE:-default}
