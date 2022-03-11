@@ -42,11 +42,11 @@ jobs:
       
       - name: "Bash Comment"
         run: |
-          chmod +x ./actions/bash/script.sh
-          bash ./actions/bash/script.sh
+          chmod +x ./actions/bash/src/script.sh
+          bash ./actions/bash/src/script.sh
         env:
           INPUT: '${{ steps.pre-commit.outputs.filecontent }}'
-          
+
       - name: Comment
         id: compost-comment
         uses: infracost/compost-action@master
