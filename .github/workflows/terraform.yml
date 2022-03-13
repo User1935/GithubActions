@@ -22,11 +22,12 @@ jobs:
         uses: ./actions/pre-commit
 
       - name: 'Convert to Markdown file'
+        id: 'to-markdown'
         run: |
           sudo apt install php-league-html-to-markdown
           echo '${{ steps.pre-commit.outputs.filecontent }}' > document.html
           html-to-markdown document.html > ./actions/node/tempfile.md
-          cat ./actions/node/tempfile.md
+          echo ::set-output name=markdown::$(cat ./actions/node/tempfile.md)
       #|
       #    npm install turndown --save
       #    npm install @octokit/core
@@ -36,13 +37,15 @@ jobs:
       #    FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
       #    FILE_OUTPUT: './actions/node/tempfile.md'
       
-      - name: Comment
-        run: |
-           curl \
-            -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/GithubActions/hello-world/issues/42/comments \
-            -d '{"body":"body"}'
+
+      - name: Comment-push
+        if: github.event_name != 'pull_request'
+        uses: 'peter-evans/commit-comment@v1'
+        with:
+          body: ${{ steps.to-markdown.outputs.markdown }}
+
+      - name: "echo stuff"
+        run: echo $GITHUB_REF
 
       - name: "Bash Comment"
         uses: "./actions/bash"
