@@ -17,7 +17,7 @@ FROM ghcr.io/antonbabenko/pre-commit-terraform:latest
 
 COPY ["src", "/src/"]
 RUN ["chmod", "+x", "/src/main.sh"]
-RUN apk install colorized-logs
+#RUN apk install colorized-logs
 
 # Checkov happy
 HEALTHCHECK NONE
