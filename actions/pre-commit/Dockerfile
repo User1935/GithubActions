@@ -17,7 +17,7 @@ FROM ghcr.io/antonbabenko/pre-commit-terraform:latest
 
 COPY ["src", "/src/"]
 RUN ["chmod", "+x", "/src/main.sh"]
-RUN apt-get install colorized-logs
+RUN apk update && apk add colorized-logs
 
 # Checkov happy
 HEALTHCHECK NONE
