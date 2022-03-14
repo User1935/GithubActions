@@ -44,7 +44,7 @@ jobs:
       - name: Create a File with something
         id: file
         run: |
-          sudo apt install ansi2html
+          sudo apt-get install colorized-logs 
           echo ' ${{ steps.pre-commit.outputs.filecontent }}' > temp.html
           echo : ::set-output name=html:: ${ansi2html < temp.html}
 
