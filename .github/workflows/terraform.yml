@@ -53,7 +53,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: ./actions/commit-comment  #'peter-evans/commit-comment@v1'
         with:
-          body: fs.readFile('temp.html', 'utf8' , (err, data) => { return data} #$(cat temp.html) #${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
+          body: fs.readFile('temp.html', 'utf8' , (err, data) => { return data } #$(cat temp.html) #${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
 
       - uses: actions/github-script@v6
         with:
