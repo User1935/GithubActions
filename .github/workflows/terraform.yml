@@ -45,7 +45,7 @@ jobs:
         id: file
         run: |
           sudo apt-get install colorized-logs 
-          echo ' ${{ steps.pre-commit.outputs.filecontent }}' > temp.html
+          echo " ${{ steps.pre-commit.outputs.filecontent }}" > temp.html
           echo : ::set-output name=html:: ${ansi2html < temp.html}
 
       - name: Comment-push
