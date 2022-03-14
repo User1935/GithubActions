@@ -40,7 +40,7 @@ jobs:
       #  run: node ./actions/node/writeFile.js
       #  env:
       #    FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
-      ##    FILE_OUTPUT: './actions/node/tempfile.md'
+      #    FILE_OUTPUT: './actions/node/tempfile.md'
       - name: Create a File with something
         id: file
         run: |
@@ -51,9 +51,9 @@ jobs:
 
       - name: Comment-push
         if: github.event_name != 'pull_request'
-        uses: ./actions/commit-comment  #'peter-evans/commit-comment@v1'
+        uses: 'peter-evans/commit-comment@v1'
         with:
-          body: fs.readFile('temp.html', 'utf8' , (err, data) => { return data } #$(cat temp.html) #${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
+          body: ${{ steps.pre-commit.outputs.filecontent }} #${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
 
       - uses: actions/github-script@v6
         with:
@@ -191,7 +191,7 @@ jobs:
 
       - name: Install TgSwitch
         continue-on-error: true
-        run: curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
+        run: sudo curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
 
       - name: Install TFenv
         continue-on-error: true
