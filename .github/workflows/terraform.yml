@@ -45,9 +45,13 @@ jobs:
         id: file
         run: |
           sudo apt-get install colorized-logs
-          echo " ${{ steps.pre-commit.outputs.filecontent }}" > temp1.raw 
+          echo "::debug:: Pushing to file"
+          echo " ${{ steps.pre-commit.outputs.filecontent }}" > temp1.raw
+          echo "::debug:: Decoding Base64"
           base64 -d temp1.raw > temp.raw
+          echo "::debug:: Converting to HTML"
           ansi2html < temp.raw | base64 > temp.html
+          echo "::debug:: Setting Output"
           echo ::set-output name=html:: $(cat temp.html)
 
       - name: Comment-push
