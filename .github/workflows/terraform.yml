@@ -21,14 +21,16 @@ jobs:
         continue-on-error: true
         uses: ./actions/pre-commit
 
-      - name: 'Convert to Markdown file'
-        id: 'to-markdown'
-        run: |
-          sudo apt install php-league-html-to-markdown colorized-logs
-          echo '${{ steps.pre-commit.outputs.filecontent }}' | ansi2html > document.html
-          html-to-markdown document.html > ./actions/node/tempfile.md
-          echo ::set-output name=markdown::$(cat ./actions/node/tempfile.md)
-          echo ::debug:: Content of file: $(cat ./actions/node/tempfile.md)
+      #- name: 'Convert to Markdown file'
+      #  id: 'to-markdown'
+      #  continue-on-error: true
+      #  run: |
+      #    sudo apt install php-league-html-to-markdown colorized-logs
+      #    echo '${{ steps.pre-commit.outputs.filecontent }}' | ansi2html > document.html
+      #    html-to-markdown document.html > ./actions/node/tempfile.md
+      #    echo ::set-output name=markdown::$(cat ./actions/node/tempfile.md)
+      #    echo ::debug:: Content of file: $(cat ./actions/node/tempfile.md)
+      
       #|
       #    npm install turndown --save
       #    npm install @octokit/core
@@ -46,7 +48,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: 'peter-evans/commit-comment@v1'
         with:
-          body: ${{ steps.to-markdown.outputs.markdown }}
+          body: 'derd' #${{ steps.to-markdown.outputs.markdown }}
 
       - name: "Bash Comment"
         uses: "./actions/bash"
