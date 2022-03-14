@@ -60,6 +60,17 @@ jobs:
         uses: ./actions/commit-comment #'peter-evans/commit-comment@v1'
         with:
           body: ${{ steps.pre-commit.outputs.filecontent }} #${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
+
+      - name: Comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for reporting!'
+            })
 #
       #- uses: actions/github-script@v6
       #  with:
