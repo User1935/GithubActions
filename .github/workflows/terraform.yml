@@ -39,7 +39,7 @@ jobs:
       #  run: node ./actions/node/writeFile.js
       #  env:
       #    FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
-      #    FILE_OUTPUT: './actions/node/tempfile.md'
+      ##    FILE_OUTPUT: './actions/node/tempfile.md'
       
       - name: "echo stuff"
         run: echo $GITHUB_REF
