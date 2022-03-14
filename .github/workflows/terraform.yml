@@ -53,7 +53,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: 'peter-evans/commit-comment@v1'
         with:
-          body: ${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
+          body: $(cat temp.html) #${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
 
       - uses: actions/github-script@v6
         with:
@@ -62,7 +62,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '${{ steps.pre-commit.outputs.filecontent }}'
+              body: "${{ steps.pre-commit.outputs.filecontent }}""
             })
 
       - name: "Bash Comment"
