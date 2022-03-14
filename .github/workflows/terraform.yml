@@ -22,18 +22,45 @@ jobs:
         uses: ./actions/pre-commit
 
       - name: 'Convert to Markdown file'
+        id: 'to-markdown'
+        continue-on-error: true
         run: |
-          sudo apt install php-league-html-to-markdown
-          echo '${{ steps.pre-commit.outputs.filecontent }}' > document.html
-          html-to-markdown document.html > ./actions/node/tempfile.md
-          cat ./actions/node/tempfile.md
+          sudo apt install php-league-html-to-markdown colorized-logs
+          echo '${{ steps.pre-commit.outputs.filecontent }}' > ./actions/node/tempfile.md
+          echo ::set-output name=markdown::$(cat ./actions/node/tempfile.md)
+          echo ::debug:: Content of file: $(cat ./actions/node/tempfile.md)
+
       #|
+      # html-to-markdown document.html > ./actions/node/tempfile.md
+      # 
       #    npm install turndown --save
+      #    npm install @octokit/core
       #- name: 'Make File with Content'
       #  run: node ./actions/node/writeFile.js
       #  env:
       #    FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
       #    FILE_OUTPUT: './actions/node/tempfile.md'
+      
+      - name: "echo stuff"
+        run: echo $GITHUB_REF
+
+
+      - name: Comment-push
+        if: github.event_name != 'pull_request'
+        uses: 'peter-evans/commit-comment@v1'
+        with:
+          body: ${{ steps.to-markdown.outputs.markdown }}
+
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for reporting!'
+            })
+
       - name: "Bash Comment"
         uses: "./actions/bash"
         continue-on-error: true
