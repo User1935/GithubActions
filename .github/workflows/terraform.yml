@@ -41,12 +41,18 @@ jobs:
       #  env:
       #    FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
       ##    FILE_OUTPUT: './actions/node/tempfile.md'
+      - name: Create a File with something
+        id: file
+        run: |
+          apt install ansi2html
+          echo ' ${{ steps.pre-commit.outputs.filecontent }}' > temp.html
+          echo : ::set-output name=html:: ${ansi2html < temp.html}
 
       - name: Comment-push
         if: github.event_name != 'pull_request'
         uses: 'peter-evans/commit-comment@v1'
         with:
-          body: ${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
+          body: ${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
 
       - uses: actions/github-script@v6
         with:
