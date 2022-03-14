@@ -8587,7 +8587,7 @@ function getSha() {
 async function run() {
   try {
     const fs = require('fs')
-    let data = fs.readFile('temp.html', 'utf8' , (err, data) => { return data })
+    let data = fs.readFile('/home/runner/work/GithubActions/GithubActions/temp.html', 'utf8' , (err, data) => { return data })
     const inputs = {
       token: core.getInput("token"),
       repository: core.getInput("repository"),
