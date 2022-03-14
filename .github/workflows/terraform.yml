@@ -44,7 +44,7 @@ jobs:
       - name: Create a File with something
         id: file
         run: |
-          apt install ansi2html
+          sudo apt install ansi2html
           echo ' ${{ steps.pre-commit.outputs.filecontent }}' > temp.html
           echo : ::set-output name=html:: ${ansi2html < temp.html}
 
