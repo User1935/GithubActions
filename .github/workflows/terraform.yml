@@ -45,46 +45,46 @@ jobs:
         id: file
         run: |
           sudo apt-get install colorized-logs 
-          echo " ${{ steps.pre-commit.outputs.filecontent }}" > temp.raw
-          ansi2html < temp.raw > temp.html
+          echo " ${{ steps.pre-commit.outputs.filecontent }}" | base64 -d > temp.raw
+          ansi2html < temp.raw | base64 > temp.html
           echo ::set-output name=html:: $(cat temp.html)
 
       - name: Comment-push
         if: github.event_name != 'pull_request'
-        uses: 'peter-evans/commit-comment@v1'
+        uses: ./actions/commit-comment #'peter-evans/commit-comment@v1'
         with:
           body: ${{ steps.pre-commit.outputs.filecontent }} #${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
-
-      - uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "${{ steps.pre-commit.outputs.filecontent }}""
-            })
-
-      - name: "Bash Comment"
-        uses: "./actions/bash"
-        continue-on-error: true
-        with:
-          INPUT: '${{ steps.pre-commit.outputs.filecontent }}'
+#
+      #- uses: actions/github-script@v6
+      #  with:
+      #    script: |
+      #      github.rest.issues.createComment({
+      #        issue_number: context.issue.number,
+      #        owner: context.repo.owner,
+      #        repo: context.repo.repo,
+      #        body: "${{ steps.pre-commit.outputs.filecontent }}""
+      #      })
+#
+      #- name: "Bash Comment"
+      #  uses: "./actions/bash"
+      #  continue-on-error: true
+      #  with:
+      #    INPUT: '${{ steps.pre-commit.outputs.filecontent }}'
       
-      - name: "Bash Comment"
-        run: |
-          chmod +x ./actions/bash/src/script.sh
-          bash ./actions/bash/src/script.sh
-        env:
-          INPUT: '${{ steps.pre-commit.outputs.filecontent }}'
-
-      - name: Comment
-        id: compost-comment
-        uses: infracost/compost-action@master
-        with:
-          body-file: './actions/node/tempfile.md'
-          github-token: '${{ env.GITHUB_TOKEN }}'
-
+      #- name: "Bash Comment"
+      #  run: |
+      #    chmod +x ./actions/bash/src/script.sh
+      #    bash ./actions/bash/src/script.sh
+      #  env:
+      #    INPUT: '${{ steps.pre-commit.outputs.filecontent }}'
+#
+      #- name: Comment
+      #  id: compost-comment
+      #  uses: infracost/compost-action@master
+      #  with:
+      #    body-file: './actions/node/tempfile.md'
+      #    github-token: '${{ env.GITHUB_TOKEN }}'
+#     -------------------------------------------------------------
       #- name: Comment
       #  uses: actions/github-script@v6
       #  with:
@@ -112,6 +112,7 @@ jobs:
       #  env:
       #    PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
       #    PR_HEAD_USERREPO: ${{ github.event.pull_request.head.repo.full_name }}
+      # -------------------------------------------------------------------------
 
   Pull_InfraCost:
     if: github.event_name == 'pull_request'
