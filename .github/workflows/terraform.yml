@@ -44,8 +44,9 @@ jobs:
       - name: Create a File with something
         id: file
         run: |
-          sudo apt-get install colorized-logs 
-          base64 -d  " ${{ steps.pre-commit.outputs.filecontent }}" > temp.raw
+          sudo apt-get install colorized-logs
+          echo " ${{ steps.pre-commit.outputs.filecontent }}" > temp1.raw 
+          base64 -d temp1.raw > temp.raw
           ansi2html < temp.raw | base64 > temp.html
           echo ::set-output name=html:: $(cat temp.html)
 
