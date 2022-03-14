@@ -51,7 +51,7 @@ jobs:
 
       - name: Comment-push
         if: github.event_name != 'pull_request'
-        uses: './actions/commit-comment' #'peter-evans/commit-comment@v1'
+        uses: ./actions/commit-comment #'peter-evans/commit-comment@v1'
         with:
           body: fs.readFile('temp.html', 'utf8' , (err, data) => { return data} #$(cat temp.html) #${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
 
