@@ -45,7 +45,7 @@ jobs:
         id: file
         run: |
           sudo apt-get install colorized-logs 
-          echo " ${{ steps.pre-commit.outputs.filecontent }}" | base64 -d > temp.raw
+          base64 -d  " ${{ steps.pre-commit.outputs.filecontent }}" > temp.raw
           ansi2html < temp.raw | base64 > temp.html
           echo ::set-output name=html:: $(cat temp.html)
 
