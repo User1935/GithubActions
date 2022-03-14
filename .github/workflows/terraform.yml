@@ -63,17 +63,15 @@ jobs:
 
       - name: Comment-pull
         if: github.event_name == 'pull_request'
-      #- name: Comment-pull
-      #  if: github.event_name == 'pull_request'
-      #  uses: actions/github-script@v6
-      #  with:
-      #    script: |
-      #      github.rest.issues.createComment({
-      #        issue_number: context.issue.number,
-      #        owner: context.repo.owner,
-      #        repo: context.repo.repo,
-      #        body: '👋 Thanks for reporting!'
-      #      })
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for reporting!'
+            })
 ##
       #- uses: actions/github-script@v6
       #  with:
