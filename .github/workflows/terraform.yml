@@ -42,11 +42,11 @@ jobs:
       #    FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
       ##    FILE_OUTPUT: './actions/node/tempfile.md'
 
-      #- name: Comment-push
-      #  if: github.event_name != 'pull_request'
-      #  uses: 'peter-evans/commit-comment@v1'
-      #  with:
-      #    body: ${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
+      - name: Comment-push
+        if: github.event_name != 'pull_request'
+        uses: 'peter-evans/commit-comment@v1'
+        with:
+          body: ${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
 
       - uses: actions/github-script@v6
         with:
