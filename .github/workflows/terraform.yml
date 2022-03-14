@@ -47,7 +47,7 @@ jobs:
           sudo apt-get install colorized-logs 
           echo " ${{ steps.pre-commit.outputs.filecontent }}" > temp.raw
           ansi2html < temp.raw > temp.html
-          echo : ::set-output name=html:: $(cat temp.html)
+          echo ::set-output name=html:: $(cat temp.html)
 
       - name: Comment-push
         if: github.event_name != 'pull_request'
