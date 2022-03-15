@@ -155,12 +155,18 @@ jobs:
         with:
           terragrunt_version: 0.35.9
       
-      - name: Install TgSwitch
-        run: curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
+      #- name: Install TgSwitch
+      #  run: curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
 
-      - name: Install TFenv
-        run: brew install tfenv
+      #- name: Install TFenv
+      #  run: brew install tfenv
       
+      - name: 'Terragrunt init-plan'
+        continue-on-error: true
+        run: |
+          terragrunt init
+          terragrunt plan-all
+
       - name: 'ChangedFiles'
         id: files
         uses: jitterbit/get-changed-files@v1
@@ -208,14 +214,14 @@ jobs:
         with:
           terragrunt_version: 0.35.9
 
-      - name: Install TgSwitch
-        continue-on-error: true
-        run: sudo curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
-
-      - name: Install TFenv
-        continue-on-error: true
-        run: brew install tfenv
-
+      #- name: Install TgSwitch
+      #  continue-on-error: true
+      #  run: sudo curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
+#
+      #- name: Install TFenv
+      #  continue-on-error: true
+      #  run: brew install tfenv
+#
       - name: 'ChangedFiles'
         id: files
         uses: jitterbit/get-changed-files@v1
