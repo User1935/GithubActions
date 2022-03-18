@@ -1,0 +1,23 @@
+name: "TerraGrunt_Plan-Apply"
+description: 'Plans and Applies in respective paths.'
+author:  'User1935'
+inputs:
+  command:
+    description: '[apply | plan] command used by terragrunt'
+    required: true
+  
+  changed_paths:
+    description: 'A string with changed path (seperated by a " ")'
+    required: true
+
+
+outputs:
+  tf_actions_output:
+    description: 'The Terragrunt outputs in JSON format.'
+
+
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+

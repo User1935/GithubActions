@@ -55,6 +55,10 @@ terraform {
       version = "~> 2.4.0"
     }
   }
+  after_hook "after_hook_plan" {
+    commands     = ["plan"]
+    execute      = ["sh", "-c", "terraform show -json plan > plan.json"]
+  }
 }
 EOF
 }
@@ -75,6 +79,7 @@ remote_state {
     if_exists = "overwrite_terragrunt"
   }
 }
+
 
 #inputs = merge(
 #  local.account_vars.locals,
