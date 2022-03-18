@@ -299,7 +299,7 @@ jobs:
                               unset finalarray[-1]
                               path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
                               if [[ "$JSON" != *$path* ]]; then
-                                  JSON="$JSON,{\"path\":$path/},"
+                                  JSON="$JSON{\"path\":\"$path/\"},"
                               fi
                       fi
               else
@@ -312,7 +312,7 @@ jobs:
                               unset finalarray[-1]
                               path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
                               if [[ "$JSONCREATE" != *$path* ]]; then
-                                  JSONCREATE="$JSONCREATE,{\"path\":$path/},"
+                                  JSONCREATE="$JSONCREATE{\"path\":\"$path/\"},"
                               fi
                       fi
               fi  
