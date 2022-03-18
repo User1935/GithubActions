@@ -134,7 +134,7 @@ jobs:
 
   Pull_InfraCost:
     if: github.event_name == 'pull_request'
-    name: 'Terragrunt'
+    name: 'Infracost-pull'
     runs-on: ubuntu-latest
     steps:
       - name: Log in with Azure
@@ -193,7 +193,7 @@ jobs:
 
   Push_Terragrunt:
     if: github.event_name != 'pull_request'
-    name: 'Terragrunt'
+    name: 'Terragrunt-push'
     runs-on: ubuntu-latest
     steps:
       - name: Log in with Azure
@@ -234,7 +234,7 @@ jobs:
 
       
   generate-matrix:
-      name: Generate matrix for build
+      name: 'Generate matrix for build'
       runs-on: ubuntu-latest
 
       outputs:
@@ -282,6 +282,7 @@ jobs:
             DIFF1="${{ steps.diff.outputs.diff1 }}"
             JSON="{\"include\":["
             JSONCREATE="{\"include\":["
+
             # Convert to arrays
             array=($DIFF)
             array1=($DIFF1)
@@ -292,7 +293,8 @@ jobs:
                       JSONline="${array[$(($i-1))]}"
                       final=${JSONline//\// }
                       finalarray=($final)
-                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 1 ]; then
+                      # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
+                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 3 ]; then
                               
                               unset finalarray[-1]
                               path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
@@ -304,7 +306,8 @@ jobs:
                 JSONline="${array[$(($i-1))]}"
                       final=${JSONline//\// }
                       finalarray=($final)
-                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 1 ]; then
+                      # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
+                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 3 ]; then
                               
                               unset finalarray[-1]
                               path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
@@ -332,13 +335,23 @@ jobs:
             echo "::set-output name=matrix::$( echo "$JSON" )"
             echo "::set-output name=matrix2::$( echo "$JSONCREATE" )"
 
-  plan:
-    name: All the resource plannings
+            # Debugging
+            echo "::debug:: INPUT: $DIFF"
+
+  Plan:
+    name: 'All the resource plannings'
+    if: ${{ needs.generate-matrix.outputs.matrix2 }} != '{"include":[]}'
     needs: generate-matrix
     strategy:
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix2)}}
     runs-on: ubuntu-latest
     steps:
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -355,16 +368,25 @@ jobs:
 
         
       - name: Run TerraGrunt
-        run:  echo terragrunt plan --working-directory ${{ matrix.path }}
+        run: |
+          echo terragrunt init --working-directory ${{ matrix.path }}
+          echo terragrunt plan --working-directory ${{ matrix.path }}
           
-  destroy:
-    name: All the destroy plannings
+  Destroy:
+    name: 'All the destroy plannings'
+    if: ${{ needs.generate-matrix.outputs.matrix }} != '{"include":[]}'
     needs: generate-matrix
     strategy:
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
 
     runs-on: ubuntu-latest
     steps:
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -382,4 +404,5 @@ jobs:
 
       - name: Run TerraGrunt
         run: |
+          echo terragrunt init --working-directory ${{ matrix.path }}
           echo terragrunt plan -destroy --working-directory ${{ matrix.path }}
