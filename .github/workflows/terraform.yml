@@ -191,46 +191,46 @@ jobs:
           path: ${{ env.tf_working_dir }}infracost.json
           behavior: new
 
-  Push_Terragrunt:
-    if: github.event_name != 'pull_request'
-    name: 'Terragrunt-push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Log in with Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: 'Checkout'
-        uses: actions/checkout@master
-
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_wrapper: false # This is recommended so the `terraform show` command outputs valid JSON
-
-      - name: Setup Terragrunt
-        uses: autero1/action-terragrunt@v1.1.0
-        with:
-          terragrunt_version: 0.35.9
-
-      #- name: Install TgSwitch
-      #  continue-on-error: true
-      #  run: sudo curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
+ # Push_Terragrunt:
+ #   if: github.event_name != 'pull_request'
+ #   name: 'Terragrunt-push'
+ #   runs-on: ubuntu-latest
+ #   steps:
+ #     - name: Log in with Azure
+ #       uses: azure/login@v1
+ #       with:
+ #         creds: ${{ secrets.AZURE_CREDENTIALS }}
 #
-      #- name: Install TFenv
-      #  continue-on-error: true
-      #  run: brew install tfenv
+ #     - name: 'Checkout'
+ #       uses: actions/checkout@master
 #
-      - name: 'ChangedFiles'
-        id: files
-        uses: jitterbit/get-changed-files@v1
-
-      - name: 'List Changed Files'
-        run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done
+ #     - name: Install Terraform
+ #       uses: hashicorp/setup-terraform@v1
+ #       with:
+ #         terraform_wrapper: false # This is recommended so the `terraform show` command outputs valid JSON
+#
+ #     - name: Setup Terragrunt
+ #       uses: autero1/action-terragrunt@v1.1.0
+ #       with:
+ #         terragrunt_version: 0.35.9
+#
+ #     #- name: Install TgSwitch
+ #     #  continue-on-error: true
+ #     #  run: sudo curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
+##
+ #     #- name: Install TFenv
+ #     #  continue-on-error: true
+ #     #  run: brew install tfenv
+##
+ #     - name: 'ChangedFiles'
+ #       id: files
+ #       uses: jitterbit/get-changed-files@v1
+#
+ #     - name: 'List Changed Files'
+ #       run: |
+ #         for changed_file in ${{ steps.files.outputs.all }}; do
+ #           echo "Do something with this ${changed_file}."
+ #         done
 
       
   generate-matrix:
