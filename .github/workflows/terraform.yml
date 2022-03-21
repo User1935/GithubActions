@@ -19,7 +19,7 @@ jobs:
       - name: 'Pre-Commit'
         id: 'pre-commit'
         continue-on-error: true
-        uses: ./actions/pre-commit
+        uses: ./.github/actions/pre-commit
 
       #- name: 'Convert to Markdown file'
       #  id: 'to-markdown'
@@ -57,7 +57,7 @@ jobs:
 
       - name: Comment-push
         if: github.event_name != 'pull_request'
-        uses: ./actions/commit-comment  #'peter-evans/commit-comment@v1'
+        uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
         with:
           body: ${{ steps.pre-commit.outputs.filecontent }} #${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
 
@@ -244,7 +244,9 @@ jobs:
       steps:
         - name: 'not working'
           run: echo $(cat touchy3)
+
         - uses: actions/checkout@v2
+
         - name: Check changed files
           id: diff
           run: |
@@ -287,12 +289,15 @@ jobs:
             array=($DIFF)
             array1=($DIFF1)
             i=0
-            while [ $i -lt ${#array[@]} ]
+            while [ $i -lt ${#array1[@]} ]
             do
               JSONline="${array1[$(($i+1))]}"
               final=${JSONline//\// }
               finalarray=($final)
+              echo "i=[$i] [${array1[$i]}]"
+
               if [[ "${array1[$i]}" == D* ]]; then
+                      
                       # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
                       if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 3 ]; then
                               
@@ -304,7 +309,7 @@ jobs:
                       fi
               else
                 if [[ "${array1[$i]}" == R* ]]; then
-                      JSONline2="${array1[$(($i+1))]}"
+                      JSONline2="${array1[$(($i+2))]}"
                       final2=${JSONline//\// }
                       finalarray2=($final)
                       # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
