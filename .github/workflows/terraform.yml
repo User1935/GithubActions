@@ -20,7 +20,6 @@ jobs:
         id: 'pre-commit'
         continue-on-error: true
         uses: ./.github/actions/pre-commit
-
       #- name: 'Convert to Markdown file'
       #  id: 'to-markdown'
       #  continue-on-error: true
@@ -294,7 +293,7 @@ jobs:
               JSONline="${array1[$(($i+1))]}"
               final=${JSONline//\// }
               finalarray=($final)
-              echo "i=[$i] [${array1[$i]}]"
+              echo "::debug::i=[$i] [${array1[$i]}]"
 
               if [[ "${array1[$i]}" == D* ]]; then
                       
@@ -342,7 +341,9 @@ jobs:
                       fi
                 fi
               fi
+              echo "::debug::before $i"
               i=$(($i+2))  
+              echo "::debug::after $i"
             done
 
             # Remove last "," and add closing brackets
