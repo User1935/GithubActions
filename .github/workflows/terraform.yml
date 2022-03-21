@@ -292,7 +292,7 @@ jobs:
               JSONline="${array1[$(($i+1))]}"
               final=${JSONline//\// }
               finalarray=($final)
-              if [ "${array1[$i]}" == *"D"* ]; then
+              if [[ "${array1[$i]}" == D* ]]; then
                       # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
                       if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 3 ]; then
                               
@@ -303,7 +303,7 @@ jobs:
                               fi
                       fi
               else
-                if [ "${array1[$i]}" == *"R"* ]; then
+                if [[ "${array1[$i]}" == R* ]]; then
                       JSONline2="${array1[$(($i+1))]}"
                       final2=${JSONline//\// }
                       finalarray2=($final)
