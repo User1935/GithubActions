@@ -403,6 +403,7 @@ jobs:
           terragrunt_version: 0.35.9
 
       - name: Run TerraGrunt
+        working-directory: ${{ matrix.path }}
         run: |
-          echo terragrunt init --working-directory ${{ matrix.path }}
-          echo terragrunt plan -destroy --working-directory ${{ matrix.path }}
+          echo terragrunt init 
+          echo terragrunt plan -destroy
