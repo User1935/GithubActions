@@ -9,7 +9,9 @@ inputs:
     description: 'Is is a push of a pull.'
     required: false
     default: 'false'
-
+  commit:
+    description: 'Should the action commit change on the gh-pages branch'
+    default: 'somecommit'
 
 outputs:
   filecontent:
