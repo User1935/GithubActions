@@ -310,7 +310,7 @@ jobs:
                 if [[ "${array1[$i]}" == R* ]]; then
                       JSONline2="${array1[$(($i+2))]}"
                       final2=${JSONline//\// }
-                      finalarray2=($final)
+                      finalarray2=($final2)
                       # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
                       if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 3 ]; then
                               
