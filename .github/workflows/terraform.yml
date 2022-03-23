@@ -272,7 +272,7 @@ jobs:
             echo "$DIFF1"
             # Escape newlines (replace \n with %0A)
             echo "::set-output name=diff::$( echo "$DIFF" | sed ':a;N;$!ba;s/\n/ /g' )"
-            echo "::set-output name=diff1:: $DIFF1"
+            echo "::set-output name=diff1::$( echo "$DIFF1" | sed ':a;N;$!ba;s/\n/ /g' )"
             
         - name: Set matrix for build
           id: set-matrix
