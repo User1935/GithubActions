@@ -199,32 +199,32 @@ jobs:
  #       uses: azure/login@v1
  #       with:
  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
-#
+ #
  #     - name: 'Checkout'
  #       uses: actions/checkout@master
-#
+ #
  #     - name: Install Terraform
  #       uses: hashicorp/setup-terraform@v1
  #       with:
  #         terraform_wrapper: false # This is recommended so the `terraform show` command outputs valid JSON
-#
+ #
  #     - name: Setup Terragrunt
  #       uses: autero1/action-terragrunt@v1.1.0
  #       with:
  #         terragrunt_version: 0.35.9
-#
+ #
  #     #- name: Install TgSwitch
  #     #  continue-on-error: true
  #     #  run: sudo curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
-##
+ #
  #     #- name: Install TFenv
  #     #  continue-on-error: true
  #     #  run: brew install tfenv
-##
+ #
  #     - name: 'ChangedFiles'
  #       id: files
  #       uses: jitterbit/get-changed-files@v1
-#
+ #
  #     - name: 'List Changed Files'
  #       run: |
  #         for changed_file in ${{ steps.files.outputs.all }}; do
@@ -241,8 +241,6 @@ jobs:
         matrix2: ${{ steps.set-matrix.outputs.matrix2 }}
         BASE_SHA: ${{ steps.diff.outputs.sha }}
       steps:
-        - name: 'not working'
-          run: echo $(cat touchy3)
 
         - uses: actions/checkout@v2
 
@@ -250,10 +248,11 @@ jobs:
           id: diff
           run: |
             # See https://github.community/t/check-pushed-file-changes-with-git-diff-tree-in-github-actions/17220/10
+            export DIFF=''
             if [ $GITHUB_BASE_REF ]; then
               # Pull Request
               git fetch origin $GITHUB_BASE_REF --depth=1
-              export DIFF=$( git diff --name-only origin/$GITHUB_BASE_REF $GITHUB_SHA )
+              #export DIFF=$( git diff --name-only origin/$GITHUB_BASE_REF $GITHUB_SHA )
               export DIFF1=$( git diff --name-state origin/$GITHUB_BASE_REF $GITHUB_SHA )
               echo "Diff between origin/$GITHUB_BASE_REF and $GITHUB_SHA"
               echo "::set-output name=sha::$GITHUB_BASE_REF"
@@ -261,7 +260,7 @@ jobs:
             else
               # Push
               git fetch origin ${{ github.event.before }} --depth=1
-              export DIFF=$( git diff --name-only ${{ github.event.before }} $GITHUB_SHA )
+              #export DIFF=$( git diff --name-only ${{ github.event.before }} $GITHUB_SHA )
               export DIFF1=$( git diff --name-state ${{ github.event.before }} $GITHUB_SHA )
               echo "Diff between ${{ github.event.before }} and $GITHUB_SHA"
               echo "::set-output name=sha::${{ github.event.before }}"
@@ -270,10 +269,10 @@ jobs:
             echo BASEREF: $GITHUB_BASE_REF
             echo Name status: $( git diff --name-status ${{ github.event.before }} $GITHUB_SHA )
             echo ----
-            echo "$DIFF"
+            echo "$DIFF1"
             # Escape newlines (replace \n with %0A)
-            echo "::set-output name=diff::$( echo "$DIFF" | sed ':a;N;$!ba;s/\n/%0A/g' )"
-            echo "::set-output name=diff1::$( echo "$DIFF1" | sed ':a;N;$!ba;s/\n/%0A/g' )"
+            echo "::set-output name=diff::$( echo "$DIFF" | sed ':a;N;$!ba;s/\n/ /g' )"
+            echo "::set-output name=diff1::$( echo "$DIFF1" | sed ':a;N;$!ba;s/\n/ /g' )"
             
         - name: Set matrix for build
           id: set-matrix

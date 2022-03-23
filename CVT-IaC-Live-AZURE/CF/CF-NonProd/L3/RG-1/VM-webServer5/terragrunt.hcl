@@ -8,7 +8,7 @@ include {
 
 
 inputs = {
-	name = "SomethingThanLovesMenetTest"
+	name = "SomethingnetTest"
 	region = "uksouth"
 }
 #
