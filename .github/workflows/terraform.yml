@@ -296,9 +296,9 @@ jobs:
               echo "::debug::i=[$i] [${array1[$i]}]"
 
               if [[ "${array1[$i]}" == D* ]]; then
-                      
+                      # && [ ${#finalarray[@]} -gt 3 ]
                       # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
-                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 3 ]; then
+                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ]; then
                               
                               unset finalarray[-1]
                               path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
@@ -311,8 +311,9 @@ jobs:
                       JSONline2="${array1[$(($i+2))]}"
                       final2=${JSONline//\// }
                       finalarray2=($final2)
+                      # && [ ${#finalarray[@]} -gt 3 ]
                       # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
-                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 3 ]; then
+                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ]; then
                               
                               unset finalarray[-1]
                               path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
@@ -320,7 +321,8 @@ jobs:
                                   JSON="$JSON{\"path\":\"$path/\"},"
                               fi
                       fi
-                      if [ "${finalarray2[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray2[@]} -gt 3 ]; then
+                      # && [ ${#finalarray2[@]} -gt 3 ]
+                      if [ "${finalarray2[-1]}" == 'terragrunt.hcl' ] ; then
                               
                               unset finalarray2[-1]
                               path=$(echo ${finalarray2[@]} | sed -r 's/ +/\//g')
@@ -331,7 +333,8 @@ jobs:
                       i=$(($i+1))  
                 else
                       # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
-                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 3 ]; then
+                      # && [ ${#finalarray[@]} -gt 3 ]
+                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ]; then
                               
                               unset finalarray[-1]
                               path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
