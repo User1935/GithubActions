@@ -21,11 +21,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: 'Debugging'
-      run: |
-        echo "::debug::$INPUT_FILEPATH"
-      shell: bash
-
     - name: 'dependencies'
       run: |
         pip install html2text
@@ -38,6 +33,5 @@ runs:
     - name: 'fileContent'
       id: filecontent
       run: |
-        echo $(cat ./$INPUT_TYPE)
-        echo "::set-output name=FILECONTENT::$(cat ./$INPUT_TYPE)"
+        echo "::set-output name=FILECONTENT::$(cat ./$INPUT_FILEPATH)"
       shell: bash
