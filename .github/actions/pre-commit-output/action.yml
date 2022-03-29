@@ -38,8 +38,6 @@ runs:
     - name: 'fileContent'
       id: filecontent
       run: |
-        echo "::debug::$GITHUB_WORKSPACE"
-        echo "::debug::$INPUT_TYPE"
-        echo $(cat ./$INPUT_FILEPATH)
-        echo "::set-output name=FILECONTENT::$(cat ./$INPUT_FILEPATH)"
+        echo $(cat ./$INPUT_TYPE)
+        echo "::set-output name=FILECONTENT::$(cat ./$INPUT_TYPE)"
       shell: bash

@@ -169,9 +169,10 @@ jobs:
       - name: 'Terragrunt Output'
         id: terragrunt
         uses: ./.github/actions/pre-commit-output
-        with:
-          filepath: "${{ matrix.path }}"
-          type: "terragrunt"
+        env:
+          INPUT_TYPE: "terragrunt"
+          INPUT_FILEPATH: ${{ matrix.path }}
+
 
       - name: Comment-push
         if: github.event_name != 'pull_request'
@@ -219,13 +220,14 @@ jobs:
           terragrunt init
           terragrunt plan -destroy -no-color --terragrunt-include-external-dependencies -out output-planfile
           echo $(cat output-planfile)
+
       
       - name: 'Terragrunt Output'
         id: terragrunt
         uses: ./.github/actions/pre-commit-output
-        with:
-          filepath: "${{ matrix.path }}"
-          type: "terragrunt"
+        env:
+          INPUT_TYPE: "terragrunt"
+          INPUT_FILEPATH: ${{ matrix.path }}
 
       - name: Comment-push
         if: github.event_name != 'pull_request'
