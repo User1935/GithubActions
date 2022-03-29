@@ -1,7 +1,15 @@
 name: 'Terragrunt GitHub Actions'
 on:
-   [push, pull_request]
-  
+  pull_request:
+    branches:
+      - 'main'
+
+  pull_request_review:
+    types:
+      - "edited"
+
+    branches:
+      - 'main'
 
 env:
   tf_working_dir: './CVT-IaC-Live-AZURE/CF/CF-NonProd/L3/RG-1'
@@ -134,6 +142,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: Feature/pipeline
 
 
       - name: Install Terraform
@@ -156,6 +166,19 @@ jobs:
           terragrunt plan -no-color  --terragrunt-include-external-dependencies -out output-planfile
           echo $(cat output-planfile)
 
+      - name: 'Terragrunt Output'
+        id: terragrunt
+        uses: ./.github/actions/pre-commit-output
+        with:
+          filepath: "${{ matrix.path }}output-planfile"
+          type: "terragrunt"
+
+      - name: Comment-push
+        if: github.event_name != 'pull_request'
+        uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
+        with:
+          body: ${{ steps.terragrunt.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
+
 
           
   Destroy:
@@ -176,7 +199,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ needs.generate-matrix.outputs.sha }}
+          ref: main
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
@@ -196,3 +219,16 @@ jobs:
           terragrunt init
           terragrunt plan -destroy -no-color --terragrunt-include-external-dependencies -out output-planfile
           echo $(cat output-planfile)
+      
+      - name: 'Terragrunt Output'
+        id: terragrunt
+        uses: ./.github/actions/pre-commit-output
+        with:
+          filepath: "${{ matrix.path }}output-planfile"
+          type: "terragrunt"
+
+      - name: Comment-push
+        if: github.event_name != 'pull_request'
+        uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
+        with:
+          body: ${{ steps.terragrunt.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}

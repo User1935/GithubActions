@@ -55,10 +55,6 @@ terraform {
       version = "~> 2.4.0"
     }
   }
-  after_hook "after_hook_plan" {
-    commands     = ["plan"]
-    execute      = ["sh", "-c", "terraform show -json plan > plan.json"]
-  }
 }
 EOF
 }
