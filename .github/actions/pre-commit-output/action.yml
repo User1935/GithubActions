@@ -23,7 +23,7 @@ runs:
   steps:
     - name: 'Debugging'
       run: |
-        echo $INPUT_FILEPATH
+        echo "::debug::$INPUT_FILEPATH"
       shell: bash
 
     - name: 'dependencies'
@@ -38,8 +38,8 @@ runs:
     - name: 'fileContent'
       id: filecontent
       run: |
-        echo $GITHUB_WORKSPACE
-        echo $INPUT_TYPE
+        echo "::debug::$GITHUB_WORKSPACE"
+        echo "::debug::$INPUT_TYPE"
         echo $(cat ./$INPUT_FILEPATH)
         echo "::set-output name=FILECONTENT::$(cat ./$INPUT_FILEPATH)"
       shell: bash
