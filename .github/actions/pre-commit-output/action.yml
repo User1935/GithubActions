@@ -33,8 +33,7 @@ runs:
       shell: bash
       env:
         GITHUB_WORKSPACE: ${{ github.workspace }}
-        INPUT_FILEPATH: $INPUT_FILEPATH
-        INPUT_TYPE: $INPUT_TYPE
+
 
     - name: 'fileContent'
       id: filecontent
