@@ -120,8 +120,8 @@ jobs:
           id: set-output
           run: |
 
-            echo "::set-output name=matrix::$( echo $JSON )"
-            echo "::set-output name=matrix2::$( echo $JSONCREATE )"
+            echo "::set-output name=matrix::$JSON"
+            echo "::set-output name=matrix2::$JSONCREATE "
             echo  ${{ steps.set-matrix.outputs.matrix }}
             echo  ${{ steps.set-matrix.outputs.matrix2 }}
             echo  ${{ steps.set-matrix.outputs.BASE_SHA }}
