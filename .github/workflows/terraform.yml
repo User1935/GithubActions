@@ -1,6 +1,8 @@
 name: 'Terragrunt GitHub Actions'
 on:
-   [push, pull_request]
+   pull_request:
+     branches:
+      - 'main'
   
 
 env:
@@ -134,6 +136,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: Feature/pipeline
 
 
       - name: Install Terraform
@@ -176,7 +180,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ needs.generate-matrix.outputs.sha }}
+          ref: main
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
