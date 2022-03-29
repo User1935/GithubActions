@@ -39,6 +39,7 @@ runs:
       id: filecontent
       run: |
         echo $GITHUB_WORKSPACE
+        echo $INPUT_TYPE
         echo $(cat ./$INPUT_FILEPATH)
         echo "::set-output name=FILECONTENT::$(cat ./$INPUT_FILEPATH)"
       shell: bash
