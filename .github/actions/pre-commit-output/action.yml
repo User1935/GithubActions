@@ -2,10 +2,15 @@ name: "Pre-commit"
 description: 'Run and Settup Pre-commit'
 
 inputs:
-  filename:
+  filepath:
     description: "Name of file previously inserted with pre-commit output."
     required: false
     default: 'something.txt'
+
+  type:
+    description: "Type of formatting [pre-commit, terragrunt]"
+    required: false
+    default: 'pre-commit'
 
 outputs:
   output:
