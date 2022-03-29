@@ -4,10 +4,6 @@ on:
     types: [submitted]
 
 env:
-#  az_APPID: ${{secrets.APPID}}
-#  az_APPTENANT: ${{secrets.APPTENANT}}
-#  az_SECRET: ${{secrets.SECRET}}
-#  az_SUBID: ${{secrets.TEST_SECRET}}
   tf_version: 'latest'
   tg_version: 'latest'
   tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
@@ -15,8 +11,34 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
 jobs:
-  apply:
-    name: 'Terragrunt'
+  generate-matrix:
+      name: 'Generate matrix for build'
+      runs-on: ubuntu-latest
+
+      outputs:
+        matrix: ${{ steps.set-matrix.outputs.matrix }}
+        matrix2: ${{ steps.set-matrix.outputs.matrix2 }}
+        BASE_SHA: ${{ steps.set-matrix.outputs.BASE_SHA }}
+      steps:
+
+        - uses: actions/checkout@v3
+
+        - name: Create Matrixes
+          id: set-matrix
+          uses: ./.github/actions/generate-matrix
+
+        - name: Debug
+          run: |
+            echo  ${{ steps.set-matrix.outputs.matrix }}
+            echo  ${{ steps.set-matrix.outputs.matrix2 }}
+            echo  ${{ steps.set-matrix.outputs.BASE_SHA }}
+
+  Apply:
+    name: 'All the resource plannings'
+    if: ${{ needs.generate-matrix.outputs.matrix2 }} != '{"include":[]}'
+    needs: generate-matrix
+    strategy:
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix2)}}
     runs-on: ubuntu-latest
     steps:
       - name: Log in with Azure
@@ -24,32 +46,27 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: 'Checkout'
-        uses: actions/checkout@master
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_wrapper: false # This is recommended so the `terraform show` command outputs valid JSON
+          terraform_wrapper: false
 
       - name: Setup Terragrunt
         uses: autero1/action-terragrunt@v1.1.0
         with:
           terragrunt_version: 0.35.9
-     
-      - name: Terragrunt Init and Apply
-        working-directory: ${{ env.tf_working_dir }}
+
+        
+      - name: Run TerraGrunt
         run: |
+          echo terragrunt init --working-directory ${{ matrix.path }}
+          echo terragrunt apply --working-directory ${{ matrix.path }}
           terragrunt init
-          terragrunt apply -auto-approve
+          terragrunt apply -auto-approve -no-color --terragrunt-working-dir ${{matrix.files.name}} --terragrunt-include-external-dependencies -out ${{matrix.files.log}}-planfile >> ${{matrix.files.log}}-planfile.log 2>&1
 
-      - name: 'ChangedFiles'
-        id: files
-        uses: jitterbit/get-changed-files@v1
-
-      - name: 'List Changed Files'
-        run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done
-
+          

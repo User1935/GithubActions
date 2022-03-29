@@ -1,0 +1,226 @@
+name: "Pre-commit"
+description: 'Run and Settup Pre-commit'
+
+
+outputs:
+  matrix:
+    value: ${{ steps.set-output.outputs.matrix }}
+    description: "JSON file with paths of items to be deleted"
+
+  matrix2: 
+    value: ${{ steps.set-ouput.outputs.matrix2 }}
+    description: "JSON file with paths of items to be created"
+
+  BASE_SHA: 
+    value: ${{ steps.diff.outputs.sha }}
+    description: "The main / default branch"
+
+
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Check changed files
+      id: diff
+      run: |
+        # See https://github.community/t/check-pushed-file-changes-with-git-diff-tree-in-github-actions/17220/10
+        DIFF=''
+        if [ ${{ github.event_name }} == 'pull_request' ]; then
+          # Pull Request
+          git fetch origin $GITHUB_BASE_REF --depth=1
+          DIFF=$( git diff --name-status origin/$GITHUB_BASE_REF $GITHUB_SHA )
+          echo "Diff between origin/$GITHUB_BASE_REF and $GITHUB_SHA"
+          echo "::set-output name=sha::$GITHUB_BASE_REF"
+          echo "::set-output name=diff::$( echo "$DIFF" | sed ':a;N;$!ba;s/\n/%0A/g' )"
+        else
+          # Push
+          git fetch origin ${{ github.event.before }} --depth=1
+          DIFF=$( git diff --name-status ${{ github.event.before }} $GITHUB_SHA )
+          echo "Diff between ${{ github.event.before }} and $GITHUB_SHA"
+          echo "::set-output name=sha::${{ github.event.before }}"
+          echo "::set-output name=diff::${{ github.event.before }}"
+        fi
+        # Escape newlines (replace \n with %0A)
+        echo "::set-output name=diff::$( echo "$DIFF" | sed ':a;N;$!ba;s/\n/ /g' )"
+        echo "::debug::$DIFF | sed ':a;N;$!ba;s/\n/ /g'"
+      shell: bash
+      
+    - name: Set matrix for build
+      id: set-matrix
+      run: |
+        import os
+        # See https://stackoverflow.com/a/62953566/11948346
+        DIFF = os.environ['output']
+        DIFF = DIFF.replace('\t',' ')
+        array = DIFF.split(' ')
+
+        JSON = "{\"include\":["
+        JSONCREATE = "{\"include\":["
+
+        i=0
+        while (i < len(array) ):
+            JSONline = array[i+1]
+            finalarray = JSONline.split('/')
+            #echo "::debug::i=[$i] [${array[$i]}]"
+            if ('D' in array[i]):
+            #echo D ${finalarray[-1]}
+            # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
+                if (finalarray[-1] == 'terragrunt.hcl'):
+                    #echo success
+                                        
+                    path = JSONline.replace('terragrunt.hcl','')
+                    if not (path in JSON):
+                        JSON +='{' + '"path":"{}"'.format(path) + '},'
+            else:
+                if ('R' in array[i]):
+                    JSONline2 = array[i+2]
+                    finalarray2 = JSONline2.split('/')
+                    # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
+                    if (finalarray2[-1] == 'terragrunt.hcl' and finalarray[-1] == 'terragrunt.hcl'):
+                        path = JSONline.replace('terragrunt.hcl','')
+                        path2 = JSONline2.replace('terragrunt.hcl','')
+                        if not (path in JSON):
+                            JSON +='{' + '"path":"{}"'.format(path) + '},'
+                        if not (path in JSONCREATE):
+                            JSONCREATE +='{' + '"path":"{}"'.format(path2) + '},'
+                    i += 1 
+                else:
+                    #echo m OR c {finalarray[-1]}
+                    # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
+                    # && [ ${#finalarray2[@]} -gt 3 ]
+                    if (finalarray[-1] == 'terragrunt.hcl'):
+                        path = JSONline.replace('terragrunt.hcl','')
+                        if not (path in JSONCREATE):
+                            JSONCREATE +='{' + '"path":"{}"'.format(path) + '},'
+
+
+            i += 2 
+
+
+        if(JSON[-1] == ','):
+            JSON = JSON[:-1]
+        if(JSONCREATE[-1] == ','):
+            JSONCREATE = JSONCREATE[:-1]    
+
+        JSON += "]}"
+        JSONCREATE += "]}"
+
+        print(JSON)
+        print(JSONCREATE)
+
+        # Set output
+        env_file = os.getenv('GITHUB_ENV')
+
+        with open(env_file, "a") as file:
+            file.write("JSON={}\n".format(JSON))
+            file.write("JSONCREATE={}\n".format(JSONCREATE))
+        #os.system('echo "::set-output name=matrix::$( echo "$JSON" )"')
+        #os.system('echo "::set-output name=matrix::$( echo "$JSONCREATE" )"')
+      shell: python
+      env:
+        output: "${{ steps.diff.outputs.diff }}"
+
+    - name: Set Outputs
+      id: set-output
+      run: |
+        echo "::set-output name=matrix::$( echo "$JSON" )"
+        echo "::set-output name=matrix2::$( echo "$JSONCREATE" )"
+      shell: bash
+
+#    - name: Set matrix for build
+#      id: set-matrix
+#      run: |
+#        # See https://stackoverflow.com/a/62953566/11948346
+#        DIFF="${{ steps.diff.outputs.diff }}"
+#        JSON="{\"include\":["
+#        JSONCREATE="{\"include\":["
+#
+#        # Convert to arrays
+#        array=($DIFF)
+#        echo $array
+#
+#        i=0
+#        while [ $i -lt ${#array[@]} ]
+#        do
+#          JSONline="${array[$(($i+1))]}"
+#          final=${JSONline//\// }
+#          finalarray=($final)
+#          echo "::debug::i=[$i] [${array[$i]}]"
+#
+#          if [[ "${array[$i]}" == D* ]]; then
+#                  echo D ${finalarray[-1]}
+#                  # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
+#                  if [ "${finalarray[-1]}" == 'terragrunt.hcl' ]; then
+#                          echo success
+#                          unset finalarray[-1]
+#                          path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
+#                          if [[ "$JSON" != *$path* ]]; then
+#                              JSON="$JSON{\"path\":\"$path/\"},"
+#                              echo $JSON
+#                          fi
+#                  fi
+#          else
+#            if [[ "${array[$i]}" == R* ]]; then
+#                  echo R ${finalarray[-1]}
+#                  JSONline2="${array[$(($i+2))]}"
+#                  echo $JSONline2
+#                  final2=${JSONline//\// }
+#                  finalarray2=($final2)
+#                  # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
+#                  if [ "${finalarray[-1]}" == 'terragrunt.hcl' ]; then
+#                          echo success
+#                          unset finalarray[-1]
+#                          path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
+#                          if [[ "$JSON" != *$path* ]]; then
+#                              JSON="$JSON{\"path\":\"$path/\"},"
+#                              echo $JSON
+#                          fi
+#                  fi
+#                  if [ "${finalarray2[-1]}" == 'terragrunt.hcl' ]; then
+#                          
+#                          unset finalarray2[-1]
+#                          path=$(echo ${finalarray2[@]} | sed -r 's/ +/\//g')
+#                          if [[ "$JSONCREATE" != *$path* ]]; then
+#                              JSONCREATE="$JSON{\"path\":\"$path/\"},"
+#                              echo $JSONCREATE
+#                          fi
+#                  fi
+#                  i=$(($i+1))  
+#            else
+#                  echo m OR c {finalarray[-1]}
+#                  # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
+#                  # && [ ${#finalarray2[@]} -gt 3 ]
+#                  if [ "${finalarray[-1]}" == 'terragrunt.hcl' ]; then
+#                          echo success
+#                          unset finalarray[-1]
+#                          path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
+#                          if [[ "$JSONCREATE" != *$path* ]]; then
+#                              JSONCREATE="$JSONCREATE{\"path\":\"$path/\"},"
+#                              echo $JSONCREATE
+#                          fi
+#                  fi
+#            fi
+#          fi
+#
+#          i=$(($i+2))  
+# 
+#        done
+#
+#        # Remove last "," and add closing brackets
+#        if [[ $JSON == *, ]]; then
+#          JSON="${JSON%?}"
+#        fi
+#        JSON="$JSON]}"
+#
+#        # Remove last "," and add closing brackets Plan-Only
+#        if [[ $JSONCREATE == *, ]]; then
+#          JSONCREATE="${JSONCREATE%?}"
+#        fi
+#        JSONCREATE="$JSONCREATE]}"
+#        
+#
+#        # Set output
+#        echo "::set-output name=matrix::$( echo "$JSON" )"
+#        echo "::set-output name=matrix2::$( echo "$JSONCREATE" )"
+#      shell: bash

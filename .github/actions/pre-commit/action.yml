@@ -1,25 +1,64 @@
 name: "Pre-commit"
-description: 'Runs antonbabenkos pre-commit'
-author:  'User1935'
-inputs:
-  INFRACOST_API_KEY:
-    description: 'API_KEY.'
-    required: false
-  IS_PUSH:
-    description: 'Is is a push of a pull.'
-    required: false
-    default: 'false'
-  commit:
-    description: 'Should the action commit change on the gh-pages branch'
-    default: 'somecommit'
+description: 'Run and Settup Pre-commit'
+
 
 outputs:
-  filecontent:
+  precommit_output:
     description: 'Content of Pre-Commit'
 
 
 
 runs:
-  using: 'docker'
-  image: './Dockerfile'
+  using: "composite"
+  steps:
+    - run: |
+        #sudo apt-get install unzip
+        sudo apt install python3-testresources
+        mkdir dep
+        cd dep
+        # Pre-Commit
+        pip3 install --no-cache-dir pre-commit
+        # Checkov
+        pip3 install --no-cache-dir checkov
+        # Terraform Docs
+        curl -L "$(curl -s "https://api.github.com/repos/terraform-docs/terraform-docs/releases"/latest | grep -o -E -m 1 "https://.+?-linux-amd64.tar.gz")" > terraform-docs.tgz \
+        && tar -xzf terraform-docs.tgz terraform-docs && rm terraform-docs.tgz && chmod +x terraform-docs
+        # TerraGrunt
+        curl -L "$(curl -s "https://api.github.com/repos/gruntwork-io/terragrunt/releases/latest" | grep -o -E -m 1 "https://.+?/terragrunt_linux_amd64")" > terragrunt \
+        && chmod +x terragrunt
+        # TerraScan
+        curl -L "$(curl -s "https://api.github.com/repos/accurics/terrascan/releases/latest" | grep -o -E -m 1 "https://.+?_Linux_x86_64.tar.gz")" > terrascan.tar.gz \
+        && tar -xzf terrascan.tar.gz terrascan && rm terrascan.tar.gz \
+        && ./terrascan init
+        # TFLint
+        curl -L "$(curl -s "https://api.github.com/repos/terraform-linters/tflint/releases/latest" | grep -o -E -m 1 "https://.+?_linux_amd64.zip")" > tflint.zip \
+        && unzip tflint.zip && rm tflint.zip
+        # TFsec
+        curl -L "$(curl -s "https://api.github.com/repos/aquasecurity/tfsec/releases/latest" | grep -o -E -m 1 "https://.+?/tfsec-linux-amd64")" > tfsec \
+        && chmod +x tfsec
+      shell: bash
 
+    - id: random-number-generator
+      run: |
+        echo "dep" >> $GITHUB_PATH \
+        export PATH="${PATH}:${{ github.workspace }}/dep"
+        echo "$PATH"
+        echo $(ls)
+      shell: bash
+
+    - run: pre-commit run -a | tee something.txt
+      shell: bash
+
+
+    #- run: |
+    #    pre-commit run --all-files | sed 's/\x1b\[[0-9;]*m//g' | tee output.md
+    #    output=$(cat output.md)
+    #    echo ::set-output name=precommit_output::$output
+    #    echo Fileoutput $output
+    #    echo ::debug:: $output
+    #    git config user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+    #    git config user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+    #    git add .
+    #    git commit -m "$INPUT_COMMIT"
+    #    git push
+    #  shell: bash

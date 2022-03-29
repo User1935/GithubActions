@@ -61,7 +61,7 @@ The content must be [escaped to preserve newlines](https://github.community/t/se
           body=$(cat comment-body.txt)
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
-          body="${body//$'\r'/'%0D'}" 
+          body="${body//$'\r'/'%0D'}"
           echo ::set-output name=body::$body
 
       - name: Create commit comment

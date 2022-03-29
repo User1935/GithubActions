@@ -1,0 +1,34 @@
+name: "Pre-commit"
+description: 'Run and Settup Pre-commit'
+
+inputs:
+  filename:
+    description: "Name of file previously inserted with pre-commit output."
+    required: false
+    default: 'something.txt'
+
+outputs:
+  output:
+    description: 'Content of stdout'
+    value: ${{ steps.filecontent.outputs.FILECONTENT }}
+
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: 'dependencies'
+      run: |
+        pip install html2text
+        echo $(python ./.github/actions/pre-commit-output/dist/script.py)
+      shell: bash
+      env:
+        GITHUB_WORKSPACE: ${{ github.workspace }}
+
+    - name: 'fileContent'
+      id: filecontent
+      run: |
+        echo $GITHUB_WORKSPACE
+        echo $(cat ./something.txt)
+        echo "::set-output name=FILECONTENT::$(cat ./something.txt)"
+      shell: bash

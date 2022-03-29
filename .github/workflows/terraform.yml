@@ -10,126 +10,28 @@ env:
   TERRAGRUNT_DOWNLOAD: '.terragrunt-cache'
 jobs:
   pre-commit:
-    name: 'Pre-Commit'
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@master
+   name: 'Pre-Commit'
+   runs-on: ubuntu-latest
+   steps:
+     - name: 'Checkout'
+       uses: actions/checkout@v3
 
-      - name: 'Pre-Commit'
-        id: 'pre-commit'
-        continue-on-error: true
-        uses: ./.github/actions/pre-commit
-      #- name: 'Convert to Markdown file'
-      #  id: 'to-markdown'
-      #  continue-on-error: true
-      #  run: |
-      #    sudo apt install php-league-html-to-markdown colorized-logs
-      #    echo '${{ steps.pre-commit.outputs.filecontent }}' > ./actions/node/tempfile.md
-      #    echo ::set-output name=markdown::$(cat ./actions/node/tempfile.md)
-      #    echo ::debug:: Content of file: $(cat ./actions/node/tempfile.md)
-#
-      #|
-      # html-to-markdown document.html > ./actions/node/tempfile.md
-      # 
-      #    npm install turndown --save
-      #    npm install @octokit/core
+     - name: 'Pre-Commit'
+       continue-on-error: true
+       uses: ./.github/actions/pre-commit
 
-      #- name: 'Make File with Content'
-      #  run: node ./actions/node/writeFile.js
-      #  env:
-      #    FILE_INPUT:  '${{ steps.pre-commit.outputs.filecontent }}'
-      #    FILE_OUTPUT: './actions/node/tempfile.md'
-      - name: Create a File with something
-        id: file
-        run: |
-          echo "::debug:: File-Content: ${{ steps.pre-commit.outputs.filecontent }}"
-          sudo apt-get install colorized-logs
-          echo "::debug:: Pushing to file"
-          echo " ${{ steps.pre-commit.outputs.filecontent }}" > temp1.raw
-          echo "::debug:: Decoding Base64 $(cat temp1.raw)"
-          base64 -di temp1.raw > temp.raw
-          echo "::debug:: Converting to HTML"
-          ansi2html < temp.raw | base64 > temp.html
-          echo "::debug:: Setting Output"
-          echo ::set-output name=html:: $(cat temp.html)
+     - name: 'Pre-Commit_Output'
+       id: pre-commit
+       uses: ./.github/actions/pre-commit-output
 
-      - name: Comment-push
-        if: github.event_name != 'pull_request'
-        uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
-        with:
-          body: ${{ steps.pre-commit.outputs.filecontent }} #${{ steps.file.outputs.html }}  #${{ steps.pre-commit.outputs.filecontent }} #${{ steps.to-markdown.outputs.markdown }}
+     - name: Comment-push
+       if: github.event_name != 'pull_request'
+       uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
+       with:
+         body: ${{ steps.pre-commit.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
 
-      - name: Comment-pull
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '👋 Thanks for reporting!'
-            })
-##
-      #- uses: actions/github-script@v6
-      #  with:
-      #    script: |
-      #      github.rest.issues.createComment({
-      #        issue_number: context.issue.number,
-      #        owner: context.repo.owner,
-      #        repo: context.repo.repo,
-      #        body: "${{ steps.pre-commit.outputs.filecontent }}""
-      #      })
-#
-      #- name: "Bash Comment"
-      #  uses: "./actions/bash"
-      #  continue-on-error: true
-      #  with:
-      #    INPUT: '${{ steps.pre-commit.outputs.filecontent }}'
-      
-      #- name: "Bash Comment"
-      #  run: |
-      #    chmod +x ./actions/bash/src/script.sh
-      #    bash ./actions/bash/src/script.sh
-      #  env:
-      #    INPUT: '${{ steps.pre-commit.outputs.filecontent }}'
-#
-      #- name: Comment
-      #  id: compost-comment
-      #  uses: infracost/compost-action@master
-      #  with:
-      #    body-file: './actions/node/tempfile.md'
-      #    github-token: '${{ env.GITHUB_TOKEN }}'
-#     -------------------------------------------------------------
-      #- name: Comment
-      #  uses: actions/github-script@v6
-      #  with:
-      #    script: |
-      #      github.rest.issues.createComment({
-      #        issue_number: context.issue.number,
-      #        owner: context.repo.owner,
-      #        repo: context.repo.repo,
-      #        body: '👋 Thanks for reporting!'
-      #      })
-
-      #- name: comment on PR with Binder link
-      #  uses: actions/github-script@v3
-      #  with:
-      #    github-token: ${{secrets.GITHUB_TOKEN}}
-      #    script: |
-      #      var PR_HEAD_USERREPO = process.env.PR_HEAD_USERREPO;
-      #      var PR_HEAD_REF = process.env.PR_HEAD_REF;
-      #      github.issues.createComment({
-      #        issue_number: context.issue.number,
-      #        owner: context.repo.owner,
-      #        repo: context.repo.repo,
-      #        body: `👋 Thanks for reporting!`
-      #      })
-      #  env:
-      #    PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
-      #    PR_HEAD_USERREPO: ${{ github.event.pull_request.head.repo.full_name }}
-      # -------------------------------------------------------------------------
+     - name: Cleanup
+       uses: ./.github/actions/cleanup  
 
   Pull_InfraCost:
     if: github.event_name == 'pull_request'
@@ -142,7 +44,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: 'Checkout'
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
@@ -190,181 +92,31 @@ jobs:
           path: ${{ env.tf_working_dir }}infracost.json
           behavior: new
 
- # Push_Terragrunt:
- #   if: github.event_name != 'pull_request'
- #   name: 'Terragrunt-push'
- #   runs-on: ubuntu-latest
- #   steps:
- #     - name: Log in with Azure
- #       uses: azure/login@v1
- #       with:
- #         creds: ${{ secrets.AZURE_CREDENTIALS }}
- #
- #     - name: 'Checkout'
- #       uses: actions/checkout@master
- #
- #     - name: Install Terraform
- #       uses: hashicorp/setup-terraform@v1
- #       with:
- #         terraform_wrapper: false # This is recommended so the `terraform show` command outputs valid JSON
- #
- #     - name: Setup Terragrunt
- #       uses: autero1/action-terragrunt@v1.1.0
- #       with:
- #         terragrunt_version: 0.35.9
- #
- #     #- name: Install TgSwitch
- #     #  continue-on-error: true
- #     #  run: sudo curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
- #
- #     #- name: Install TFenv
- #     #  continue-on-error: true
- #     #  run: brew install tfenv
- #
- #     - name: 'ChangedFiles'
- #       id: files
- #       uses: jitterbit/get-changed-files@v1
- #
- #     - name: 'List Changed Files'
- #       run: |
- #         for changed_file in ${{ steps.files.outputs.all }}; do
- #           echo "Do something with this ${changed_file}."
- #         done
-
       
   generate-matrix:
       name: 'Generate matrix for build'
       runs-on: ubuntu-latest
 
       outputs:
-        matrix: ${{ steps.set-matrix.outputs.matrix }}
-        matrix2: ${{ steps.set-matrix.outputs.matrix2 }}
-        BASE_SHA: ${{ steps.diff.outputs.sha }}
+        matrix: ${{ steps.set-output.outputs.matrix }}
+        matrix2: ${{ steps.set-output.outputs.matrix2 }}
+        BASE_SHA: ${{ steps.set-ouput.outputs.BASE_SHA }}
       steps:
 
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v3
 
-        - name: Check changed files
-          id: diff
-          run: |
-            # See https://github.community/t/check-pushed-file-changes-with-git-diff-tree-in-github-actions/17220/10
-            DIFF=''
-            if [ $GITHUB_BASE_REF ]; then
-              # Pull Request
-              git fetch origin $GITHUB_BASE_REF --depth=1
-              #export DIFF=$( git diff --name-only origin/$GITHUB_BASE_REF $GITHUB_SHA )
-              DIFF1=$( git diff --name-status origin/$GITHUB_BASE_REF $GITHUB_SHA )
-              echo "Diff between origin/$GITHUB_BASE_REF and $GITHUB_SHA"
-              echo "::set-output name=sha::$GITHUB_BASE_REF"
-              echo "::set-output name=diff::$( echo "$DIFF" | sed ':a;N;$!ba;s/\n/%0A/g' )"
-            else
-              # Push
-              git fetch origin ${{ github.event.before }} --depth=1
-              #export DIFF=$( git diff --name-only ${{ github.event.before }} $GITHUB_SHA )
-              DIFF1=$( git diff --name-status ${{ github.event.before }} $GITHUB_SHA )
-              echo "Diff between ${{ github.event.before }} and $GITHUB_SHA"
-              echo "::set-output name=sha::${{ github.event.before }}"
-              echo "::set-output name=diff::${{ github.event.before }}"
-            fi
-            echo BASEREF: $GITHUB_BASE_REF
-            echo Name status: $( git diff --name-status ${{ github.event.before }} $GITHUB_SHA )
-            echo ----
-            echo "$DIFF1"
-            # Escape newlines (replace \n with %0A)
-            echo "::set-output name=diff::$( echo "$DIFF" | sed ':a;N;$!ba;s/\n/ /g' )"
-            echo "::set-output name=diff1::$( echo "$DIFF1" | sed ':a;N;$!ba;s/\n/ /g' )"
-            
-        - name: Set matrix for build
+        - name: Create Matrixes
           id: set-matrix
+          uses: ./.github/actions/generate-matrix
+
+        - name: Debug
+          id: set-output
           run: |
-            # See https://stackoverflow.com/a/62953566/11948346
-            DIFF="${{ steps.diff.outputs.diff }}"
-            DIFF1="${{ steps.diff.outputs.diff1 }}"
-            JSON="{\"include\":["
-            JSONCREATE="{\"include\":["
-
-            # Convert to arrays
-            array=($DIFF)
-            array1=($DIFF1)
-            echo "::debug::Array - ${array[@]}"
-            i=0
-            while [ $i -lt ${#array1[@]} ]
-            do
-              JSONline="${array1[$(($i+1))]}"
-              final=${JSONline//\// }
-              finalarray=($final)
-              echo "::debug::i=[$i] [${array1[$i]}]"
-
-              if [[ "${array1[$i]}" == D* ]]; then
-                      
-                      # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
-                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 3 ]; then
-                              
-                              unset finalarray[-1]
-                              path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
-                              if [[ "$JSON" != *$path* ]]; then
-                                  JSON="$JSON{\"path\":\"$path/\"},"
-                              fi
-                      fi
-              else
-                if [[ "${array1[$i]}" == R* ]]; then
-                      JSONline2="${array1[$(($i+2))]}"
-                      final2=${JSONline//\// }
-                      finalarray2=($final2)
-                      # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
-                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 3 ]; then
-                              
-                              unset finalarray[-1]
-                              path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
-                              if [[ "$JSON" != *$path* ]]; then
-                                  JSON="$JSON{\"path\":\"$path/\"},"
-                              fi
-                      fi
-                      if [ "${finalarray2[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray2[@]} -gt 3 ]; then
-                              
-                              unset finalarray2[-1]
-                              path=$(echo ${finalarray2[@]} | sed -r 's/ +/\//g')
-                              if [[ "$JSONCREATE" != *$path* ]]; then
-                                  JSONCREATE="$JSON{\"path\":\"$path/\"},"
-                              fi
-                      fi
-                      i=$(($i+1))  
-                else
-                      # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
-                      if [ "${finalarray[-1]}" == 'terragrunt.hcl' ] && [ ${#finalarray[@]} -gt 3 ]; then
-                              
-                              unset finalarray[-1]
-                              path=$(echo ${finalarray[@]} | sed -r 's/ +/\//g')
-                              if [[ "$JSONCREATE" != *$path* ]]; then
-                                  JSONCREATE="$JSONCREATE{\"path\":\"$path/\"},"
-                              fi
-                      fi
-                fi
-              fi
-              echo "::debug::before $i"
-              i=$(($i+2))  
-              echo "::debug::after $i"
-            done
-
-            # Remove last "," and add closing brackets
-            if [[ $JSON == *, ]]; then
-              JSON="${JSON%?}"
-            fi
-            JSON="$JSON]}"
-
-            # Remove last "," and add closing brackets Plan-Only
-            if [[ $JSONCREATE == *, ]]; then
-              JSONCREATE="${JSONCREATE%?}"
-            fi
-            JSONCREATE="$JSONCREATE]}"
-            
-
-            # Set output
-            echo "::set-output name=matrix::$( echo "$JSON" )"
-            echo "::set-output name=matrix2::$( echo "$JSONCREATE" )"
-
-            # Debugging
-            echo "::debug:: INPUT: $DIFF"
+            echo "::set-output name=matrix::$( echo $JSON )"
+            echo "::set-output name=matrix2::$( echo $JSONCREATE )"
+            echo  ${{ steps.set-matrix.outputs.matrix }}
+            echo  ${{ steps.set-matrix.outputs.matrix2 }}
+            echo  ${{ steps.set-matrix.outputs.BASE_SHA }}
 
   Plan:
     name: 'All the resource plannings'
@@ -381,7 +133,7 @@ jobs:
 
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
 
       - name: Install Terraform
@@ -399,6 +151,9 @@ jobs:
         run: |
           echo terragrunt init --working-directory ${{ matrix.path }}
           echo terragrunt plan --working-directory ${{ matrix.path }}
+          terragrunt init
+          terragrunt plan -no-color --terragrunt-working-dir ${{matrix.files.name}} --terragrunt-include-external-dependencies -out ${{matrix.files.log}}-planfile >> ${{matrix.files.log}}-planfile.log 2>&1
+
           
   Destroy:
     name: 'All the destroy plannings'
@@ -409,14 +164,20 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+
+      - name: Print Shit
+        run: |
+          echo ${{needs.job1.outputs.matrix}}
+          echo ${{needs.job1.outputs.matrix2}}
+
       - name: Log in with Azure
         uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+        #with:
+        #  creds: ${{ secrets.AZURE_CREDENTIALS }}
 
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ needs.generate-matrix.outputs.sha }}
 
@@ -435,3 +196,5 @@ jobs:
         run: |
           echo terragrunt init 
           echo terragrunt plan -destroy
+          terragrunt init
+          terragrunt plan -destroy -no-color --terragrunt-include-external-dependencies -out ${{matrix.files.log}}-planfile >> ${{matrix.files.log}}-planfile.log 2>&1
