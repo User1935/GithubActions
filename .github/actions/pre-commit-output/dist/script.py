@@ -12,7 +12,7 @@ h = html2text.HTML2Text()
 
 runtype = os.environ['INPUT_TYPE']
 relpath = os.environ['INPUT_FILEPATH']
-path2file = os.environ['GITHUB_WORKSPACE'] + '/' + relpath
+path2file = os.environ['GITHUB_WORKSPACE'] + '/' + relpath + '/output-planfile'
 print(path2file)
 with open (path2file, 'r') as myfile:
     data = myfile.readlines()

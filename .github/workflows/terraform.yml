@@ -170,7 +170,7 @@ jobs:
         id: terragrunt
         uses: ./.github/actions/pre-commit-output
         with:
-          filepath: "bananas" #"${{ matrix.path }}output-planfile"
+          filepath: "${{ matrix.path }}"
           type: "terragrunt"
 
       - name: Comment-push
@@ -224,7 +224,7 @@ jobs:
         id: terragrunt
         uses: ./.github/actions/pre-commit-output
         with:
-          filepath: "${{ matrix.path }}output-planfile"
+          filepath: "${{ matrix.path }}"
           type: "terragrunt"
 
       - name: Comment-push
