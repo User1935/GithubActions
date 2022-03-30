@@ -1,4 +1,4 @@
-name: 'Terragrunt GitHub Actions'
+name: 'Plan Create and Plan destroy'
 on:
   pull_request:
     branches:
