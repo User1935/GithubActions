@@ -16,9 +16,9 @@ jobs:
       runs-on: ubuntu-latest
 
       outputs:
-        matrix: ${{ steps.set-matrix.outputs.matrix }}
-        matrix2: ${{ steps.set-matrix.outputs.matrix2 }}
-        BASE_SHA: ${{ steps.set-matrix.outputs.BASE_SHA }}
+        matrix: ${{ steps.set-output.outputs.matrix }}
+        matrix2: ${{ steps.set-output.outputs.matrix2 }}
+        BASE_SHA: ${{ steps.set-ouput.outputs.BASE_SHA }}
       steps:
 
         - uses: actions/checkout@v3
@@ -28,7 +28,10 @@ jobs:
           uses: ./.github/actions/generate-matrix
 
         - name: Debug
+          id: set-output
           run: |
+            echo "::set-output name=matrix::$JSON"
+            echo "::set-output name=matrix2::$JSONCREATE "
             echo  ${{ steps.set-matrix.outputs.matrix }}
             echo  ${{ steps.set-matrix.outputs.matrix2 }}
             echo  ${{ steps.set-matrix.outputs.BASE_SHA }}
@@ -60,13 +63,22 @@ jobs:
         uses: autero1/action-terragrunt@v1.1.0
         with:
           terragrunt_version: 0.35.9
-
         
       - name: Run TerraGrunt
+        working-directory: ${{ matrix.path }}
         run: |
-          echo terragrunt init --working-directory ${{ matrix.path }}
-          echo terragrunt apply --working-directory ${{ matrix.path }}
           terragrunt init
-          terragrunt apply -auto-approve -no-color --terragrunt-working-dir ${{matrix.files.name}} --terragrunt-include-external-dependencies -out ${{matrix.files.log}}-planfile >> ${{matrix.files.log}}-planfile.log 2>&1
+          terragrunt apply -auto-approve -no-color --terragrunt-include-external-dependencies -out output-planfile | tee output-planfile
+          echo $(cat output-planfile)
 
-          
+      - name: 'Terragrunt Output'
+        id: terragrunt
+        uses: ./.github/actions/pre-commit-output
+        env:
+          INPUT_TYPE: "terragrunt"
+          INPUT_FILEPATH: ${{ matrix.path }}
+
+      - name: Comment-push
+        uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
+        with:
+          body: ${{ steps.terragrunt.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
