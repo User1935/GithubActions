@@ -177,7 +177,6 @@ jobs:
 
 
       - name: Comment-push
-        if: github.event_name != 'pull_request'
         uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
         with:
           body: ${{ steps.terragrunt.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
@@ -232,7 +231,6 @@ jobs:
           INPUT_FILEPATH: ${{ matrix.path }}
 
       - name: Comment-push
-        if: github.event_name != 'pull_request'
         uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
         with:
           body: ${{ steps.terragrunt.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
