@@ -165,7 +165,7 @@ jobs:
           echo terragrunt init --working-directory ${{ matrix.path }}
           echo terragrunt plan --working-directory ${{ matrix.path }}
           terragrunt init
-          terragrunt plan -no-color  --terragrunt-include-external-dependencies -out output-planfile
+          terragrunt plan -no-color  --terragrunt-include-external-dependencies -out output-planfile | tee output-planfile
           echo $(cat output-planfile)
 
       - name: 'Terragrunt Output'
