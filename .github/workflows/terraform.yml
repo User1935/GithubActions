@@ -160,8 +160,8 @@ jobs:
       - name: Run TerraGrunt
         working-directory: ${{ matrix.path }}
         run: |
-          echo "::debug:: $(pwd)"
-          echo "::debug::${GITHUB_REF#refs/heads/}"
+          echo "::debug:: PWD - $(pwd)"
+          echo "::debug:: BRANCH - ${GITHUB_REF#refs/heads/}"
           echo terragrunt init --working-directory ${{ matrix.path }}
           echo terragrunt plan --working-directory ${{ matrix.path }}
           terragrunt init
