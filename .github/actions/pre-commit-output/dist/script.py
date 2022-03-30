@@ -12,7 +12,7 @@ h = html2text.HTML2Text()
 
 runtype = os.environ['INPUT_TYPE']
 relpath = os.environ['INPUT_FILEPATH']
-path2file = os.environ['GITHUB_WORKSPACE'] + '/' + relpath
+path2file = os.environ['GITHUB_WORKSPACE'] + '/' + relpath + 'output-planfile'
 print(path2file)
 with open (path2file, 'r') as myfile:
     data = myfile.readlines()
@@ -31,7 +31,7 @@ if (runtype == 'pre-commit'):
 
 elif(runtype == 'terragrunt'):
 
-    finalstring = '# TerraGrunt Log [{}]\n'.format(os.environ['GITHUB_WORLFOW'])
+    finalstring = '# TerraGrunt Log\n ### [{}]\n<pre>'.format(os.environ['INPUT_FILEPATH'])
     flag = False
     for s in data:
         # Filter info
@@ -39,7 +39,7 @@ elif(runtype == 'terragrunt'):
             flag = not flag
         if (flag):
             finalstring += s
-
+    finalstring += '</pre>'
 
 
 # OUTPUT ENCODING

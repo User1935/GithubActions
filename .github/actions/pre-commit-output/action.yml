@@ -21,7 +21,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-
     - name: 'dependencies'
       run: |
         pip install html2text
@@ -30,10 +29,11 @@ runs:
       env:
         GITHUB_WORKSPACE: ${{ github.workspace }}
 
+
     - name: 'fileContent'
       id: filecontent
       run: |
-        echo $GITHUB_WORKSPACE
-        echo $(cat ./something.txt)
-        echo "::set-output name=FILECONTENT::$(cat ./something.txt)"
+        echo "::debug::$(ls)"
+        echo "::debug::$(ls ./$INPUT_FILEPATH)"
+        echo "::set-output name=FILECONTENT::$(cat ./${INPUT_FILEPATH}output-planfile)"
       shell: bash
