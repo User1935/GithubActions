@@ -218,7 +218,7 @@ jobs:
           echo terragrunt init 
           echo terragrunt plan -destroy
           terragrunt init
-          terragrunt plan -destroy -no-color --terragrunt-include-external-dependencies -out output-planfile
+          terragrunt plan -destroy -no-color --terragrunt-include-external-dependencies -out output-planfile | tee output-planfile
           echo $(cat output-planfile)
 
       
