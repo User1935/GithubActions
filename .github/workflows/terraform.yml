@@ -215,6 +215,8 @@ jobs:
       - name: Run TerraGrunt
         working-directory: ${{ matrix.path }}
         run: |
+          echo "::debug:: $(pwd)"
+          echo "::debug::${GITHUB_REF#refs/heads/}"
           echo terragrunt init 
           echo terragrunt plan -destroy
           terragrunt init
