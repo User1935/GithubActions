@@ -216,6 +216,7 @@ jobs:
       - name: Run TerraGrunt
         working-directory: ${{ matrix.path }}
         run: |
+          echo Branch: $(git log --merges $GITHUB_SHA)
           echo terragrunt init 
           echo terragrunt plan -destroy
           terragrunt init
