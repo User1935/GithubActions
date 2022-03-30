@@ -31,7 +31,7 @@ if (runtype == 'pre-commit'):
 
 elif(runtype == 'terragrunt'):
 
-    finalstring = '# TerraGrunt Log [{}]\n'.format(os.environ['GITHUB_WORLFOW'])
+    finalstring = '# TerraGrunt Log [{}]\n'.format(os.environ['INPUT_FILEPATH'])
     flag = False
     for s in data:
         # Filter info
