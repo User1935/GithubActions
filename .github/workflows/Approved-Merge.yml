@@ -13,6 +13,7 @@ env:
   
 jobs:
   generate-matrix:
+      if: github.event.review.state == 'approved'
       name: 'Generate matrix for build'
       runs-on: ubuntu-latest
 
