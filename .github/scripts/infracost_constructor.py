@@ -14,6 +14,7 @@ version: 0.1
 projects:
 '''
 yaml += filecontent
+print('JSON: {}'.format(data))
 print(getcwd())
 print(yaml)
 with open('infracost.yml', 'w') as file:
