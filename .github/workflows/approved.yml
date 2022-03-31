@@ -25,6 +25,8 @@ jobs:
 
         - uses: actions/checkout@v3
 
+        - run: echo ${{ github }}
+
         - name: Create Matrixes
           id: set-matrix
           uses: ./.github/actions/generate-matrix
