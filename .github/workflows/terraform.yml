@@ -77,7 +77,7 @@ jobs:
           terragrunt plan-all
 
       - name: 'FileChanges'
-        run: git diff --name-status origin/$GITHUB_BASE_REF $GITHUB_SHA
+        run: git diff --name-status $GITHUB_BASE_REF $GITHUB_SHA
 
       - name: 'ChangedFiles'
         id: set-matrix
