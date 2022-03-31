@@ -1,5 +1,6 @@
 import sys
 import json
+from os import getcwd
 
 data = sys.argv[1]
 decdata = json.loads(data)
@@ -13,6 +14,6 @@ version: 0.1
 projects:
 '''
 yaml += filecontent
-
+print(getcwd())
 with open('infracost.yml', 'r') as file:
     file.write(yaml)
