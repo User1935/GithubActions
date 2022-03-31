@@ -81,7 +81,7 @@ jobs:
         uses: ./.github/actions/generate-matrix
 
       - name: 'Create infracost.yml'
-        run: python ./.github/scripts/infracost_constructor.py ${JSONCREATE}
+        run: python ./.github/scripts/infracost_constructor.py ${{ steps.set-matrix.outputs.matrix2 }}
 
       - name: Setup Infracost
         uses: infracost/actions/setup@v1
