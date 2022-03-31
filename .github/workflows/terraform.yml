@@ -90,7 +90,7 @@ jobs:
           
       - name: Run Infracost
         run: |
-          infracost breakdown --config-file=infracost.yml --format=json --out-file=infracost.json
+          infracost breakdown --config-file=/home/runner/work/GithubActions/GithubActions/infracost.yml --format=json --out-file=infracost.json
           echo [FILECONTENT - INFRACOST CONFIG] $(cat infracost.yml)
           echo [FILECONTENT - INFRACOST] $(cat infracost.json)
         
