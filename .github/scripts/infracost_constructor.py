@@ -6,8 +6,7 @@ data = sys.argv[1]
 decdata = json.loads(data)
 filecontent = ""
 for ele in decdata['include']:
-    filecontent += "\t- path: " + ele['path'][-1] + "\n"
-    print(ele['path'][-1])
+    filecontent += "\t- path: " + ele['path'][:-1] + "\n"
 yaml = '''
 version: 0.1
 
