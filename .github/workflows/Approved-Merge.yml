@@ -2,8 +2,8 @@ name: 'Apply planned settings'
 on:
   pull_request_review:
     types: [submitted]
-    branches:
-      - 'main'
+
+
 env:
   tf_version: 'latest'
   tg_version: 'latest'
