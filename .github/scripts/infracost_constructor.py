@@ -7,7 +7,7 @@ decdata = json.loads(data)
 filecontent = ""
 for ele in decdata['include']:
     filecontent += "\t- path: " + ele['path'][-1] + "\n"
-
+    print(ele['path'])
 yaml = '''
 version: 0.1
 
