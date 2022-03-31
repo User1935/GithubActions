@@ -15,5 +15,6 @@ projects:
 '''
 yaml += filecontent
 print(getcwd())
+print(yaml)
 with open('infracost.yml', 'w') as file:
     file.write(yaml)
