@@ -78,13 +78,10 @@ jobs:
 
       - name: 'ChangedFiles'
         id: files
-        uses: jitterbit/get-changed-files@v1
+        uses: ./.github/actions/generate-matrix
 
-      - name: 'List Changed Files'
-        run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done
+      - name: 'Create infracost.yml'
+        run: python ./.github/scripts/infracost_constructor.py ${JSONCREATE}
 
       - name: Setup Infracost
         uses: infracost/actions/setup@v1
@@ -92,12 +89,15 @@ jobs:
           api-key: ${{ secrets.INFRACOST_API_KEY }}
           
       - name: Run Infracost
-        run: infracost breakdown --path=${{ env.tf_working_dir }} --format=json --out-file=${{ env.tf_working_dir }}infracost.json
+        run: |
+          infracost breakdown --config-file=infracost.yml --format=json --out-file=infracost.json
+          echo [FILECONTENT - INFRACOST CONFIG] $(cat infracost.yml)
+          echo [FILECONTENT - INFRACOST] $(cat infracost.json)
         
       - name: Post the comment
         uses: infracost/actions/comment@v1
         with:
-          path: ${{ env.tf_working_dir }}infracost.json
+          path: infracost.json
           behavior: new
 
   generate-matrix:

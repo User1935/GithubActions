@@ -1,5 +1,5 @@
 name: 'Apply planned settings'
-on:  
+on:
   pull_request_review:
     types: [submitted]
 
@@ -17,11 +17,70 @@ jobs:
       name: 'Generate matrix for build'
       runs-on: ubuntu-latest
 
+      outputs:
+        matrix: ${{ steps.set-output.outputs.matrix }}
+        matrix2: ${{ steps.set-output.outputs.matrix2 }}
+        BASE_SHA: ${{ steps.set-ouput.outputs.BASE_SHA }}
       steps:
 
         - uses: actions/checkout@v3
 
+        - name: Create Matrixes
+          id: set-matrix
+          uses: ./.github/actions/generate-matrix
+
         - name: Debug
           id: set-output
           run: |
-            echo Hello-WORLD!!
+            echo "::set-output name=matrix::$JSON"
+            echo "::set-output name=matrix2::$JSONCREATE "
+            echo  ${{ steps.set-matrix.outputs.matrix }}
+            echo  ${{ steps.set-matrix.outputs.matrix2 }}
+            echo  ${{ steps.set-matrix.outputs.BASE_SHA }}
+
+  Apply:
+    name: 'All the resource plannings'
+    if: ${{ needs.generate-matrix.outputs.matrix2 }} != '{"include":[]}'
+    needs: generate-matrix
+    strategy:
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix2)}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_wrapper: false
+
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v1.1.0
+        with:
+          terragrunt_version: 0.35.9
+        
+      - name: Run TerraGrunt
+        working-directory: ${{ matrix.path }}
+        run: |
+          terragrunt init
+          terragrunt apply -auto-approve -no-color --terragrunt-include-external-dependencies -out output-planfile | tee output-planfile
+          echo $(cat output-planfile)
+
+      - name: 'Terragrunt Output'
+        id: terragrunt
+        uses: ./.github/actions/pre-commit-output
+        env:
+          INPUT_TYPE: "terragrunt"
+          INPUT_FILEPATH: ${{ matrix.path }}
+
+      - name: Comment-push
+        uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
+        with:
+          body: ${{ steps.terragrunt.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
