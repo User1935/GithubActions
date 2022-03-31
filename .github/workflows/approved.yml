@@ -7,15 +7,13 @@ on:
 
 
 env:
-  tf_version: 'latest'
-  tg_version: 'latest'
   tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
   STORAGE_KEY: ${{secrets.STORAGE_KEY}}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
 jobs:
   generate-matrix:
-      if: github.event.review.state == 'approved'
+      #if: github.event.review.state == 'approved'
       name: 'Generate matrix for build'
       runs-on: ubuntu-latest
 
