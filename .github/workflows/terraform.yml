@@ -131,6 +131,7 @@ jobs:
         - name: Outputs
           id: set-output
           run: |
+            echo $(pwd)
             echo $JSON > ./.github/context/deleted-dir
             echo $JSONCREATE > ./.github/context/created-dir
 
