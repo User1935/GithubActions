@@ -37,3 +37,9 @@ runs:
         echo "::debug::$(ls ./$INPUT_FILEPATH)"
         echo "::set-output name=FILECONTENT::$(cat ./${INPUT_FILEPATH}output-planfile)"
       shell: bash
+
+    - name: 'Remove files'
+      run: |
+         rm something.txt
+         rm -dr dep
+      shell: bash
