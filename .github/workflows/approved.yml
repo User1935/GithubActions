@@ -25,11 +25,24 @@ jobs:
       steps:
         - uses: actions/checkout@v3
 
+        - run: cat  os.environ['GITHUB_WORKSPACE']/.github/context/delete-dir
+          continue-on-error: true
+
+        - run: echo $(ls ./.github)
+          continue-on-error: true
+
+        - run: echo $(ls)
+          continue-on-error: true
+
+        - run: echo $(ls ./.github/context)
+          continue-on-error: true
+
         - name: Fetch Matrix
           id: set-output
           run: |
-            echo "::set-output name=matrix::$(cat ./.github/context/delete-dir)"
-            echo "::set-output name=matrix2::$(cat ./.github/context/create-dir)"
+            echo $(pwd)
+            echo "::set-output name=matrix::$(cat .github/context/delete-dir)"
+            echo "::set-output name=matrix2::$(cat .github/context/create-dir)"
             echo  ${{ steps.set-matrix.outputs.matrix }}
             echo  ${{ steps.set-matrix.outputs.matrix2 }}
 
