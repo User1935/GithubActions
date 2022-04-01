@@ -30,8 +30,8 @@ runs:
           # Pull Request
           git fetch origin $GITHUB_BASE_REF --depth=1
          if [ ${{ github.event.action }} == 'closed' ]; then
-            prev_sha=(echo $(git log -n 2 --pretty=format:"%H" ))
-           DIFF=$( git diff --name-status origin/${{ github.base_ref }} ${prev_sha[1]} )
+           prev_sha=(echo $(git log -n 1 ${{ github.head_ref }} --pretty=format:"%H" ))
+           DIFF=$( git diff --name-status origin/${{ github.before }} ${prev_sha[0]} )
          else
             # origin/$GITHUB_BASE_REF $GITHUB_SHA
             DIFF=$( git diff --name-status origin/$GITHUB_BASE_REF $GITHUB_SHA )
