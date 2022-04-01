@@ -28,8 +28,6 @@ runs:
         DIFF=''
         if [ ${{ github.event_name }} == 'pull_request' ]; then
           # Pull Request
-          echo BANANA: $(git branch && git status) : BANANAEND
-          echo Changes: $(wget ${{ github.diffs-url }})
           git fetch origin $GITHUB_BASE_REF --depth=2
          if [ ${{ github.event.action }} == 'closed' ]; then
             export JSON=$( cat ./.github/context/deleted-dir )
