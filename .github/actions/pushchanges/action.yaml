@@ -1,15 +1,9 @@
-name: "Cleanup"
+name: "Commit Changes"
 description: 'Destroy and commits changes'
 
 runs:
   using: "composite"
   steps:
-
-    - name: 'Destroy items created'
-      run: |
-         rm something.txt
-         rm -dr dep
-      shell: bash
 
     - name: 'Commit changes'
       run: |
