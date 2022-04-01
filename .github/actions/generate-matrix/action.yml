@@ -28,13 +28,12 @@ runs:
         DIFF=''
         if [ ${{ github.event_name }} == 'pull_request' ]; then
           # Pull Request
-          echo BANANA: $(git branch && git status) : BANANAEND
           git fetch origin $GITHUB_BASE_REF --depth=2
          if [ ${{ github.event.action }} == 'closed' ]; then
-           prev_sha=(echo $(git log -n 1 --pretty=format:"%H" ))
-           echo "Diff between origin/${{ github.before }} and ${prev_sha[0]}"
-           DIFF=$( git diff --name-status origin/${{ github.before }} ${prev_sha[0]} )
-
+            export JSON=$( cat ./.github/context/deleted-dir )
+            export JSONCREATE=$( cat ./.github/context/deleted-dir )
+            echo JSON:$JSON
+            echo JSONCREATE:$JSON
          else
             # origin/$GITHUB_BASE_REF $GITHUB_SHA
             DIFF=$( git diff --name-status origin/$GITHUB_BASE_REF $GITHUB_SHA )
@@ -58,6 +57,7 @@ runs:
       shell: bash
       
     - name: Set matrix for build
+      if: ${{ github.event.action }} != 'closed'
       id: set-matrix
       run: |
         import os

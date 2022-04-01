@@ -23,6 +23,8 @@ jobs:
    steps:
      - name: 'Checkout'
        uses: actions/checkout@v3
+       with:
+        ref: ${{ github.head_ref }}
 
      - name: 'Pre-Commit'
        continue-on-error: true
@@ -38,8 +40,8 @@ jobs:
        with:
          body: ${{ steps.pre-commit.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
 
-     - name: Cleanup
-       uses: ./.github/actions/cleanup  
+     - name: Push Changes
+       uses: ./.github/actions/pushchanges  
 
   Pull_InfraCost:
     if: github.event_name == 'pull_request'
@@ -53,7 +55,7 @@ jobs:
 
       - name: 'Checkout'
         uses: actions/checkout@v3
-
+        
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -116,15 +118,33 @@ jobs:
           id: set-matrix
           uses: ./.github/actions/generate-matrix
 
-        - name: Debug
+        - uses: actions/checkout@v3
+          with:
+            ref: ${{ github.head_ref }}
+
+        - name: Outputs
           id: set-output
           run: |
+            echo $JSON > ./.github/context/deleted-dir
+            echo $JSONCREATE > ./.github/context/created-dir
 
             echo "::set-output name=matrix::$JSON"
             echo "::set-output name=matrix2::$JSONCREATE "
+            echo Upload made to branch ${{ github.head_ref }}
+
+            #git config user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+            #git config user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+            #git add .
+            #git commit -m "[no ci] Changes made by pipeline"
+            #git push
+
             echo  ${{ steps.set-matrix.outputs.matrix }}
             echo  ${{ steps.set-matrix.outputs.matrix2 }}
             echo  ${{ steps.set-matrix.outputs.BASE_SHA }}
+
+        - name: Push Changes
+          continue-on-error: true
+          uses: ./.github/actions/pushchanges
 
   Plan:
     name: 'All the resource plannings'
