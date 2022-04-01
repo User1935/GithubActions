@@ -29,12 +29,13 @@ runs:
         if [ ${{ github.event_name }} == 'pull_request' ]; then
           # Pull Request
           git fetch origin $GITHUB_BASE_REF --depth=1
-         #if [ ${{ github.event.action }} == 'closed' ]; then
-         #  DIFF=$( git diff --name-status origin/${{ github.base_ref }} origin/${{ github.head_ref }} )
-         #else
+         if [ ${{ github.event.action }} == 'closed' ]; then
+            prev_sha=(echo $(git log -n 2 --pretty=format:"%H" ))
+           DIFF=$( git diff --name-status origin/${{ github.base_ref }} ${prev_sha[1]} )
+         else
             # origin/$GITHUB_BASE_REF $GITHUB_SHA
             DIFF=$( git diff --name-status origin/$GITHUB_BASE_REF $GITHUB_SHA )
-          #fi
+          fi
           echo "Diff between origin/$GITHUB_BASE_REF and $GITHUB_SHA"
           echo "::set-output name=sha::$GITHUB_BASE_REF"
           echo "::set-output name=diff::$( echo "$DIFF" | sed ':a;N;$!ba;s/\n/%0A/g' )"
