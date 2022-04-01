@@ -53,8 +53,8 @@ jobs:
 
       - name: 'Checkout'
         uses: actions/checkout@v3
-        with:
-            ref: ${{ github.head_ref }}
+        #with:
+        #    ref: ${{ github.head_ref }}
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
@@ -126,6 +126,8 @@ jobs:
           continue-on-error: true
           id: set-output
           run: |
+            echo $JSON > ./.github/context/deleted-dir
+            echo $JSONCREATE > ./.github/context/created-dir
 
             echo "::set-output name=matrix::$JSON"
             echo "::set-output name=matrix2::$JSONCREATE "

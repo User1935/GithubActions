@@ -135,8 +135,6 @@ runs:
     - name: Set Outputs
       id: set-output
       run: |
-        echo $JSON > ./.github/context/deleted-dir
-        echo $JSONCREATE > ./.github/context/created-dir
         echo "::set-output name=matrix::$( echo "$JSON" )"
         echo "::set-output name=matrix2::$( echo "$JSONCREATE" )"
       shell: bash
