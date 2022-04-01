@@ -24,9 +24,7 @@ jobs:
         BASE_SHA: ${{ steps.set-ouput.outputs.BASE_SHA }}
       steps:
         - uses: actions/checkout@v3
-          with:
-              ref: ${{ github.head_ref }}
-              
+
         - name: Fetch Matrix
           id: set-output
           run: |
