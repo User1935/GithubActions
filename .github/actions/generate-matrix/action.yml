@@ -28,7 +28,7 @@ runs:
         DIFF=''
         if [ ${{ github.event_name }} == 'pull_request' ]; then
           # Pull Request
-          echo $(git branch && git status)
+          echo BANANA: $(git branch && git status) : BANANAEND
           git fetch origin $GITHUB_BASE_REF --depth=2
          if [ ${{ github.event.action }} == 'closed' ]; then
            prev_sha=(echo $(git log -n 1 --pretty=format:"%H" ))
