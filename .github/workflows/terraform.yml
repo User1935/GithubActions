@@ -113,12 +113,14 @@ jobs:
       steps:
 
         - uses: actions/checkout@v3
-          with:
-            ref: ${{ github.head_ref }}
 
         - name: Create Matrixes
           id: set-matrix
           uses: ./.github/actions/generate-matrix
+
+        - uses: actions/checkout@v3
+          with:
+            ref: ${{ github.head_ref }}
 
         - name: Debug
           continue-on-error: true
