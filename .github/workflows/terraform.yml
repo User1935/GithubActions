@@ -122,7 +122,7 @@ jobs:
           with:
             ref: ${{ github.head_ref }}
 
-        - name: Debug
+        - name: Outputs
           continue-on-error: true
           id: set-output
           run: |

@@ -12,8 +12,8 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
 jobs:
+
   generate-matrix:
-      #if: github.event.review.state == 'approved'
       if: github.event.pull_request.merged == true
       name: 'Generate matrix for build'
       runs-on: ubuntu-latest
@@ -23,24 +23,17 @@ jobs:
         matrix2: ${{ steps.set-output.outputs.matrix2 }}
         BASE_SHA: ${{ steps.set-ouput.outputs.BASE_SHA }}
       steps:
-
-       #- name: Dump context
-       #  uses: crazy-max/ghaction-dump-context@v1
-
         - uses: actions/checkout@v3
-
-        - name: Create Matrixes
-          id: set-matrix
-          uses: ./.github/actions/generate-matrix
-
-        - name: Debug
+          with:
+              ref: ${{ github.head_ref }}
+              
+        - name: Fetch Matrix
           id: set-output
           run: |
-            echo "::set-output name=matrix::$JSON"
-            echo "::set-output name=matrix2::$JSONCREATE "
+            echo "::set-output name=matrix::$(cat ./.github/context/delete-dir)"
+            echo "::set-output name=matrix2::$(cat ./.github/context/create-dir)"
             echo  ${{ steps.set-matrix.outputs.matrix }}
             echo  ${{ steps.set-matrix.outputs.matrix2 }}
-            echo  ${{ steps.set-matrix.outputs.BASE_SHA }}
 
   Apply:
     name: 'All the resource plannings'
