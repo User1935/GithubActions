@@ -29,7 +29,7 @@ runs:
         if [ ${{ github.event_name }} == 'pull_request' ]; then
           # Pull Request
           echo $(git branch && git status)
-          git fetch origin $GITHUB_BASE_REF --depth=1
+          git fetch origin $GITHUB_BASE_REF --depth=2
          if [ ${{ github.event.action }} == 'closed' ]; then
            prev_sha=(echo $(git log -n 1 --pretty=format:"%H" ))
            echo "Diff between origin/${{ github.before }} and ${prev_sha[0]}"
