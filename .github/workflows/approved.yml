@@ -4,8 +4,6 @@ on:
     types:
       - closed
 
-
-
 env:
   tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
   STORAGE_KEY: ${{secrets.STORAGE_KEY}}
