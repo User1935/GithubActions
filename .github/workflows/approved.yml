@@ -23,6 +23,9 @@ jobs:
         BASE_SHA: ${{ steps.set-ouput.outputs.BASE_SHA }}
       steps:
 
+        - name: Dump context
+          uses: crazy-max/ghaction-dump-context@v1
+          
         - uses: actions/checkout@v3
 
         - run: echo ${{ github }}
