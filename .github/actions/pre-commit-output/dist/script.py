@@ -35,7 +35,7 @@ elif(runtype == 'terragrunt'):
     flag = False
     for s in data:
         # Filter info
-        if( 'Terraform will perform the following actions:' in s) or ('────────────────' in s):
+        if( 'Terraform will perform the following actions:' in s) or ('────────────────' in s) or ('Error' in s):
             flag = not flag
         if (flag):
             finalstring += s
