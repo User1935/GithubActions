@@ -29,7 +29,7 @@ locals {
   sops_file_path = split("/",abspath(path.root))
 }
 data "sops_file" "secrets" {
-  source_file = join("/",["",local.sops_file_path[1],local.sops_file_path[2],local.sops_file_path[3],local.sops_file_path[4], local.sops_file_path[5],"secure/stuff.yaml"]) 
+  source_file = join("/",["",local.sops_file_path[1],local.sops_file_path[2],local.sops_file_path[3],local.sops_file_path[4], local.sops_file_path[5],"secure/stuff.yaml"])
   input_type  = "yaml"
 }
 EOF

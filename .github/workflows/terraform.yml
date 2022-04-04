@@ -41,13 +41,13 @@ jobs:
        uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
        with:
          body: ${{ steps.pre-commit.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
-     
+
      - name: 'Remove files'
        run: |
         rm something.txt
         rm -dr dep
        shell: bash
-      
+
      - name: Push Changes
        uses: ./.github/actions/pushchanges  
 
@@ -73,13 +73,13 @@ jobs:
         uses: autero1/action-terragrunt@v1.1.0
         with:
           terragrunt_version: 0.35.9
-      
+
       #- name: Install TgSwitch
       #  run: curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
 
       #- name: Install TFenv
       #  run: brew install tfenv
-      
+
       - name: 'Terragrunt init-plan'
         continue-on-error: true
         run: |
@@ -97,13 +97,13 @@ jobs:
         uses: infracost/actions/setup@v1
         with:
           api-key: ${{ secrets.INFRACOST_API_KEY }}
-          
+
       - name: Run Infracost
         run: |
           infracost breakdown --config-file=infracost.yml --format=json --out-file=infracost.json
           echo [FILECONTENT - INFRACOST CONFIG] $(cat infracost.yml)
           echo [FILECONTENT - INFRACOST] $(cat infracost.json)
-        
+
       - name: Post the comment
         uses: infracost/actions/comment@v1
         with:
@@ -185,7 +185,7 @@ jobs:
         with:
           terragrunt_version: 0.35.9
 
-        
+
       - name: Run TerraGrunt
         working-directory: ${{ matrix.path }}
         run: |
@@ -211,7 +211,7 @@ jobs:
           body: ${{ steps.terragrunt.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
 
 
-          
+
   Destroy:
     name: 'All the destroy plannings'
     if: ${{ needs.generate-matrix.outputs.matrix }} != '{"include":[]}'
@@ -246,13 +246,13 @@ jobs:
         working-directory: ${{ matrix.path }}
         run: |
           echo Branch: $(git log --merges $GITHUB_SHA)
-          echo terragrunt init 
+          echo terragrunt init
           echo terragrunt plan -destroy
           terragrunt init
           terragrunt plan -destroy -no-color --terragrunt-include-external-dependencies -out output-planfile | tee output-planfile
           echo $(cat output-planfile)
 
-      
+
       - name: 'Terragrunt Output'
         id: terragrunt
         uses: ./.github/actions/pre-commit-output
