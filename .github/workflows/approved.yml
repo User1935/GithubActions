@@ -1,3 +1,88 @@
+<<<<<<< HEAD
+name: 'Apply planned settings'
+on:
+  pull_request:
+    types:
+      - closed
+
+  pull_request_review:
+    types: [submitted]
+
+env:
+  tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
+  STORAGE_KEY: ${{secrets.STORAGE_KEY}}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+
+  generate-matrix:
+      if: github.event.pull_request.merged == true
+      name: 'Generate matrix for build'
+      runs-on: ubuntu-latest
+
+      outputs:
+        matrix: ${{ steps.set-output.outputs.matrix }}
+        matrix2: ${{ steps.set-output.outputs.matrix2 }}
+        BASE_SHA: ${{ steps.set-ouput.outputs.BASE_SHA }}
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Fetch Matrix
+          id: set-output
+          run: |
+            echo $(pwd)
+            echo "::set-output name=matrix::$(cat ./.github/context/deleted-dir)"
+            echo "::set-output name=matrix2::$(cat ./.github/context/created-dir)"
+            echo  ${{ steps.set-matrix.outputs.matrix }}
+            echo  ${{ steps.set-matrix.outputs.matrix2 }}
+
+  Apply:
+    name: 'All the resource plannings'
+    if: ${{ needs.generate-matrix.outputs.matrix2 }} != '{"include":[]}'
+    needs: generate-matrix
+    strategy:
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix2)}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_wrapper: false
+
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v1.1.0
+        with:
+          terragrunt_version: 0.35.9
+
+      - name: Run TerraGrunt
+        working-directory: ${{ matrix.path }}
+        run: |
+          terragrunt init
+          terragrunt apply -auto-approve -no-color --terragrunt-include-external-dependencies | tee output-planfile
+          echo $(cat output-planfile)
+
+      - name: 'Terragrunt Output'
+        id: terragrunt
+        uses: ./.github/actions/pre-commit-output
+        env:
+          INPUT_TYPE: "terragrunt"
+          INPUT_FILEPATH: ${{ matrix.path }}
+
+      - name: Comment-push
+        uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
+        with:
+          body: ${{ steps.terragrunt.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
+=======
 name: 'Apply planned settings'
 on:
   pull_request:
@@ -78,3 +163,4 @@ jobs:
         uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
         with:
           body: ${{ steps.terragrunt.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
+>>>>>>> 8f924d1a76ba81b3852b412c3caa9ac6020a1ec3
