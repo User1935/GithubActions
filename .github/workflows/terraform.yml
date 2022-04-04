@@ -25,6 +25,7 @@ jobs:
        uses: actions/checkout@v3
        with:
         ref: ${{ github.head_ref }}
+        token: ${{ secrets.GITPAT }}
 
      - name: 'Pre-Commit'
        continue-on-error: true
