@@ -2,17 +2,17 @@
 name: 'Apply planned settings'
 on:
   pull_request:
-    types: 
+    types:
       - closed
 
   pull_request_review:
     types: [submitted]
-    
+
 env:
   tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
   STORAGE_KEY: ${{secrets.STORAGE_KEY}}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
 jobs:
 
   generate-matrix:
@@ -63,7 +63,7 @@ jobs:
         uses: autero1/action-terragrunt@v1.1.0
         with:
           terragrunt_version: 0.35.9
-        
+
       - name: Run TerraGrunt
         working-directory: ${{ matrix.path }}
         run: |
