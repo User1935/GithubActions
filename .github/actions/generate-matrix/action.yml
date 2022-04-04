@@ -7,11 +7,11 @@ outputs:
     value: ${{ steps.set-output.outputs.matrix }}
     description: "JSON file with paths of items to be deleted"
 
-  matrix2: 
+  matrix2:
     value: ${{ steps.set-ouput.outputs.matrix2 }}
     description: "JSON file with paths of items to be created"
 
-  BASE_SHA: 
+  BASE_SHA:
     value: ${{ steps.diff.outputs.sha }}
     description: "The main / default branch"
 
@@ -39,7 +39,7 @@ runs:
             DIFF=$( git diff --name-status origin/$GITHUB_BASE_REF $GITHUB_SHA )
             echo "Diff between origin/$GITHUB_BASE_REF and $GITHUB_SHA"
           fi
-          
+
           echo "::set-output name=sha::$GITHUB_BASE_REF"
           echo "::set-output name=diff::$( echo "$DIFF" | sed ':a;N;$!ba;s/\n/%0A/g' )"
         else
@@ -55,7 +55,7 @@ runs:
         echo "::debug:: Changes: $(git diff --name-status origin/$GITHUB_BASE_REF $GITHUB_SHA)"
         echo "::debug::$DIFF | sed ':a;N;$!ba;s/\n/ /g'"
       shell: bash
-      
+
     - name: Set matrix for build
       if: ${{ github.event.action }} != 'closed'
       id: set-matrix
@@ -79,7 +79,7 @@ runs:
             # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
                 if (finalarray[-1] == 'terragrunt.hcl'):
                     #echo success
-                                        
+
                     path = JSONline.replace('terragrunt.hcl','')
                     if not (path in JSON):
                         JSON +='{' + '"path":"{}"'.format(path) + '},'
@@ -95,7 +95,7 @@ runs:
                             JSON +='{' + '"path":"{}"'.format(path) + '},'
                         if not (path in JSONCREATE):
                             JSONCREATE +='{' + '"path":"{}"'.format(path2) + '},'
-                    i += 1 
+                    i += 1
                 else:
                     #echo m OR c {finalarray[-1]}
                     # Is a terragrunt.hcl file? and Is it not the root terragrun.hcl file?
@@ -106,13 +106,13 @@ runs:
                             JSONCREATE +='{' + '"path":"{}"'.format(path) + '},'
 
 
-            i += 2 
+            i += 2
 
 
         if(JSON[-1] == ','):
             JSON = JSON[:-1]
         if(JSONCREATE[-1] == ','):
-            JSONCREATE = JSONCREATE[:-1]    
+            JSONCREATE = JSONCREATE[:-1]  
 
         JSON += "]}"
         JSONCREATE += "]}"
@@ -189,7 +189,7 @@ runs:
 #                          fi
 #                  fi
 #                  if [ "${finalarray2[-1]}" == 'terragrunt.hcl' ]; then
-#                          
+#  
 #                          unset finalarray2[-1]
 #                          path=$(echo ${finalarray2[@]} | sed -r 's/ +/\//g')
 #                          if [[ "$JSONCREATE" != *$path* ]]; then
@@ -215,7 +215,7 @@ runs:
 #          fi
 #
 #          i=$(($i+2))  
-# 
+#
 #        done
 #
 #        # Remove last "," and add closing brackets
@@ -229,7 +229,7 @@ runs:
 #          JSONCREATE="${JSONCREATE%?}"
 #        fi
 #        JSONCREATE="$JSONCREATE]}"
-#        
+#  
 #
 #        # Set output
 #        echo "::set-output name=matrix::$( echo "$JSON" )"
