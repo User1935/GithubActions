@@ -4,9 +4,9 @@ from os import getcwd
 
 data = sys.argv[1]
 decdata = json.loads(data)
-filecontent = ""
+filecontent = ''
 for ele in decdata['include']:
-    filecontent += "    - path: " + ele['path'][:-1] + "\n"
+    filecontent += '    - path: ' + ele['path'][:-1] + '\n'
 yaml = '''
 version: 0.1
 

@@ -23,4 +23,3 @@ repos:
     - id: terraform_tflint
     - id: terraform_tfsec
     - id: checkov
-
