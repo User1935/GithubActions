@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 name: 'Apply planned settings'
 on:
   pull_request:
