@@ -36,6 +36,7 @@ jobs:
 
      - name: Comment-push
        if: github.event_name != 'pull_request'
+       continue-on-error: true
        uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
        with:
          body: ${{ steps.pre-commit.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
