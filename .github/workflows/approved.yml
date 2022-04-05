@@ -67,7 +67,7 @@ jobs:
         working-directory: ${{ matrix.path }}
         run: |
           terragrunt init
-          terragrunt apply -auto-approve -no-color --terragrunt-include-external-dependencies | tee output-planfile 
+          terragrunt apply -auto-approve -no-color --terragrunt-include-external-dependencies | tee output-planfile
           echo $(cat output-planfile)
 
       - name: 'Terragrunt Output'
