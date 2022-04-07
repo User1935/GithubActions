@@ -1,5 +1,5 @@
 name: 'Apply planned settings'
-on: 
+on:
   push:
     branches:
       - 'main'
@@ -16,3 +16,6 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - run: echo Hello World!
+
+        - name: Dump context
+          uses: crazy-max/ghaction-dump-context@v1
