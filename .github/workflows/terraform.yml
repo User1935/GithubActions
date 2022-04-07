@@ -63,6 +63,8 @@ jobs:
 
       - name: 'Checkout'
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITPAT }}
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
