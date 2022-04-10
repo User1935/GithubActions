@@ -8,10 +8,10 @@ runs:
 
     - id: random-number-generator
       run: |
-        echo "~/cache" >> $GITHUB_PATH \
-        export PATH="${PATH}:~/cache"
+        echo "/home/runner/cache" >> $GITHUB_PATH \
+        export PATH="${PATH}:/home/runner/cache"
         echo "$PATH"
-        echo $(ls)
+        echo $(ls /home/runner/cache)
       shell: bash
 
     - run: pre-commit run -a | tee something.txt
