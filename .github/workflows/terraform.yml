@@ -63,6 +63,7 @@ jobs:
        shell: bash
 
      - name: Push Changes
+       continue-on-error: true
        uses: ./.github/actions/pushchanges  
 
   Pull_InfraCost:
