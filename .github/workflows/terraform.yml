@@ -34,7 +34,7 @@ jobs:
        id: cache
        uses: actions/cache@v3
        with:
-         path: ~/cache
+         path: /home/runner/cache
          key: ${{ runner.os }}-${{ hashFiles('dep') }}
 
      - name: 'Install dependencies'
