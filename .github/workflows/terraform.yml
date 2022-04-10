@@ -54,7 +54,7 @@ jobs:
        continue-on-error: true
        uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
        with:
-         body: ${{ steps.pre-commit.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
+         body: ${{ steps.pre-commit.outputs.output }} ##${{ steps.pre-commit.outputs.precommit_output }}
 
      - name: 'Remove files'
        run: |
