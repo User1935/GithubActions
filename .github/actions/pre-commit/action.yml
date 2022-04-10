@@ -2,15 +2,17 @@ name: "Pre-commit"
 description: 'Run and Settup Pre-commit'
 
 
-outputs:
-  precommit_output:
-    description: 'Content of Pre-Commit'
-
-
-
 runs:
   using: "composite"
   steps:
+
+    - id: random-number-generator
+      run: |
+        echo "~/cache" >> $GITHUB_PATH \
+        export PATH="${PATH}:~/cache"
+        echo "$PATH"
+        echo $(ls)
+      shell: bash
 
     - run: pre-commit run -a | tee something.txt
       shell: bash

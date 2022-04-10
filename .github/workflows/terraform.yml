@@ -30,7 +30,7 @@ jobs:
      - name: 'Check dependencies'
        uses: ./.github/actions/depend-check
 
-     - name: Cache multiple paths
+     - name: Cache dependencies
        id: cache
        uses: actions/cache@v3
        with:

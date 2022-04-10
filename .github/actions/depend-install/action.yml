@@ -11,9 +11,9 @@ runs:
         mkdir ~/cache
         cd ~/cache
         # Pre-Commit
-        pip3 install --no-cache-dir pre-commit
+        pip3 install --target=~/cache pre-commit
         # Checkov
-        pip3 install --no-cache-dir checkov
+        pip3 install --target=~/cache checkov
         # Terraform Docs
         curl -L "$(curl -s "https://api.github.com/repos/terraform-docs/terraform-docs/releases"/latest | grep -o -E -m 1 "https://.+?-linux-amd64.tar.gz")" > terraform-docs.tgz \
         && tar -xzf terraform-docs.tgz terraform-docs && rm terraform-docs.tgz && chmod +x terraform-docs
@@ -30,12 +30,4 @@ runs:
         # TFsec
         curl -L "$(curl -s "https://api.github.com/repos/aquasecurity/tfsec/releases/latest" | grep -o -E -m 1 "https://.+?/tfsec-linux-amd64")" > tfsec \
         && chmod +x tfsec
-      shell: bash
-
-    - id: random-number-generator
-      run: |
-        echo "~/cache" >> $GITHUB_PATH \
-        export PATH="${PATH}:~/cache"
-        echo "$PATH"
-        echo $(ls)
       shell: bash
