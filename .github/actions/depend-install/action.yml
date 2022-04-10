@@ -34,8 +34,8 @@ runs:
 
     - id: random-number-generator
       run: |
-        echo "dep" >> $GITHUB_PATH \
-        export PATH="${PATH}:${{ github.workspace }}/dep"
+        echo "~/cache" >> $GITHUB_PATH \
+        export PATH="${PATH}:~/cache"
         echo "$PATH"
         echo $(ls)
       shell: bash

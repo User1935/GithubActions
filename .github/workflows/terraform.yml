@@ -59,7 +59,7 @@ jobs:
      - name: 'Remove files'
        run: |
         rm something.txt
-        rm -dr dep
+        rm dep2
        shell: bash
 
      - name: Push Changes
