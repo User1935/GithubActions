@@ -8,7 +8,8 @@ runs:
 
     - id: random-number-generator
       run: |
-        pip3 install --no-cache-dir pre-commit
+        pip3 install --user --no-cache-dir pre-commit
+        echo ${PYTHONUSERBASE}
         # Checkov
         pip3 install --no-cache-dir checkov
         echo "/home/runner/cache" >> $GITHUB_PATH \
