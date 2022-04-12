@@ -10,6 +10,7 @@ runs:
       run: |
         pip3 install --user --no-cache-dir pre-commit
         echo -------------- derd ------------------- ${PYTHONUSERBASE}
+        pip3 install --user --no-cache-dir pre-commit
         # Checkov
         pip3 install --no-cache-dir checkov
         echo "/home/runner/cache" >> $GITHUB_PATH \
