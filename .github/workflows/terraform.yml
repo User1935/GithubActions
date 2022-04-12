@@ -28,6 +28,7 @@ jobs:
         token: ${{ secrets.GITPAT }}
 
      - name: 'Check dependencies'
+       id: 'dep-check'
        uses: ./.github/actions/depend-check
 
      - name: Cache dependencies
@@ -35,8 +36,9 @@ jobs:
        uses: actions/cache@v3
        with:
          path: /home/runner/cache
-         key: ${{ runner.os }}-${{ hashFiles('dep') }}
-
+         key: ${{ runner.os }}-${{ steps.dep-check.outputs.hash }}
+    # ${{ hashFiles('dep') }}
+    
      - name: 'Install dependencies'
        if: steps.cache.outputs.cache-hit != 'true'
        uses: ./.github/actions/depend-install
