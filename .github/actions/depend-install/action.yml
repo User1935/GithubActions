@@ -12,10 +12,10 @@ runs:
         cd /home/runner/cache
         # Pre-Commit
         #pip3 install --target=/home/runner/cache pre-commit
-        pip3 install --user --no-cache-dir pre-commit
+        #pip3 install --user --no-cache-dir pre-commit
         # Checkov
         #pip3 install --target=/home/runner/cache checkov
-        pip3 install --user --no-cache-dir checkov
+        #pip3 install --user --no-cache-dir checkov
         # Terraform Docs
         curl -L "$(curl -s "https://api.github.com/repos/terraform-docs/terraform-docs/releases"/latest | grep -o -E -m 1 "https://.+?-linux-amd64.tar.gz")" > terraform-docs.tgz \
         && tar -xzf terraform-docs.tgz terraform-docs && rm terraform-docs.tgz && chmod +x terraform-docs
