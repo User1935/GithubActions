@@ -35,7 +35,9 @@ jobs:
        id: cache
        uses: actions/cache@v3
        with:
-         path: /home/runner/cache
+         path: |
+          /home/runner/cache
+          ${{ steps.dep-check.outputs.pythonpath }}
          key: ${{ runner.os }}-${{ steps.dep-check.outputs.hash }}
     # ${{ hashFiles('dep') }}
 
