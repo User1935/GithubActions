@@ -22,6 +22,7 @@ runs:
         echo "$(curl -s "https://api.github.com/repos/accurics/terrascan/releases/latest" | grep -o -E -m 1 "https://.+?_Linux_x86_64.tar.gz")" >> dep2
         echo "$(curl -s "https://api.github.com/repos/terraform-linters/tflint/releases/latest" | grep -o -E -m 1 "https://.+?_linux_amd64.zip")" >> dep2
         echo "$(curl -s "https://api.github.com/repos/aquasecurity/tfsec/releases/latest" | grep -o -E -m 1 "https://.+?/tfsec-linux-amd64")" >> dep2
+        echo "bananas" >> dep2
         echo "python3 -m site --usersite" >> dep2
         echo "::set-output name=HASH:: $(echo -n $(cat dep2) | sha256sum)"
         echo "::set-output name=PYTHONPATH:: $(python3 -m site --usersite)"
