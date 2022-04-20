@@ -215,8 +215,15 @@ jobs:
           echo terragrunt init --working-directory ${{ matrix.path }}
           echo terragrunt plan --working-directory ${{ matrix.path }}
           terragrunt init
-          terragrunt plan -no-color  --terragrunt-include-external-dependencies -out output-planfile | tee output-planfile
+          terragrunt plan -no-color  --terragrunt-include-external-dependencies -out output-planfile > output-planfile 2>&1
           echo $(cat output-planfile)
+
+      # logging
+      - uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535
+        if: always()
+        with:
+          name: my-artifact
+          path: ${{ matrix.path }}/output-planfile
 
       - name: 'Terragrunt Output'
         id: terragrunt
@@ -270,8 +277,15 @@ jobs:
           echo terragrunt init
           echo terragrunt plan -destroy
           terragrunt init
-          terragrunt plan -destroy -no-color --terragrunt-include-external-dependencies -out output-planfile | tee output-planfile
+          terragrunt plan -destroy -no-color --terragrunt-include-external-dependencies -out output-planfile > output-planfile 2>&1
           echo $(cat output-planfile)
+
+      # logging
+      - uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535
+        if: always()
+        with:
+          name: my-artifact
+          path: ${{ matrix.path }}/output-planfile
 
 
       - name: 'Terragrunt Output'
