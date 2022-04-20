@@ -1,3 +1,6 @@
 [submodule "GithubActions"]
 	path = GithubActions
 	url = https://github.com/User1935/GithubActions.git
+[submodule "CVT-IaC-Live-AZURE/SomeProject"]
+	path = CVT-IaC-Live-AZURE/SomeProject
+	url = https://github.com/User1935/SomeotherProject.git

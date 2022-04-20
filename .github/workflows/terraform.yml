@@ -27,6 +27,24 @@ jobs:
         ref: ${{ github.head_ref }}
         token: ${{ secrets.GITPAT }}
 
+     - name: 'Check dependencies'
+       id: 'dep-check'
+       uses: ./.github/actions/depend-check
+
+     - name: Cache dependencies
+       id: cache
+       uses: actions/cache@v3
+       with:
+         path: |
+          /home/runner/cache
+          ${{ steps.dep-check.outputs.pythonpath }}
+         key: ${{ runner.os }}-${{ steps.dep-check.outputs.hash }}
+    # ${{ hashFiles('dep') }}
+
+     - name: 'Install dependencies'
+       if: steps.cache.outputs.cache-hit != 'true'
+       uses: ./.github/actions/depend-install
+
      - name: 'Pre-Commit'
        continue-on-error: true
        uses: ./.github/actions/pre-commit
@@ -40,15 +58,16 @@ jobs:
        continue-on-error: true
        uses: ./.github/actions/commit-comment  #'peter-evans/commit-comment@v1'
        with:
-         body: ${{ steps.pre-commit.outputs.output }} #${{ steps.pre-commit.outputs.precommit_output }}
+         body: ${{ steps.pre-commit.outputs.output }} ##${{ steps.pre-commit.outputs.precommit_output }}
 
      - name: 'Remove files'
        run: |
         rm something.txt
-        rm -dr dep
+        rm dep2
        shell: bash
 
      - name: Push Changes
+       continue-on-error: true
        uses: ./.github/actions/pushchanges  
 
   Pull_InfraCost:
@@ -196,8 +215,15 @@ jobs:
           echo terragrunt init --working-directory ${{ matrix.path }}
           echo terragrunt plan --working-directory ${{ matrix.path }}
           terragrunt init
-          terragrunt plan -no-color  --terragrunt-include-external-dependencies -out output-planfile | tee output-planfile
+          terragrunt plan -no-color  --terragrunt-include-external-dependencies -out output-planfile > output-planfile 2>&1
           echo $(cat output-planfile)
+
+      # logging
+      - uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535
+        if: always()
+        with:
+          name: my-artifact
+          path: ${{ matrix.path }}/output-planfile
 
       - name: 'Terragrunt Output'
         id: terragrunt
@@ -251,8 +277,15 @@ jobs:
           echo terragrunt init
           echo terragrunt plan -destroy
           terragrunt init
-          terragrunt plan -destroy -no-color --terragrunt-include-external-dependencies -out output-planfile | tee output-planfile
+          terragrunt plan -destroy -no-color --terragrunt-include-external-dependencies -out output-planfile > output-planfile 2>&1
           echo $(cat output-planfile)
+
+      # logging
+      - uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535
+        if: always()
+        with:
+          name: my-artifact
+          path: ${{ matrix.path }}/output-planfile
 
 
       - name: 'Terragrunt Output'

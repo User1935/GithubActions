@@ -2,48 +2,23 @@ name: "Pre-commit"
 description: 'Run and Settup Pre-commit'
 
 
-outputs:
-  precommit_output:
-    description: 'Content of Pre-Commit'
-
-
-
 runs:
   using: "composite"
   steps:
-    - run: |
-        #sudo apt-get install unzip
-        sudo apt install python3-testresources
-        mkdir dep
-        cd dep
-        # Pre-Commit
-        pip3 install --no-cache-dir pre-commit
-        # Checkov
-        pip3 install --no-cache-dir checkov
-        # Terraform Docs
-        curl -L "$(curl -s "https://api.github.com/repos/terraform-docs/terraform-docs/releases"/latest | grep -o -E -m 1 "https://.+?-linux-amd64.tar.gz")" > terraform-docs.tgz \
-        && tar -xzf terraform-docs.tgz terraform-docs && rm terraform-docs.tgz && chmod +x terraform-docs
-        # TerraGrunt
-        curl -L "$(curl -s "https://api.github.com/repos/gruntwork-io/terragrunt/releases/latest" | grep -o -E -m 1 "https://.+?/terragrunt_linux_amd64")" > terragrunt \
-        && chmod +x terragrunt
-        # TerraScan
-        curl -L "$(curl -s "https://api.github.com/repos/accurics/terrascan/releases/latest" | grep -o -E -m 1 "https://.+?_Linux_x86_64.tar.gz")" > terrascan.tar.gz \
-        && tar -xzf terrascan.tar.gz terrascan && rm terrascan.tar.gz \
-        && ./terrascan init
-        # TFLint
-        curl -L "$(curl -s "https://api.github.com/repos/terraform-linters/tflint/releases/latest" | grep -o -E -m 1 "https://.+?_linux_amd64.zip")" > tflint.zip \
-        && unzip tflint.zip && rm tflint.zip
-        # TFsec
-        curl -L "$(curl -s "https://api.github.com/repos/aquasecurity/tfsec/releases/latest" | grep -o -E -m 1 "https://.+?/tfsec-linux-amd64")" > tfsec \
-        && chmod +x tfsec
-      shell: bash
 
     - id: random-number-generator
       run: |
-        echo "dep" >> $GITHUB_PATH \
-        export PATH="${PATH}:${{ github.workspace }}/dep"
+        pip3 install --user --no-cache-dir pre-commit
+        echo -------------- derd ------------------- ${PYTHONUSERBASE}
+        #ls /home/runner/.local/lib/python3.8/site-packages
+        echo ----------------------
+        #ls /usr/lib/python3/dist-packages
+        # Checkov
+        pip3 install --no-cache-dir checkov
+        echo "/home/runner/cache" >> $GITHUB_PATH \
+        export PATH="${PATH}:/home/runner/cache"
         echo "$PATH"
-        echo $(ls)
+        echo $(ls /home/runner/cache)
       shell: bash
 
     - run: pre-commit run -a | tee something.txt

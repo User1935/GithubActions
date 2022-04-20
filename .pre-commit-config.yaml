@@ -10,7 +10,6 @@ repos:
       args: [ --allow-multiple-documents ]
     - id: check-json
     - id: check-merge-conflict
-    #- id: detect-aws-credentials
     - id: double-quote-string-fixer
     - id: end-of-file-fixer
 

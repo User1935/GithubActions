@@ -1,18 +1,16 @@
 name: 'Apply planned settings'
 on:
-  pull_request:
-    types:
-      - closed
+  #pull_request:
+  #  types:
+  #    - closed
+  #
+  #pull_request_review:
+  #  types: [submitted]
+
+  push:
     branches:
       - "main"
 
-  pull_request_review:
-    types: [submitted]
-    branches:
-      - "main"
- #push:
- #  branches:
- #    - "main"
 
 env:
   tf_working_dir: './CVT-IaC-Live-AZURE/ci-prod/ci-prod-vnet/'
